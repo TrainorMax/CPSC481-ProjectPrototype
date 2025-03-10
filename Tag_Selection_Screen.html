@@ -1,0 +1,141 @@
+<!-- Author: Sean Tan
+     UCID: 30094560     
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Selection</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .app-container {
+            width: 375px; /* set mobile app width */
+            height: 667px; /* set mobile app height */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0; /* add bottom margin to separate from content */
+        }
+        .breadcrumb li {
+            margin-right: 5px;
+        }
+        .breadcrumb li+li:before {
+            content: ">";
+            margin-right: 5px;
+        }
+        .button-container {
+            position: absolute;
+            bottom: 80px; /* adjusted to make space for the navbar */
+            right: 20px;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .tag-container button:active {
+            opacity: 50%;
+        }
+        .tag-container button:focus{
+            opacity: 50%;
+        }
+        .breadcrumb li {
+            font-size: 13px;
+        }
+        .app-container h2 {
+            align-self: flex-start; /* align the h2 element to the start */
+        }
+        .navbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #c70f0f;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .navbar button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .tag-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .app-container select{
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Start Planning</a></li>
+            <li>Tag Selection</li>
+        </ul>
+        <h2>Select Date</h2>
+
+        <select name="dropdown-list">
+            <option value="Sunday">Sunday, March 16th</option>
+            <option value="Monday">Monday, March 17th</option>
+            <option value="Tuesday">Tuesday, March 18th</option>
+        </select>
+
+        <h2>Select Tags</h2>
+
+        <div class="tag-container">
+            <button>Attractions</button>
+            <button>Tours</button>
+            <button>Outdoors</button>
+            <button>Concerts & Shows</button>
+            <button>Day Trips</button>
+            <button>Shopping</button>
+        </div>
+
+        <div class="navbar">
+            <button>Home</button>
+            <button>Trips</button>
+            <button>Events</button>
+            <button>Tickets</button>
+        </div>
+        <div class="button-container">
+            <button>Continue</button>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
