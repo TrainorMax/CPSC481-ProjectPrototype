@@ -1,0 +1,108 @@
+<!-- Author: Max Trainor
+     UCID: 30089346     
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .app-container {
+            width: 375px; /* set mobile app width */
+            height: 667px; /* set mobile app height */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0; /* add bottom margin to separate from content */
+            
+        }
+        .breadcrumb li {
+            margin-right: 5px;
+        }
+        .breadcrumb li+li:before {
+            content: ">";
+            margin-right: 5px;
+        }
+        .button-container {
+            bottom: 100px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-inline-end: 10px;
+        }
+        h1 {
+            text-decoration: underline;
+        }
+        input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .breadcrumb li {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <ul class="breadcrumb">
+            <li><a href="#">Welcome</a></li>
+            <li>Sign Up</li>
+        </ul>
+
+        <h1> Create an Account</h1><br><br>
+
+        <div class="text-input">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="first-name"><br><br>
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name"><br><br><br><br>
+            
+            <label for="phone-number">Phone #:</label>
+            <input type="text" id="phone-number" name="phone-number"><br><br><br><br>
+
+            <label for="user-name">Username:</label>
+            <input type="text" id="user-name" name="user-name"><br><br>
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password"><br><br><br><br>
+        </div>
+        <div class="checkbox-input">
+            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a></label>
+            <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
+            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a></label>
+            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br><br><br><br>
+        </div>
+
+        <div class="button-container">
+            <button>Go Back</button>
+            <button>Continue</button>
+        </div>
+    </div>
+</body>
+</html>
