@@ -76,28 +76,33 @@
             <li>Sign Up</li>
         </ul>
 
-        <h1> Create an Account</h1><br><br>
+        <h1>Create an Account</h1><br><br>
 
         <div class="text-input">
-            <label for="first-name">First Name:</label>
+            <label for="first-name">*First Name:</label>
             <input type="text" id="first-name" name="first-name"><br><br>
-            <label for="last-name">Last Name:</label>
+            <label for="last-name">*Last Name:</label>
             <input type="text" id="last-name" name="last-name"><br><br><br><br>
             
             <label for="phone-number">Phone #:</label>
-            <input type="text" id="phone-number" name="phone-number"><br><br><br><br>
+            <input type="text" id="phone-number" name="phone-number"><br><br>
+            <label for="email">*Email:</label>
+            <input type="text" id="email" name="email"><br><br><br><br>
 
-            <label for="user-name">Username:</label>
+            <label for="user-name">*Username:</label>
             <input type="text" id="user-name" name="user-name"><br><br>
-            <label for="password">Password:</label>
+            <label for="password">*Password:</label>
             <input type="text" id="password" name="password"><br><br><br><br>
         </div>
         <div class="checkbox-input">
-            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a></label>
+            <label for="marketing">I agree to receive marketing emails</label>
+            <input type="checkbox" id="marketing" name="marketing"><br><br>
+            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>*</label>
             <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
-            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a></label>
-            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br><br><br><br>
+            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a>*</label>
+            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br>
         </div>
+        <h5><i>*indicates a required field</i></h3>
 
         <div class="button-container">
             <button>Go Back</button>
