@@ -70,6 +70,7 @@
         }
         .app-container h2 {
             align-self: flex-start; /* align the h2 element to the start */
+            margin-top: 80px;
         }
         .navbar {
             position: absolute;
@@ -97,6 +98,21 @@
         .app-container select{
             margin-bottom: 100px;
         }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button-container{
+            position:absolute;
+            top: 60px;
+            left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -106,6 +122,11 @@
             <li><a href="#">Start Planning</a></li>
             <li>Tag Selection</li>
         </ul>
+
+        <div class="back-button-container">
+            <button class="back-button">Back</button>
+        </div>
+
         <h2>Tell Us What You Love & We’ll Handle the Rest!</h2>
 
         <!--<select name="dropdown-list">
