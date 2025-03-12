@@ -124,6 +124,24 @@
             font-size: 12px;
             cursor: pointer;
         }
+        .navbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #c70f0f;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .navbar button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: Verdana;
+        }
     </style>
 </head>
 <body>
@@ -144,10 +162,10 @@
 
         <div class="button-container">
             <button style="margin-bottom: 20px;">Plan New Trip</button>
-        </div>
+        </div><br>
 
         <div class="text-input">
-            <label style="display: block; text-align: left;"><b>Your Past Trips</b></label><br>
+            <label style="display: block; text-align: left;"><b><u>Your Past Trips</u></b></label><br>
             <div class="trip-container">
                 <div class="box">
                     <span class="box-text">May 2023</span>
@@ -157,16 +175,21 @@
                     <span class="box-text">July 2021</span>
                     <button class="box-button">View Details</button>
                 </div>
+        </div><br>
+        <div class="text-input">
+            <label style="display: block; text-align: left;"><b><u>Amenities and Emergency Services</u></b></label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/cps.html">Calgary Police Service</a>: 911</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/311.html">Calgary City Services</a>: 311</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.albertahealthservices.ca/topics/page11975.aspx">Poison and Drug Information Service</a>: 1-800-332-1414</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.thecheckergroup.com/">Checker Cabs</a>: (403) 299-9999</label>
         </div>
-        <div class="checkbox-input">
-            <label for="marketing">I agree to receive marketing emails</label>
-            <input type="checkbox" id="marketing" name="marketing"><br><br>
-            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>*</label>
-            <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
-            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a>*</label>
-            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br>
+
+        <div class="navbar">
+            <button style="background-color:#a70f0f">Home</button>
+            <button>Trips</button>
+            <button>Events</button>
+            <button>Tickets</button>
         </div>
-        <h5><i>*indicates a required field</i></h3>
     </div>
 </body>
 </html>
