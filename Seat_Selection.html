@@ -1,0 +1,123 @@
+<!-- Author: Ahmed Alaqad
+     UCID: 30078697   
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Selection</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Verdana, sans-serif;
+        }
+        .app-container {
+            width: 375px;
+            min-height: 667px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .back-button {
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .map-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .map {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .ticket-info {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            margin: 5px 0;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .ticket-info strong {
+            font-size: 14px;
+        }
+        .select-button {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .navbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #c70f0f;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .navbar button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <span class="back-button">←</span> Seat Selection
+        </div>
+
+        <div class="map-container">
+            <img src="https://cdn.glitch.global/548b78c0-df12-40e6-9de3-54954e38ed60/IMG_0037.JPG?v=1741797446977" alt="Map" class="map">
+        </div>
+
+        <div class="ticket-info">
+            <strong>Lower Section - Seat #106</strong><br>
+            VIP Ticket<br>
+            Price: $350.00
+        </div>
+
+        <div class="ticket-info">
+            <strong>Upper Section - Seat #309</strong><br>
+            General Ticket<br>
+            Price: $100.00
+        </div>
+
+        <button class="select-button">SELECT</button>
+
+        <div class="navbar">
+            <button>Home</button>
+            <button>Trips</button>
+            <button>Events</button>
+            <button>Tickets</button>
+        </div>
+    </div>
+</body>
+</html>
