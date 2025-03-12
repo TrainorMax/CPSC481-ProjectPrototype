@@ -47,6 +47,19 @@
             content: ">";
             margin-right: 5px;
         }
+        .back-button-container {
+            display: flex;
+            justify-content: flex-start;
+            margin: 10px 0;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
         h1 {
             margin-top: 5px;
         }
@@ -98,10 +111,7 @@
         .add-event {
             width: 100%;
             margin-bottom: 10px;
-            background-color: #007bff;
-        }
-        .view-tickets {
-            background-color: #28a745;
+            background-color: #7A7D7D;
         }
         .book-button {
             width: 100%;
@@ -119,7 +129,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #c70f0f;
+            background-color: #a81d25;
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
@@ -144,7 +154,11 @@
                 <li>Trip Timeline</li>
             </ul>
         </div>
-        
+
+        <div class="back-button-container">
+            <button class="back-button">Back</button>
+        </div>
+
         <h1>Trip Timeline</h1>
         <button class="add-event">Add Event</button>
 
@@ -153,7 +167,7 @@
             <p><b>9 AM</b></p>
             <div class="event">
                 <div class="event-details">
-                    <span class="event-label">Event 1 <span class="arrow">▼</span></span> <!-- Smaller arrow -->
+                    <span class="event-label">Event 1 <span class="arrow">▼</span></span> 
                 </div>
                 <div class="event-buttons">
                     <button>Edit</button>
@@ -165,10 +179,9 @@
             <p><b>2 PM</b></p>
             <div class="event">
                 <div class="event-details">
-                    <span class="event-label">Event 2 <span class="arrow">▼</span></span> <!-- Smaller arrow -->
+                    <span class="event-label">Event 2 <span class="arrow">▼</span></span> 
                 </div>
                 <div class="event-buttons">
-                    <button class="view-tickets">View Tickets</button>
                     <button>Edit</button>
                     <button>Remove</button>
                     <input type="checkbox" class="checkbox">
@@ -181,7 +194,7 @@
             <p><b>8 AM</b></p>
             <div class="event">
                 <div class="event-details">
-                    <span class="event-label">Event 3 <span class="arrow">▼</span></span> <!-- Smaller arrow -->
+                    <span class="event-label">Event 3 <span class="arrow">▼</span></span> 
                 </div>
                 <div class="event-buttons">
                     <button>Edit</button>
@@ -193,7 +206,7 @@
             <p><b>12 PM</b></p>
             <div class="event">
                 <div class="event-details">
-                    <span class="event-label">Event 4 <span class="arrow">▼</span></span> <!-- Smaller arrow -->
+                    <span class="event-label">Event 4 <span class="arrow">▼</span></span> 
                 </div>
                 <div class="event-buttons">
                     <button>Edit</button>
@@ -203,12 +216,10 @@
             </div>
         </div>
 
-
         <button class="book-button">BOOK</button>
         <div class="navbar">
             <button>Home</button>
             <button>Trips</button>
-            <button>Events</button>
             <button>Tickets</button>
         </div>
     </div>
