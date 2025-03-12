@@ -1,0 +1,172 @@
+<!-- Author: Max Trainor
+     UCID: 30089346     
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #d0cfcf;
+            font-family:Verdana;
+        }
+        .app-container {
+            width: 375px; /* set mobile app width */
+            height: 667px; /* set mobile app height */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .weather-container {
+            width: 375px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1px;
+            padding-left: 10%;
+        }
+        .container img {
+            width: 20px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .weather-text {
+            display: flex;
+            flex-direction: column;
+            font-family: Verdana;
+            margin-bottom: 5px;
+        }
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0; /* add bottom margin to separate from content */
+            
+        }
+        .breadcrumb li {
+            margin-right: 5px;
+        }
+        .breadcrumb li+li:before {
+            content: ">";
+            margin-right: 5px;
+        }
+        .button-container {
+            bottom: 100px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #c81d25;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-inline-end: 10px;
+            font-family:Verdana;
+        }
+        h1 {
+            color: #c81d25;
+            font-family:Verdana;
+        }
+        h2 {
+            color: #c81d25;
+            font-family:Verdana;
+        }
+        h3 {
+            font-family:Verdana;
+        }
+        h4 {
+            font-family:Verdana;
+        }
+        input[type="date"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .breadcrumb li {
+            font-size: 13px;
+            font-family:Verdana;
+        }
+        .trip-container {
+            display: flex;
+            flex-direction: column;
+            width: 350px;
+        }
+        .box {
+            width: 70%;
+            height: 30px;
+            text-align: center;
+            align-items: center;
+            font-size: 18px;
+            border: 1px solid black;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .box:first-child {
+            background-color: #d0cfcf;
+        }
+        .box:last-child {
+            background-color: #fffbfe;
+        }
+        .box-button {
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <ul class="breadcrumb">
+            <li>Home</li>
+        </ul>
+
+        <div class="weather-container">
+            <img src="assets/weather-partly-cloudy.svg" alt="icon" style="width: 50px; height: auto;">
+            <div class="weather-text">
+                <span>13&degC</span>
+                <span>Partly Cloudy</span>
+            </div>
+        </div>
+
+        <h2>Ready to plan a trip?</h2>
+
+        <div class="button-container">
+            <button style="margin-bottom: 20px;">Plan New Trip</button>
+        </div>
+
+        <div class="text-input">
+            <label style="display: block; text-align: left;"><b>Your Past Trips</b></label><br>
+            <div class="trip-container">
+                <div class="box">
+                    <span class="box-text">May 2023</span>
+                    <button class="box-button">View Details</button>
+                </div>
+                <div class="box">
+                    <span class="box-text">July 2021</span>
+                    <button class="box-button">View Details</button>
+                </div>
+        </div>
+        <div class="checkbox-input">
+            <label for="marketing">I agree to receive marketing emails</label>
+            <input type="checkbox" id="marketing" name="marketing"><br><br>
+            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>*</label>
+            <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
+            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a>*</label>
+            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br>
+        </div>
+        <h5><i>*indicates a required field</i></h3>
+    </div>
+</body>
+</html>
