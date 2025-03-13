@@ -1,0 +1,149 @@
+<!-- Author: Ahmed Alaqad
+     UCID: 30078697   
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Trips</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Verdana, sans-serif;
+        }
+        .app-container {
+            width: 375px;
+            height: 667px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .back-button-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        h1 {
+            margin-top: 5px;
+        }
+        .trip-section {
+            text-align: left;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .trip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+        }
+        .trip-details {
+            flex-grow: 1;
+        }
+        .trip-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .trip-buttons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        button {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #c70f0f;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .navbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #c81d25;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .navbar button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .navbar button:nth-child(2) {
+            background-color: #a81d25;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="back-button-container">
+            <button class="back-button">Back</button>
+        </div>
+
+        <h1>My Trips</h1>
+
+        <div class="trip-section">
+            <strong>Trip to Calgary</strong>
+            <p><b>Date: Feb. 13 - Feb. 14, 2025</b></p>
+            <div class="trip">
+                <div class="trip-details">
+                    <span class="trip-label">Calgary Business</span>
+                </div>
+                <div class="trip-buttons">
+                    <button>View</button>
+                    <button>Edit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="trip-section">
+            <strong>Trip to Jasper</strong>
+            <p><b>Date: May 5 - May 10, 2025</b></p>
+            <div class="trip">
+                <div class="trip-details">
+                    <span class="trip-label">Wilderness Adventure</span>
+                </div>
+                <div class="trip-buttons">
+                    <button>View</button>
+                    <button>Edit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar">
+            <button>Home</button>
+            <button>Trips</button>
+            <button>Tickets</button>
+        </div>
+    </div>
+</body>
+</html>
