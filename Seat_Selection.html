@@ -5,140 +5,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seat Selection</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Verdana, sans-serif;
-        }
-        .app-container {
-            width: 375px;
-            min-height: 667px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-        .back-button-container {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-        }
-        .back-button {
-            padding: 10px 20px;
-            background-color: #c70f0f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 40px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        .seat-label {
-            font-size: 14px;
-            color: #7A7D7D;
-            margin-bottom: 10px;
-        }
-        .map-container {
-            position: relative;
-            margin-bottom: 10px;
-        }
-        .map {
-            width: 100%;
-            border-radius: 5px;
-        }
-        .ticket-info {
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: left;
-            margin: 10px 0;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .ticket-info strong {
-            font-size: 14px;
-        }
-        .select-button {
-            width: 100%;
-            margin-top: 10px;
-            background-color: #c70f0f;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .navbar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #c70f0f;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-        }
-        .navbar button {
-            background-color: transparent;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seat Selection</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Verdana, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .app-container {
+      width: 375px;
+      height: 667px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .scroll-area {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      padding-bottom: 90px;
+    }
+    .back-button-container {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      z-index: 1;
+    }
+    .back-button {
+      padding: 10px 20px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .header {
+      margin-top: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .concert-info {
+      font-size: 13px;
+      color: #a81d25;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .seat-label {
+      font-size: 14px;
+      color: #333;
+      margin: 10px 0;
+      text-align: center;
+    }
+    .stage {
+      background-color: #333;
+      color: white;
+      padding: 4px;
+      border-radius: 5px;
+      margin: 15px auto;
+      font-size: 14px;
+      width: 95%;
+      text-align: center;
+    }
+    .seat-row {
+      display: flex;
+      justify-content: center;
+      margin: 5px 0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .seat {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      color: white;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .seat:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+    .seat.selected {
+      outline: 2px solid white;
+      box-shadow: 0 0 10px #007bff;
+    }
+    .seat.booked {
+      background-color: gray !important;
+      cursor: not-allowed;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .seat[data-section="GA Floor"] {
+      background-color: #673AB7;
+    }
+    .seat[data-section="Lower"] {
+      background-color: #F9A825;
+      color: black;
+    }
+    .seat[data-section="Upper"] {
+      background-color: #607D8B;
+    }
+    .legend {
+      font-size: 12px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .legend span {
+      margin: 0 10px;
+    }
+    .ticket-info {
+      background: linear-gradient(135deg, #f0f0f0, #ffffff);
+      padding: 10px;
+      border-left: 4px solid transparent;
+      border-radius: 5px;
+      text-align: left;
+      margin-top: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .remove-button {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* Hover and click effects */
+    .remove-button:hover,
+    .select-button:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .remove-button:active,
+    .select-button:active {
+      transform: scale(0.97);
+    }
+
+    #totalDisplay {
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: left;
+    }
+    .select-button {
+      width: 100%;
+      margin-top: 15px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 3px;
+      display: none;
+    }
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c70f0f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #confirmation-toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #28a745;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.25);
+      z-index: 999;
+      display: none;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="back-button-container">
-            <button class="back-button">Back</button>
-        </div>
+  <div class="app-container">
+    <div class="scroll-area">
+      <div class="back-button-container">
+        <button class="back-button">Back</button>
+      </div>
 
-        <div class="header">
-            <h1>Seat Selection</h1>
-        </div>
+      <div class="header">Seat Selection</div>
+      <div class="concert-info">(Snoop Dogg: Cali to Canada – 9 PM)</div>
+      <p class="seat-label">Tap seat to get details</p>
 
-        <p class="seat-label">Tap seat to get details</p>
+      <div class="stage">STAGE</div>
 
-        <div class="map-container">
-            <img src="https://cdn.glitch.global/548b78c0-df12-40e6-9de3-54954e38ed60/IMG_0037.JPG?v=1741797446977" alt="Map" class="map">
-        </div>
+      <div class="seat-row">
+        <button class="seat" data-seat="GA1" data-section="GA Floor" data-price="120">GA1</button>
+        <button class="seat" data-seat="GA2" data-section="GA Floor" data-price="120">GA2</button>
+        <button class="seat booked" disabled>✖</button>
+        <button class="seat" data-seat="GA4" data-section="GA Floor" data-price="120">GA4</button>
+        <button class="seat" data-seat="GA5" data-section="GA Floor" data-price="120">GA5</button>
+      </div>
 
-        <div class="ticket-info">
-            <strong>Lower Section - Seat #106</strong><br>
-            VIP Ticket<br>
-            Price: $350.00
-        </div>
+      <div class="seat-row">
+        <button class="seat" data-seat="201" data-section="Lower" data-price="250">201</button>
+        <button class="seat booked" disabled>✖</button>
+        <button class="seat" data-seat="203" data-section="Lower" data-price="250">203</button>
+        <button class="seat" data-seat="204" data-section="Lower" data-price="250">204</button>
+      </div>
 
-        <div class="ticket-info">
-            <strong>Upper Section - Seat #309</strong><br>
-            General Ticket<br>
-            Price: $100.00
-        </div>
+      <div class="seat-row">
+        <button class="seat" data-seat="301" data-section="Upper" data-price="100">301</button>
+        <button class="seat" data-seat="302" data-section="Upper" data-price="100">302</button>
+        <button class="seat" data-seat="303" data-section="Upper" data-price="100">303</button>
+      </div>
 
-        <button class="select-button">SELECT</button>
+      <div class="legend">
+        <span style="color: #673AB7;">● GA Floor</span>
+        <span style="color: #F9A825;">● Lower Bowl</span>
+        <span style="color: #607D8B;">● Upper Bowl</span>
+      </div>
 
-        <div class="navbar">
-            <button>Home</button>
-            <button>Trips</button>
-            <button>Tickets</button>
-        </div>
+      <div id="ticketContainer"></div>
+      <div id="totalDisplay"></div>
+
+      <button class="select-button">SELECT</button>
+
+      <div id="confirmation-toast"></div>
     </div>
+
+    <div class="navbar">
+      <button>Home</button>
+      <button>Trips</button>
+      <button>Tickets</button>
+    </div>
+  </div>
+
+  <script>
+    const seats = document.querySelectorAll('.seat:not(.booked)');
+    const ticketContainer = document.getElementById('ticketContainer');
+    const totalDisplay = document.getElementById('totalDisplay');
+    const selectBtn = document.querySelector('.select-button');
+    const toast = document.getElementById('confirmation-toast');
+    const selectedSeats = [];
+
+    function renderTickets() {
+      ticketContainer.innerHTML = "";
+      let total = 0;
+
+      selectedSeats.forEach((s, index) => {
+        const ticket = document.createElement('div');
+        ticket.className = "ticket-info";
+        ticket.style.borderLeft = `4px solid ${s.color}`;
+        ticket.innerHTML = `
+          <strong>${s.section} - Seat #${s.seat}</strong><br/>
+          ${s.section === "GA Floor" ? "General Admission Ticket" : 
+            s.section === "Lower" ? "VIP Lower Bowl Ticket" : 
+            "Upper Bowl Ticket"}<br/>
+          Price: $${s.price}.00
+        `;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-button";
+        removeBtn.textContent = "Remove";
+        removeBtn.onclick = () => {
+          selectedSeats.splice(index, 1);
+          document.querySelectorAll('.seat').forEach(btn => {
+            if (btn.dataset.seat === s.seat) {
+              btn.classList.remove('selected');
+            }
+          });
+          renderTickets();
+        };
+
+        ticket.appendChild(removeBtn);
+        ticketContainer.appendChild(ticket);
+        total += parseFloat(s.price);
+      });
+
+      totalDisplay.textContent = selectedSeats.length > 0 
+        ? `Total: $${total.toFixed(2)}` 
+        : "";
+
+      selectBtn.style.display = selectedSeats.length > 0 ? "block" : "none";
+    }
+
+    seats.forEach(seat => {
+      seat.addEventListener('click', () => {
+        const seatNum = seat.dataset.seat;
+        const section = seat.dataset.section;
+        const price = seat.dataset.price;
+        const color = getComputedStyle(seat).backgroundColor;
+
+        const index = selectedSeats.findIndex(s => s.seat === seatNum);
+
+        if (seat.classList.contains('selected')) {
+          seat.classList.remove('selected');
+          if (index !== -1) selectedSeats.splice(index, 1);
+        } else {
+          seat.classList.add('selected');
+          selectedSeats.push({ seat: seatNum, section, price, color });
+        }
+
+        renderTickets();
+      });
+    });
+
+    selectBtn.addEventListener('click', () => {
+      if (selectedSeats.length === 0) return;
+
+      //Save selected seats on a localStorage so it can be retrieved
+      localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats));
+
+      toast.textContent = `${selectedSeats.length} ticket(s) selected and saved!`;
+      toast.style.display = "block";
+
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3000);
+    });
+  </script>
 </body>
 </html>
