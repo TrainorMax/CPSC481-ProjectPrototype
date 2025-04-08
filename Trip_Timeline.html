@@ -5,223 +5,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip Timeline</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Verdana, sans-serif;
-        }
-        .app-container {
-            width: 375px;
-            height: auto;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-        .breadcrumb-container {
-            padding-bottom: 5px;
-            margin-bottom: 0;
-        }
-        .breadcrumb {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 13px;
-            flex-wrap: wrap;
-        }
-        .breadcrumb li {
-            margin-right: 5px;
-        }
-        .breadcrumb li+li:before {
-            content: ">";
-            margin-right: 5px;
-        }
-        .back-button-container {
-            display: flex;
-            justify-content: flex-start;
-            margin: 10px 0;
-        }
-        .back-button {
-            padding: 10px 20px;
-            background-color: #c70f0f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        h1 {
-            margin-top: 5px;
-        }
-        .section {
-            text-align: left;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-        .event {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fff;
-            padding: 8px;
-            border-radius: 5px;
-            margin: 5px 0;
-            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-        }
-        .event-details {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
-        .event-label {
-            margin-right: 5px;
-            font-weight: normal;
-            font-size: 14px;
-        }
-        .arrow {
-            font-size: 10px;
-            margin-left: 3px;
-        }
-        .event-buttons {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        button {
-            padding: 6px 12px;
-            font-size: 12px;
-            background-color: #c70f0f;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .add-event {
-            width: 100%;
-            margin-bottom: 10px;
-            background-color: #7A7D7D;
-        }
-        .book-button {
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 60px;
-            background-color: #c70f0f;
-            font-size: 14px;
-        }
-        .checkbox {
-            transform: scale(1.5);
-            margin-left: 5px;
-        }
-        .navbar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #c70f0f;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-        }
-        .navbar button {
-            background-color: transparent;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trip Timeline</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Verdana, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .app-container {
+      width: 375px;
+      height: 667px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .scrollable-content {
+      overflow-y: auto;
+      padding: 20px;
+      flex-grow: 1;
+      padding-bottom: 80px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb li {
+      margin-right: 5px;
+    }
+
+    .breadcrumb li+li:before {
+      content: ">";
+      margin-right: 5px;
+    }
+
+    .back-button-container {
+      display: flex;
+      justify-content: flex-start;
+      margin: 10px 0;
+    }
+
+    .back-button {
+      padding: 10px 20px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    h1 {
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .section {
+      text-align: left;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .time-block {
+      margin-bottom: 10px;
+    }
+
+    .event {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      padding: 8px;
+      border-radius: 5px;
+      margin-top: 5px;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    }
+
+    .event-details {
+      flex-grow: 1;
+    }
+
+    .event-label {
+      font-weight: normal;
+      font-size: 14px;
+    }
+
+    .event-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    button {
+      padding: 6px 12px;
+      font-size: 12px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.1);
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .action-buttons button {
+      background-color: #007bff;
+      width: 50%;
+    }
+
+    .book-button {
+      width: 100%;
+      margin-top: 10px;
+      background-color: #c70f0f;
+      font-size: 14px;
+    }
+
+    .confirmation {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #28a745;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      display: none;
+      z-index: 10;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c70f0f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="breadcrumb-container">
-            <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Start Planning</a></li>
-                <li><a href="#">Tag Selection</a></li>
-                <li><a href="#">Suggestion Selection</a></li>
-                <li>Trip Timeline</li>
-            </ul>
-        </div>
+  <div class="app-container">
+    <div class="scrollable-content">
+      <ul class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Start Planning</a></li>
+        <li><a href="#">Tag Selection</a></li>
+        <li><a href="#">Suggestion Selection</a></li>
+        <li>Trip Timeline</li>
+      </ul>
 
-        <div class="back-button-container">
-            <button class="back-button">Back</button>
-        </div>
+      <div class="back-button-container">
+        <button class="back-button">Back</button>
+      </div>
 
-        <h1>Trip Timeline</h1>
-        <button class="add-event">Add Event</button>
+      <h1>Trip Timeline</h1>
 
+      <div class="action-buttons">
+        <button>Add Event from Suggestions</button>
+        <button>Add Custom Event</button>
+      </div>
+
+      <div id="timeline-container">
         <div class="section">
-            <strong>Feb 13</strong>
+          <strong>Feb 13</strong>
+          <div class="time-block">
             <p><b>9 AM</b></p>
             <div class="event">
-                <div class="event-details">
-                    <span class="event-label">Event 1 <span class="arrow">▼</span></span> 
-                </div>
-                <div class="event-buttons">
-                    <button>Edit</button>
-                    <button>Remove</button>
-                    <input type="checkbox" class="checkbox">
-                </div>
+              <div class="event-details">
+                <span class="event-label">Event 1</span>
+              </div>
+              <div class="event-buttons">
+                <button>Edit</button>
+                <button class="remove-btn">Remove</button>
+              </div>
             </div>
+          </div>
 
+          <div class="time-block">
             <p><b>2 PM</b></p>
             <div class="event">
-                <div class="event-details">
-                    <span class="event-label">Event 2 <span class="arrow">▼</span></span> 
-                </div>
-                <div class="event-buttons">
-                    <button>Edit</button>
-                    <button>Remove</button>
-                    <input type="checkbox" class="checkbox">
-                </div>
+              <div class="event-details">
+                <span class="event-label">Event 2</span>
+              </div>
+              <div class="event-buttons">
+                <button>Edit</button>
+                <button class="remove-btn">Remove</button>
+              </div>
             </div>
+          </div>
         </div>
 
         <div class="section">
-            <strong>Feb 14</strong>
+          <strong>Feb 14</strong>
+          <div class="time-block">
             <p><b>8 AM</b></p>
             <div class="event">
-                <div class="event-details">
-                    <span class="event-label">Event 3 <span class="arrow">▼</span></span> 
-                </div>
-                <div class="event-buttons">
-                    <button>Edit</button>
-                    <button>Remove</button>
-                    <input type="checkbox" class="checkbox">
-                </div>
+              <div class="event-details">
+                <span class="event-label">Event 3</span>
+              </div>
+              <div class="event-buttons">
+                <button>Edit</button>
+                <button class="remove-btn">Remove</button>
+              </div>
             </div>
+          </div>
 
+          <div class="time-block">
             <p><b>12 PM</b></p>
             <div class="event">
-                <div class="event-details">
-                    <span class="event-label">Event 4 <span class="arrow">▼</span></span> 
-                </div>
-                <div class="event-buttons">
-                    <button>Edit</button>
-                    <button>Remove</button>
-                    <input type="checkbox" class="checkbox">
-                </div>
+              <div class="event-details">
+                <span class="event-label">Event 4</span>
+              </div>
+              <div class="event-buttons">
+                <button>Edit</button>
+                <button class="remove-btn">Remove</button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
 
-        <button class="book-button">BOOK</button>
-        <div class="navbar">
-            <button>Home</button>
-            <button>Trips</button>
-            <button>Tickets</button>
-        </div>
+      <p id="empty-message" class="empty-message" style="display: none;">No events added yet.</p>
+      <button id="bookBtn" class="book-button">BOOK</button>
     </div>
+
+    <div class="confirmation" id="confirmation">Events booked and saved!</div>
+
+    <div class="navbar">
+      <button>Home</button>
+      <button>Trips</button>
+      <button>Tickets</button>
+    </div>
+  </div>
+
+  <script>
+    const bookBtn = document.getElementById('bookBtn');
+    const confirmation = document.getElementById('confirmation');
+    const emptyMessage = document.getElementById('empty-message');
+
+    bookBtn.addEventListener('click', () => {
+      const events = [];
+      document.querySelectorAll('.event').forEach(event => {
+        events.push(event.querySelector('.event-label').innerText);
+      });
+      localStorage.setItem("bookedEvents", JSON.stringify(events));
+
+      confirmation.style.display = "block";
+      confirmation.style.opacity = 1;
+      setTimeout(() => {
+        confirmation.style.opacity = 0;
+        setTimeout(() => {
+          confirmation.style.display = "none";
+        }, 500);
+      }, 1500);
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(button => {
+      button.addEventListener('click', e => {
+        const eventDiv = e.target.closest('.event');
+        const timeBlock = eventDiv.closest('.time-block');
+        const section = eventDiv.closest('.section');
+
+        eventDiv.remove();
+        if (!timeBlock.querySelector('.event')) timeBlock.remove();
+        if (!section.querySelector('.time-block')) section.remove();
+
+        const remaining = document.querySelectorAll('.event').length;
+        if (remaining === 0) {
+          bookBtn.style.display = 'none';
+          emptyMessage.style.display = 'block';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
