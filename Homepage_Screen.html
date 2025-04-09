@@ -102,12 +102,19 @@
         .trip-container {
             display: flex;
             flex-direction: column;
-            width: 350px;
+            width: 450px;;
+        }
+        .box-text {
+            font-size: 14px;
+            font-family: Verdana;
+            color: #000000;
+            margin-right: 10px;
+            align-items: left;
         }
         .box {
             width: 70%;
             height: 28px;
-            text-align: center;
+            display: flex;
             align-items: center;
             font-size: 18px;
             border: 1px solid black;
@@ -164,27 +171,33 @@
         <h2>Ready to plan a trip?</h2>
 
         <div class="button-container">
-            <button style="margin-bottom: 20px;">Plan New Trip</button>
+            <button class="newtrip-button" style="margin-bottom: 20px;">Plan New Trip</button>
+        </div>
+
+        <div class="text-input">
+            <label style="display: block; text-align: left;"><b>Upcoming Trips</b></label><br>
+            <div class="trip-container">
+                <div class="box">
+                    <span class="box-text">Sep. 3 - Sep. 17, 2025</span>
+                    <button class="box-button">View Details</button>
+                </div>
+                
         </div><br>
 
         <div class="text-input">
-            <label style="display: block; text-align: left;"><b><u>Your Past Trips</u></b></label><br>
+            <label style="display: block; text-align: left;"><b>Past Trips</b></label><br>
             <div class="trip-container">
                 <div class="box">
-                    <span class="box-text">May 2023</span>
+                    <span class="box-text">May 6 - May 9, 2023</span>
                     <button class="box-button">View Details</button>
                 </div>
                 <div class="box">
-                    <span class="box-text">July 2021</span>
-                    <button class="box-button">View Details</button>
-                </div>
-                <div class="box">
-                    <span class="box-text">June 2017</span>
+                    <span class="box-text">Jul. 30 - Aug. 2, 2021</span>
                     <button class="box-button">View Details</button>
                 </div>
         </div><br>
         <div class="text-input">
-            <label style="display: block; text-align: left;"><b><u>Amenities and Emergency Services</u></b></label><br>
+            <label style="display: block; text-align: left;"><b>Amenities and Emergency Services</b></label><br>
             <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/cps.html">Calgary Police Service</a>: 911</label><br>
             <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/311.html">Calgary City Services</a>: 311</label><br>
             <label style="display: block; text-align: left;"><a href="https://www.albertahealthservices.ca/topics/page11975.aspx">Poison and Drug Information Service</a>: 1-800-332-1414</label><br>
@@ -193,9 +206,32 @@
 
         <div class="navbar">
             <button style="background-color:#a81d25">Home</button>
-            <button>Events</button>
-            <button>Tickets</button>
+            <button class="trips-button">Trips</button>
+            <button class="tickets-button">Tickets</button>
         </div>
     </div>
+    <script>
+        let newtrip_button = document.querySelector(".newtrip-button");
+        let viewtrip_button = document.querySelector(".box-button");
+        let trips_button = document.querySelector(".trips-button");
+        let tickets_button = document.querySelector(".tickets-button");
+    
+        newtrip_button.addEventListener("click", () => {
+          window.location.href = "Start_Planning_Screen.html"
+        });
+    
+        viewtrip_button.addEventListener("click", () => {
+          window.location.href = "Trip_Timeline.html"
+        });
+    
+        trips_button.addEventListener("click", () => {
+          window.location.href = "Trips_Tab.html"
+        });
+    
+        tickets_button.addEventListener("click", () => {
+          window.location.href = "Ticket_Viewer.html"
+        });
+      </script>
 </body>
 </html>
+
