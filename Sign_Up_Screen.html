@@ -85,23 +85,23 @@
             <li>Sign Up</li>
         </ul>
 
-        <h1>Create an Account</h1><br><br>
+        <h1>Create an Account</h1><br>
 
         <div class="text-input">
             <label for="first-name">*First Name:</label>
             <input type="text" id="first-name" name="first-name" placeholder="John"><br><br>
             <label for="last-name">*Last Name:</label>
-            <input type="text" id="last-name" name="last-name" placeholder="Doe"><br><br><br><br>
+            <input type="text" id="last-name" name="last-name" placeholder="Doe"><br><br><br>
             
             <label for="phone-number">Phone #:</label>
             <input type="text" id="phone-number" name="phone-number" placeholder="123-456-7890"><br><br>
             <label for="email">*Email:</label>
-            <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com"><br><br><br><br>
+            <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com"><br><br><br>
 
             <label for="user-name">*Username:</label>
             <input type="text" id="user-name" name="user-name"><br><br>
             <label for="password">*Password:</label>
-            <input type="text" id="password" name="password"><br><br><br><br>
+            <input type="text" id="password" name="password"><br><br><br>
         </div>
         <div class="checkbox-input">
             <label for="marketing">I agree to receive marketing emails</label>
@@ -114,9 +114,20 @@
         <h5><i>*indicates a required field</i></h3>
 
         <div class="button-container">
-            <button>Back to Log In</button>
+            <button class="login-button">Back to Log In</button>
             <button>Continue</button>
         </div>
     </div>
+    <script>
+        let login_button = document.querySelector(".login-button");
+        let continue_button = document.querySelector(".continue-button");
+    
+        login_button.addEventListener("click", () => {
+          window.location.href = "Landing_Page_Screen.html"
+        });
+        continue_button.addEventListener("click", () => {
+          window.location.href = "Homepage_Screen.html"
+        });
+      </script>
 </body>
 </html>
