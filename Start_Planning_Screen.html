@@ -75,33 +75,33 @@
         }
         .dropdown-container label{
             margin-right: 10px;
-            width: 85px; /* Ensure consistent width for labels */
-            text-align: left; /* Align text to the right */
+            width: 85px; /* ensure consistent width for labels */
+            text-align: left; /* align text to the right */
         }
         input[type="date"] {
             padding: 10px;
             font-size: 16px;
         }
         .traveler-container {
-            margin-top: 40px; /* Add space above the traveler section */
+            margin-top: 40px; /* add space above the traveler section */
             text-align: center;
         }
 
         .traveler-container h3 {
-            margin-bottom: 20px; /* Add space below the label */
+            margin-bottom: 20px; /* add space below the label */
         }
 
         .traveler-group {
             display: flex;
-            justify-content: center; /* Center the buttons and labels */
+            justify-content: center; /* center the buttons and labels */
             align-items: center;
-            margin: 10px 0; /* Add spacing between rows */
+            margin: 10px 0; /* add spacing between rows */
         }
 
         .traveler-group label {
             margin-right: 10px;
-            width: 140px; /* Ensure consistent width for labels */
-            text-align: left; /* Align text to the right */
+            width: 140px; /* ensure consistent width for labels */
+            text-align: left; /* align text to the right */
         }
 
         .traveler-group button {
@@ -112,7 +112,7 @@
         }
 
         .traveler-group span {
-            width: 30px; /* Ensure consistent width for the count display */
+            width: 30px; /* ensure consistent width for the count display */
             text-align: center;
             font-size: 16px;
         }
@@ -139,12 +139,12 @@
             font-size: 13px;
         }
         .back-button {
-            width: 40px; /* Adjust the size of the image */
+            width: 40px; 
             height: 40px;
-            cursor: pointer; /* Make it look clickable */
-            border: none; /* Remove any border */
-            background: none; /* Ensure no background is applied */
-            outline: none; /* Remove focus outline */
+            cursor: pointer; 
+            border: none; 
+            background: none; 
+            outline: none; 
         }
 
         .back-button-container {
@@ -166,7 +166,7 @@
         <h1>Start Planning!</h1>
 
         <div class="dropdown-container">
-            <h3><i>When Are You Traveling?</i></h3>
+            <h3><i>When Are You Traveling?</i></h3> <!-- tag line for date section-->
             <div class="input-group">
                 <label for="start-date">Arrival Date:</label>
                 <input type="date" id="start-date" name="start-date">
@@ -177,7 +177,7 @@
             </div>
         </div>
         <div class="traveler-container">
-            <h3>Who’s Coming Along?</h3> <!-- Add a label above the traveler section -->
+            <h3>Who’s Coming Along?</h3> <!-- tag line for traveler section-->
             <div class="traveler-group">
                 <label for="adults">Adults (18-59):</label>
                 <button type="button" onclick="updateTravelerCount('adults', 'decrement')">-</button>
@@ -209,41 +209,43 @@
 
 
     <script>
+
+        // back button action/functionality (taken from soila's code for consistency)
         let back_button = document.querySelector(".back-button");
 
         back_button.addEventListener("click", () => {
           window.location.href = "Homepage_Screen.html"
         });
 
-        // Function to move to the specified page
+        // function to move to the specified page
         function navigateTo(page) {
             window.location.href = page;
         }
 
-        // Function to set the minimum date for the arrival and departure inputs
+        // function to set the minimum date for the arrival and departure inputs
         function initializeDateInputs() {
-            // Get today's date in YYYY-MM-DD format
+            // get today's date
             const today = new Date().toISOString().split('T')[0];
             const arrivalInput = document.getElementById('start-date');
             const departureInput = document.getElementById('end-date');
 
-            // Set the minimum date for the arrival input to today
+            // set the minimum date for the arrival input to today
             arrivalInput.min = today;
 
-            // Add an event listener to update the departure date's minimum based on the arrival date
+            // add an event listener to update the departure date's minimum based on the arrival date
             arrivalInput.addEventListener('change', () => {
                 const selectedArrivalDate = arrivalInput.value;
-                // Set the departure date's minimum to the selected arrival date
+                // set the departure date's minimum to the selected arrival date (ensure trip dates are valid)
                 departureInput.min = selectedArrivalDate;
             });
         }
 
-        // Function to handle traveler count increment and decrement
+        // function to handle traveler count increment and decrement
         function updateTravelerCount(type, operation) {
             const countElement = document.getElementById(`${type}-count`);
             let count = parseInt(countElement.textContent);
             
-            // Increment or decrement the count based on the operation
+            // increment or decrement the traveler count based on the operation/button pressed
             if (operation === 'increment') {
                 count++;
             } else if (operation === 'decrement' && count > 0) {
@@ -253,40 +255,40 @@
             countElement.textContent = count;
         }
 
-        // Function to gather all data and pass it to another screen
+        // function to gather all data and pass it to another screen
         function submitData() {
-            // Get the selected dates and traveler counts
+            // get the selected dates and traveler counts
             const arrivalDate = document.getElementById('start-date').value;
             const departureDate = document.getElementById('end-date').value;
 
-            // Get the traveler counts
+            // get the traveler counts
             const travelers = {
                 adults: parseInt(document.getElementById('adults-count').textContent),
                 children: parseInt(document.getElementById('children-count').textContent),
                 seniors: parseInt(document.getElementById('seniors-count').textContent),
             };
 
-            // Store dates and traveler counts in an object
+            // store dates and traveler counts in an object
             const tripData = {
                 arrivalDate,
                 departureDate,
                 travelers,
             };
 
-            // Log the trip data to the console (for debugging)
+            // log the trip data to the console (for debugging)
             console.log('Trip Data:', tripData);
 
-            // Pass the data to next screen
+            // pass the data to next screen
             localStorage.setItem('tripData', JSON.stringify(tripData));
 
 
-            // Redirect to another screen (replace 'next_screen.html' with the actual file name)
+            // redirect to next screen
             // window.location.href = 'INSET_NEXT_SCREEN_HERE.html'; // Change this to the next screen
         }
 
         
 
-        // Initialize the date inputs when the page loads
+        // when the page loads, initialize the date inputs
         window.onload = initializeDateInputs;
     </script>
 </body>

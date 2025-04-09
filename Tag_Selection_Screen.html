@@ -167,30 +167,35 @@
     </div>
 
     <script>
-        // Data structure to store selected tags
+        // data structure to store selected tags
         const selectedTags = new Set();
 
-        // Function to move to the specified page
+        // function to move to the specified page
         function navigateTo(page) {
-            window.location.href = page; // Redirect to the specified page
+            window.location.href = page; // redirect to the specified page
         }
 
-        // Function to toggle tag selection
+        // function to toggle tag selection
         function toggleTag(button, tag) {
             if (selectedTags.has(tag)) {
-                selectedTags.delete(tag); // Remove tag if already selected
-                button.classList.remove('selected'); // Remove fade effect
+                selectedTags.delete(tag); // remove tag if already selected
+                button.classList.remove('selected'); // remove fade effect
             } else {
-                selectedTags.add(tag); // Add tag to the set
-                button.classList.add('selected'); // Apply fade effect
+                selectedTags.add(tag); // add tag to the set
+                button.classList.add('selected'); // apply fade effect
             }
         }
 
-        // Function to handle submission of selected tags
+        // function to pass user tag selection to the next screen using localStorage
         function submitTags() {
+            // put the tags into an array, and store it in localStorage
+            localStorage.setItem('selectedTags', JSON.stringify(Array.from(selectedTags)));
+
+            // console log just to make sure things are being passed correctly
             console.log('Selected Tags:', Array.from(selectedTags));
-            // Pass the selected tags to another screen or process them as needed
-            alert('Selected Tags: ' + Array.from(selectedTags).join(', '));
+
+            // redirect to the next screen
+            window.location.href = 'Suggestion_Selection_Screen.html';
         }
     </script>
     

@@ -21,8 +21,8 @@
             }
 
             .app-container {
-                width: 375px; /* Fixed mobile app width */
-                height: 667px; /* Fixed mobile app height */
+                width: 375px; /* fixed mobile app width */
+                height: 667px; /* fixed mobile app height */
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 padding: 20px;
@@ -34,7 +34,7 @@
             }
 
             #events-container {
-                height: 275px; /* Adjust this value as needed */
+                height: 275px; /* set height of events container to avoid collision with continue button */
                 overflow-y: auto;
                 margin-top: 20px;
                 padding-right: 10px;
@@ -124,12 +124,12 @@
                 background-color: #ddd;
             }
             .back-button {
-                width: 40px; /* Adjust the size of the image */
+                width: 40px; /* adjust the size of the image */
                 height: 40px;
-                cursor: pointer; /* Make it look clickable */
-                border: none; /* Remove any border */
-                background: none; /* Ensure no background is applied */
-                outline: none; /* Remove focus outline */
+                cursor: pointer; /* make it look clickable */
+                border: none; /* remove any border */
+                background: none; /* ensure no background is applied */
+                outline: none; /* remove focus outline */
             }
 
             .back-button-container {
@@ -159,15 +159,15 @@
                 border: 1px solid #ddd;
                 border-radius: 5px;
                 font-size: 14px;
-                display: none; /* Initially hidden */
+                display: none; /* initially hidden */
             }
 
             select {
-                margin-bottom: 10px; /* Reduce the bottom margin of the dropdown */
+                margin-bottom: 10px; /* reduce the bottom margin of the dropdown */
             }
 
             #selected-date {
-                margin-top: 5px; /* Reduce the top margin of the date label */
+                margin-top: 5px; /* reduce the top margin of the date label */
             }
 
         </style>
@@ -198,7 +198,7 @@
             <h4><i>Here are some suggestions!</i></h4>
 
             <div id="events-container">
-                <!-- Events will be dynamically updated here -->
+                <!-- the updateDateLabelandEvents() function populates this container -->
             </div>
             
             <div class="button-container">
@@ -226,19 +226,15 @@
         "Tuesday, February 15th": []
     };
 
-    // Function to move to the specified page
+    // function to move to the specified page
     function navigateTo(page) {
-        window.location.href = page; // Redirect to the specified page
+        // move to the specified page
+        window.location.href = page;
     }
 
-    function updateDateLabel() {
-        const dropdown = document.getElementById("date-dropdown");
-        const selectedDate = dropdown.value;
-        const dateLabel = document.getElementById("selected-date");
-        dateLabel.textContent = selectedDate;
-    }
+    
 
-
+    // initialize the events data for each date
     const eventsData = {
         "Sunday, February 13th": [
             { name: "Pancake Breakfast", time: "9AM-11AM", details: "Enjoy a delicious pancake breakfast with fresh fruit and coffee." },
@@ -260,28 +256,34 @@
         ]
     };
 
+
+    // function to update the date label and events/suggestion listed based on the selected date in the dropdown menu
     function updateDateLabelAndEvents() {
         const dropdown = document.getElementById("date-dropdown");
         const selectedDate = dropdown.value;
 
-        // Update the date label
+        // update the date label
         const dateLabel = document.getElementById("selected-date");
         dateLabel.textContent = selectedDate;
 
-        // Update the events
+        // update the events
         const eventsContainer = document.getElementById("events-container");
-        eventsContainer.innerHTML = ""; // Clear existing events
+        // clear existing events
+        eventsContainer.innerHTML = "";
+
 
         const events = eventsData[selectedDate];
+
+        // iterate through the events and create buttons for each event
         events.forEach((event, index) => {
-            // Create a button for the event
+            // create a button for the event
             const button = document.createElement("button");
             button.type = "button";
             button.className = "collapsible";
             button.innerHTML = `${event.name} <span style="font-size: 12px;">(${event.time})</span>`;
             button.onclick = () => toggleInfoBox(`info-box-${index}`);
 
-            // Create the info box for the event
+            // create the info box for the event
             const infoBox = document.createElement("div");
             infoBox.id = `info-box-${index}`;
             infoBox.className = "info-box";
@@ -291,12 +293,13 @@
                 <button onclick="toggleSelection('${selectedDate}', '${event.name}', this)">Select</button>
             `;
 
-            // Append the button and info box to the container
+            // append the button and info box to the container
             eventsContainer.appendChild(button);
             eventsContainer.appendChild(infoBox);
         });
     }
 
+    // function to handle infobox toggle/functionality
     function toggleInfoBox(id) {
         const infoBox = document.getElementById(id);
         if (infoBox.style.display === "none" || infoBox.style.display === "") {
@@ -307,6 +310,7 @@
         
     }
 
+    // function to handle the infobox suggestion selection/deselection
     function toggleSelection(date, eventName, button) {
         const list = selectedSuggestions[date];
         const index = list.indexOf(eventName);
@@ -321,12 +325,14 @@
         }
     }
 
+    // function to send data to next page through localStorage
     function submitData() {
         localStorage.setItem("selectedSuggestions", JSON.stringify(selectedSuggestions));
         console.log("Selected Suggestions:", selectedSuggestions);
-        //navigateTo("Trip_Timeline.html"); // Replace with your next screen
+        // UN COMMENT THIS WHEN READY TO ACTUALLY MOVE PAGES
+        //navigateTo("Trip_Timeline.html");
     }
 
-    // Initialize with the default date's events
+    // when the page loads, set the default date and update the events
     updateDateLabelAndEvents();
 </script>
