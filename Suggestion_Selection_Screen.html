@@ -219,100 +219,135 @@
 </html>
 
 <script>
+    // get the user selected tags from local storage (from tag selection screen)
+    const userTags = JSON.parse(localStorage.getItem('selectedTags')) || [];
 
-    let selectedSuggestions = {
+    // back button action (from soilas code for consistency)
+    let back_button = document.querySelector(".back-button");
+    back_button.addEventListener("click", () => {
+        window.location.href = "Tag_Selection_Screen.html";
+    });
+
+    // either load the selected suggestions from local storage or initialize with empty arrays when the user first visits the screen
+    let selectedSuggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {
         "Sunday, February 13th": [],
         "Monday, February 14th": [],
         "Tuesday, February 15th": []
     };
 
-    // function to move to the specified page
+    // function to move to a specified page (used for navbar)
     function navigateTo(page) {
-        // move to the specified page
         window.location.href = page;
     }
 
-    
-
-    // initialize the events data for each date
+    // object to store all the event suggestion data
+    // each event has a name, time, details, and tags
     const eventsData = {
         "Sunday, February 13th": [
-            { name: "Pancake Breakfast", time: "9AM-11AM", details: "Enjoy a delicious pancake breakfast with fresh fruit and coffee." },
-            { name: "TELUS Spark", time: "10AM-5PM", details: "Explore interactive science exhibits and activities." },
-            { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck." },
-            { name: "Clear Nordic Spa", time: "9AM-5PM", details: "Relax and rejuvenate at the Nordic spa with hot and cold pools." }
+            { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
+            { name: "Glenbow Museum", time: "10AM-4PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"] },
+            { name: "City Walking Tour", time: "1PM-3PM", details: "Guided walking tour through downtown Calgary’s architectural and historical highlights.", tags: ["Tours"] },
+            { name: "Fish Creek Provincial Park", time: "9AM-5PM", details: "Explore one of Canada’s largest urban parks, perfect for a scenic hike or bike ride.", tags: ["Outdoor Adventures", "Family-Friendly"] },
+            { name: "Ice Skating at Olympic Plaza", time: "1PM-3PM", details: "Outdoor skating in a historic downtown plaza.", tags: ["Outdoor Adventures", "Family-Friendly"] },
+            { name: "Heritage Park", time: "10AM-5PM", details: "Step back in time at Canada’s largest living history museum.", tags: ["Day Trips & Excursions", "Family-Friendly"] },
+            { name: "Calgary Farmers' Market", time: "10AM-5PM", details: "Sample fresh local produce, treats, and artisan goods.", tags: ["Shopping", "Food & Drink"] },
+            { name: "NOtaBLE", time: "6PM-9PM", details: "Enjoy an amazing dinner at one of Calgary's top-rated restaurants.", tags: ["Food & Drink"] },
+            { name: "Clear Nordic Spa", time: "10AM-6PM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"] },
+            { name: "TELUS Spark Science Centre", time: "10AM-5PM", details: "Interactive exhibits, live science demos, and creative workshops.", tags: ["Family-Friendly", "Outdoor Adventures"] },
         ],
         "Monday, February 14th": [
-            { name: "Romantic Dinner", time: "6PM-9PM", details: "A candlelit dinner with a special Valentine's Day menu." },
-            { name: "Movie Night", time: "8PM-10PM", details: "Watch a romantic movie at the local theater." },
-            { name: "Art Gallery Visit", time: "10AM-4PM", details: "Explore beautiful art exhibits at the gallery." },
-            { name: "Ice Skating", time: "1PM-3PM", details: "Enjoy ice skating at the outdoor rink." }
+            { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
+            { name: "Studio Bell, Home of the National Music Centre", time: "10AM-5PM", details: "Interactive exhibits and performances exploring Canada’s music history.", tags: ["Landmarks & Attractions", "Tours"] },
+            { name: "Historical Walking Tour of Inglewood", time: "11AM-1PM", details: "Explore Calgary’s oldest neighborhood with a guided tour of its historic buildings and stories.", tags: ["Tours"] },
+            { name: "Fish Creek Provincial Park", time: "9AM-5PM", details: "Enjoy a peaceful walk or a snowshoe adventure in the natural landscape.", tags: ["Outdoor Adventures"] },
+            { name: "Prince’s Island Park Walk", time: "3PM-5PM", details: "A serene riverside stroll in the heart of Calgary.", tags: ["Outdoor Adventures", "Family-Friendly"] },
+            { name: "CrossIron Mills", time: "10AM-9PM", details: "Shop at Alberta’s largest one-level shopping centre.", tags: ["Shopping"] },
+            { name: "Craft Beer Tasting Tour", time: "4PM-6PM", details: "Sample Calgary’s finest craft beers with a local expert.", tags: ["Food & Drink", "Tours"] },
+            { name: "Dinner at River Café", time: "6PM-9PM", details: "Experience a delicious farm-to-table meal in Prince’s Island Park.", tags: ["Food & Drink"] },
+            { name: "Clear Nordic Spa", time: "10AM-6PM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"] },
+            { name: "Live Music at The Blues Can", time: "8PM-11PM", details: "Enjoy blues and jazz at one of Calgary’s top live music venues.", tags: ["Live Entertainment"] },
         ],
         "Tuesday, February 15th": [
-            { name: "Hiking Trip", time: "7AM-12PM", details: "A guided hike through scenic trails." },
-            { name: "Museum Tour", time: "10AM-3PM", details: "Discover history and artifacts at the museum." },
-            { name: "Cooking Class", time: "5PM-8PM", details: "Learn to cook a gourmet meal with a professional chef." },
-            { name: "Stargazing", time: "9PM-11PM", details: "Observe the night sky with telescopes and expert guides." }
+            { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
+            { name: "Glenbow Museum", time: "10AM-4PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"] },
+            { name: "Bow River Bike Tour", time: "10AM-12PM", details: "Cycle along Calgary’s scenic river pathway system with a guide.", tags: ["Outdoor Adventures", "Tours"] },
+            { name: "Hiking Trip to Johnsons Canyon", time: "8AM-1PM", details: "Day trip out to experience scenic trails and fresh mountain air.", tags: ["Outdoor Adventures", "Day Trips & Excursions"] },
+            { name: "CrossIron Mills", time: "11AM-4PM", details: "Alberta’s biggest outlet mall with top brands and unique finds.", tags: ["Shopping"] },
+            { name: "Snoop Dogg: Cali to Canada Tour", time: "7PM-10PM", details: "Catch Snoop Dogg live at the Scotiabank Saddledome! Hip hop legend and an unforgettable night.", tags: ["Live Entertainment"] },
+            { name: "YYC Food Trucks Lunch Park", time: "12PM-2PM", details: "Sample bites from some of Calgary’s most popular food trucks at a central downtown spot.", tags: ["Food & Drink"] },
+            { name: "Clear Nordic Spa", time: "10AM-6PM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"] },
+            { name: "TELUS Spark Science Centre", time: "10AM-5PM", details: "Interactive exhibits and learning fun for kids and adults alike.", tags: ["Family-Friendly", "Outdoor Adventures"] },
+            { name: "Heritage Park", time: "10AM-5PM", details: "Step back in time at Canada’s largest living history museum.", tags: ["Day Trips & Excursions", "Family-Friendly"] },
         ]
     };
 
-
-    // function to update the date label and events/suggestion listed based on the selected date in the dropdown menu
+    // function to update the date label and event suggestions based on date selected, and tags selected (in previous screen)
     function updateDateLabelAndEvents() {
+        // get the selected date from the dropdown
         const dropdown = document.getElementById("date-dropdown");
         const selectedDate = dropdown.value;
-
+        
         // update the date label
-        const dateLabel = document.getElementById("selected-date");
-        dateLabel.textContent = selectedDate;
+        document.getElementById("selected-date").textContent = selectedDate;
 
-        // update the events
         const eventsContainer = document.getElementById("events-container");
-        // clear existing events
+        
+        // clear the existing events
         eventsContainer.innerHTML = "";
 
+        // filter events based on the selected date and selected user tags
+        const allEvents = eventsData[selectedDate] || [];
+        const filteredEvents = allEvents.filter(event =>
+            event.tags.some(tag => userTags.includes(tag))
+        );
 
-        const events = eventsData[selectedDate];
-
-        // iterate through the events and create buttons for each event
-        events.forEach((event, index) => {
-            // create a button for the event
+        // create buttons for each event
+        filteredEvents.forEach((event, index) => {
+            // this button expands/collapses the event details
             const button = document.createElement("button");
             button.type = "button";
             button.className = "collapsible";
             button.innerHTML = `${event.name} <span style="font-size: 12px;">(${event.time})</span>`;
             button.onclick = () => toggleInfoBox(`info-box-${index}`);
 
-            // create the info box for the event
+            // check if the event is already selected
+            // if it is, set the button to "Deselect" and change the background color
+            const isSelected = selectedSuggestions[selectedDate]?.includes(event.name);
+            const label = isSelected ? "Deselect" : "Select";
+            const bgColor = isSelected ? "#555" : "#c81d25";
+
+            // create the info box for the event details
             const infoBox = document.createElement("div");
             infoBox.id = `info-box-${index}`;
             infoBox.className = "info-box";
-            infoBox.style.display = "none"; // Initially hidden
+            infoBox.style.display = "none";
             infoBox.innerHTML = `
                 <p><strong>Details:</strong> ${event.details}</p>
-                <button onclick="toggleSelection('${selectedDate}', '${event.name}', this)">Select</button>
+                <p><strong>Tags:</strong> ${event.tags.join(', ')}</p>
+                <button style="background-color:${bgColor}" onclick="toggleSelection('${selectedDate}', '${event.name}', this)">${label}</button>
             `;
 
-            // append the button and info box to the container
+            // add the button and info box to the events container
             eventsContainer.appendChild(button);
             eventsContainer.appendChild(infoBox);
         });
+
+        // if there are no events matching the tags the user selected, then return a message
+        if (filteredEvents.length === 0) {
+            eventsContainer.innerHTML = "<p style='text-align: left;'>No events match your selected tags for this day. Try picking a different day or going back to choose different tags.</p>";
+        }
     }
 
-    // function to handle infobox toggle/functionality
+    // function to handle the infobox collapse/expand
     function toggleInfoBox(id) {
         const infoBox = document.getElementById(id);
-        if (infoBox.style.display === "none" || infoBox.style.display === "") {
-            infoBox.style.display = "block";
-        } else {
-            infoBox.style.display = "none";
-        }
-        
+        infoBox.style.display = (infoBox.style.display === "none" || !infoBox.style.display) ? "block" : "none";
     }
 
-    // function to handle the infobox suggestion selection/deselection
+    // function to handle the selection/deselection of events
     function toggleSelection(date, eventName, button) {
-        const list = selectedSuggestions[date];
+        // get the list of selected events if it exists, or initialize it as an empty array
+        const list = selectedSuggestions[date] || [];
         const index = list.indexOf(eventName);
         if (index === -1) {
             list.push(eventName);
@@ -323,16 +358,19 @@
             button.textContent = "Select";
             button.style.backgroundColor = "#c81d25";
         }
+        selectedSuggestions[date] = list;
+        localStorage.setItem("selectedSuggestions", JSON.stringify(selectedSuggestions));
     }
 
-    // function to send data to next page through localStorage
+    // function to pass the suggestion selections to the next screen using localStorage (passing to trip timeline screen)
     function submitData() {
         localStorage.setItem("selectedSuggestions", JSON.stringify(selectedSuggestions));
         console.log("Selected Suggestions:", selectedSuggestions);
-        // UN COMMENT THIS WHEN READY TO ACTUALLY MOVE PAGES
-        //navigateTo("Trip_Timeline.html");
+        navigateTo("Trip_Timeline.html"); // change this to your actual next screen
     }
 
-    // when the page loads, set the default date and update the events
-    updateDateLabelAndEvents();
+    // run the updateDateLabelAndEvents function when the page loads
+    window.onload = () => {
+        updateDateLabelAndEvents();
+    };
 </script>

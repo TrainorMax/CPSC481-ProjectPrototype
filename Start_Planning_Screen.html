@@ -209,87 +209,110 @@
 
 
     <script>
-
-        // back button action/functionality (taken from soila's code for consistency)
+        // back button functionality
         let back_button = document.querySelector(".back-button");
-
         back_button.addEventListener("click", () => {
-          window.location.href = "Homepage_Screen.html"
+            window.location.href = "Homepage_Screen.html";
         });
 
-        // function to move to the specified page
+        // function to move to specified page (used in navbar)
         function navigateTo(page) {
             window.location.href = page;
         }
 
-        // function to set the minimum date for the arrival and departure inputs
+        // function to initialize the date input fields
         function initializeDateInputs() {
-            // get today's date
+            // get todays date
             const today = new Date().toISOString().split('T')[0];
             const arrivalInput = document.getElementById('start-date');
             const departureInput = document.getElementById('end-date');
 
-            // set the minimum date for the arrival input to today
+            // ensure the date selection is valid (no past dates) - this was from heuristic evaluation
             arrivalInput.min = today;
 
-            // add an event listener to update the departure date's minimum based on the arrival date
+
+            // once the arrival date is selected, set the min date for departure date to the arrival date (no negative trips i.e -4 days)
             arrivalInput.addEventListener('change', () => {
-                const selectedArrivalDate = arrivalInput.value;
-                // set the departure date's minimum to the selected arrival date (ensure trip dates are valid)
-                departureInput.min = selectedArrivalDate;
+                departureInput.min = arrivalInput.value;
+                saveTripData();
+            });
+
+            // when the departure date is selected, save the dates to the trip data (which is passed to other screens)
+            departureInput.addEventListener('change', () => {
+                saveTripData();
             });
         }
 
-        // function to handle traveler count increment and decrement
+        // function to handle the traveler count section
         function updateTravelerCount(type, operation) {
             const countElement = document.getElementById(`${type}-count`);
             let count = parseInt(countElement.textContent);
-            
-            // increment or decrement the traveler count based on the operation/button pressed
+
+            // increment or decrement the count based on the button clicked
+            // ensure the count does not go below 0
             if (operation === 'increment') {
                 count++;
             } else if (operation === 'decrement' && count > 0) {
                 count--;
             }
 
+            // update the count label so the user can see the changes
             countElement.textContent = count;
+            // save the updated count to trip data
+            saveTripData();
         }
 
-        // function to gather all data and pass it to another screen
-        function submitData() {
-            // get the selected dates and traveler counts
+        // function to save trip data to local storage, and be ready to be passed to the next screen
+        function saveTripData() {
+            // get the values from the date inputs and traveler counts
             const arrivalDate = document.getElementById('start-date').value;
             const departureDate = document.getElementById('end-date').value;
-
-            // get the traveler counts
             const travelers = {
                 adults: parseInt(document.getElementById('adults-count').textContent),
                 children: parseInt(document.getElementById('children-count').textContent),
                 seniors: parseInt(document.getElementById('seniors-count').textContent),
             };
 
-            // store dates and traveler counts in an object
+            // create a trip data object to store the values
             const tripData = {
                 arrivalDate,
                 departureDate,
                 travelers,
             };
 
-            // log the trip data to the console (for debugging)
-            console.log('Trip Data:', tripData);
-
-            // pass the data to next screen
+            // store the trip data in local storage
             localStorage.setItem('tripData', JSON.stringify(tripData));
-
-
-            // redirect to next screen
-            // window.location.href = 'INSET_NEXT_SCREEN_HERE.html'; // Change this to the next screen
         }
 
-        
+        // function for continue button to call on saveTripData(), and to move to next page
+        function submitData() {
+            saveTripData();
+            window.location.href = 'Tag_Selection_Screen.html';
+        }
 
-        // when the page loads, initialize the date inputs
-        window.onload = initializeDateInputs;
+
+        // run when the page loads
+        window.onload = () => {
+            // setup the date inputs
+            initializeDateInputs();
+
+            // get the trip data from local storage
+            const savedTrip = JSON.parse(localStorage.getItem('tripData'));
+            // if it exists, then restore the values
+            if (savedTrip) {
+                if (savedTrip.arrivalDate) {
+                    document.getElementById('start-date').value = savedTrip.arrivalDate;
+                    document.getElementById('end-date').min = savedTrip.arrivalDate; // maintain valid date logic
+                }
+                if (savedTrip.departureDate) {
+                    document.getElementById('end-date').value = savedTrip.departureDate;
+                }
+                document.getElementById('adults-count').textContent = savedTrip.travelers.adults || 0;
+                document.getElementById('children-count').textContent = savedTrip.travelers.children || 0;
+                document.getElementById('seniors-count').textContent = savedTrip.travelers.seniors || 0;
+            }
+        };
     </script>
+
 </body>
 </html>

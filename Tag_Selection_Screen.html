@@ -130,7 +130,7 @@
         </ul>
 
         <div class="back-button-container">
-            <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
+            <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" />
         </div>
 
         <h2>Tell Us What You Love & We’ll Handle the Rest!</h2>
@@ -167,6 +167,15 @@
     </div>
 
     <script>
+
+        // back button action/functionality (taken from soila's code for consistency)
+        let back_button = document.querySelector(".back-button");
+
+        back_button.addEventListener("click", () => {
+          window.location.href = "Start_Planning_Screen.html"
+        });
+
+
         // data structure to store selected tags
         const selectedTags = new Set();
 
@@ -184,6 +193,9 @@
                 selectedTags.add(tag); // add tag to the set
                 button.classList.add('selected'); // apply fade effect
             }
+
+            // store selected tags in localStorage
+            localStorage.setItem('selectedTags', JSON.stringify(Array.from(selectedTags))); 
         }
 
         // function to pass user tag selection to the next screen using localStorage
@@ -197,6 +209,23 @@
             // redirect to the next screen
             window.location.href = 'Suggestion_Selection_Screen.html';
         }
+
+        // run when the page loads
+        window.onload = () => {
+            // get the tag selections from local storage
+            const savedTags = JSON.parse(localStorage.getItem('selectedTags'));
+            // if they exist, then restore the selected tags
+            if (savedTags) {
+                savedTags.forEach(tag => {
+                    const button = [...document.querySelectorAll('.tag-container button')]
+                        .find(btn => btn.textContent === tag);
+                    if (button) {
+                        button.classList.add('selected');
+                        selectedTags.add(tag);
+                    }
+                });
+            }
+        };
     </script>
     
 </body>
