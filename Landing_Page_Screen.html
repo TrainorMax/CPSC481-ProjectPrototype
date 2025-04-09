@@ -90,12 +90,12 @@
             </div>
             <div class="input-row">
                 <label for="password">Password:</label>
-                <input type="text" id="password" name="password">
+                <input type="password" id="password" name="password">
             </div>
         </div>
 
         <div class="button-container">
-            <button class=""login-button>Log In</button>
+            <button class="login-button">Log In</button>
         </div>
 
         <h4>Don't have an account?</h4>
@@ -108,20 +108,32 @@
         <img src="assets/calgary-skyline.jpg" alt="Calgary Skyline" style="width: 100%; position: absolute; bottom: 0; left: 0;">
     </div>
     <script>
-        let login_button = document.querySelector(".login-button");
         let signup_button = document.querySelector(".signup-button");
         let guest_button = document.querySelector(".guest-button");
-    
-        login_button.addEventListener("click", () => {
-          window.location.href = "Homepage_Screen.html"
-        });
 
         signup_button.addEventListener("click", () => {
-          window.location.href = "Start_Planning_Screen.html"
+          window.location.href = "Sign_Up_Screen.html"
         });
     
         guest_button.addEventListener("click", () => {
           window.location.href = "Homepage_Screen.html"
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let login_button = document.querySelector(".login-button");
+
+            login_button.addEventListener("click", () => {
+                const username = document.getElementById("user-name").value;
+                const password = document.getElementById("password").value;
+                if (username && password) {
+                    window.location.href = `Homepage_Screen.html?username=${encodeURIComponent(username)}`;
+                } else if (username && !password) {
+                    alert("Please enter a password.");
+                } else if (!username && password) {
+                    alert("Please enter a username.");
+                } else
+                    alert("Please enter a username and password.");
+            });
         });
       </script>
 </body>
