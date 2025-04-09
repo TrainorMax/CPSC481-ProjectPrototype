@@ -16,11 +16,13 @@
                 height: 100vh;
                 margin: 0;
                 background-color: #f0f0f0;
-                font-family: Verdana;
+                font-family: Verdana, sans-serif;
+                overflow-y: auto;
             }
+
             .app-container {
-                width: 375px; /* set mobile app width */
-                height: 667px; /* set mobile app height */
+                width: 375px; /* Fixed mobile app width */
+                height: 667px; /* Fixed mobile app height */
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 padding: 20px;
@@ -28,7 +30,17 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
+                overflow: hidden; /* Prevent scrolling on the container */
             }
+
+            #events-container {
+                flex-grow: 1; /* Allow the container to grow and take available space */
+                overflow-y: auto; /* Enable vertical scrolling for the events section */
+                margin-top: 20px;
+                padding-right: 10px; /* Add padding to prevent content from being cut off */
+                max-height: calc(100% - 200px); /* Adjust height to fit within the app container */
+            }
+
             .breadcrumb {
                 display: flex;
                 list-style: none;
@@ -97,7 +109,7 @@
             .app-container select{
                 margin-bottom: 80px;
             }
-            .collapsible{
+            .collapsible {
                 cursor: pointer;
                 padding: 18px;
                 width: 100%;
@@ -106,21 +118,23 @@
                 outline: none;
                 font-size: 15px;
                 margin-bottom: 10px;
+                background-color: #c81d25;
+                border-radius: 5px;
             }
             .active, .collapsible:hover {
-                background-color: #803131;
+                background-color: #ddd;
             }
             .back-button {
-                padding: 10px 20px;
-                background-color: #c81d25;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
+                width: 40px; /* Adjust the size of the image */
+                height: 40px;
+                cursor: pointer; /* Make it look clickable */
+                border: none; /* Remove any border */
+                background: none; /* Ensure no background is applied */
+                outline: none; /* Remove focus outline */
             }
 
-            .back-button-container{
-                position:absolute;
+            .back-button-container {
+                position: absolute;
                 top: 60px;
                 left: 20px;
             }
@@ -139,6 +153,24 @@
                 align-items: center;
             }
 
+            .info-box {
+                padding: 10px;
+                margin-top: 5px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none; /* Initially hidden */
+            }
+
+            select {
+                margin-bottom: 10px; /* Reduce the bottom margin of the dropdown */
+            }
+
+            #selected-date {
+                margin-top: 5px; /* Reduce the top margin of the date label */
+            }
+
         </style>
     </head>
     <body>
@@ -150,24 +182,25 @@
                 <li>Suggestions</li>
             </ul>
             <div class="back-button-container">
-                <button class="back-button">Back</button>
+                <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
             </div>
 
             <h2>Select Date</h2>
 
-            <select name="dropdown-list">
-                <option value="Sunday">Sunday, February 13th</option>
-                <option value="Monday">Monday, February 14th</option>
-                <option value="Tuesday">Tuesday, February 15th</option>
+            <select name="dropdown-list" id="date-dropdown" onchange="updateDateLabelAndEvents()">
+                <option value="Sunday, February 13th">Sunday, February 13th</option>
+                <option value="Monday, February 14th">Monday, February 14th</option>
+                <option value="Tuesday, February 15th">Tuesday, February 15th</option>
             </select>
 
-            <h2>Sunday, February 13th</h2>
+            
+
+            <h2 id="selected-date">Sunday, February 13th</h2>
             <h4><i>Here are some suggestions!</i></h4>
 
-            <button type="button" class="collapsible">Pancake Breakfast <!--9AM-11AM--></button>
-            <button type="button" class="collapsible">TELUS Spark <!--10AM-5PM--></button>
-            <button type="button" class="collapsible">Calgary Tower <!--10AM-9PM--></button>
-            <button type="button" class="collapsible">Clear Nordic Spa <!--9AM-5PM--></button>
+            <div id="events-container">
+                <!-- Events will be dynamically updated here -->
+            </div>
             
             <div class="button-container">
                 <button>Continue</button>
@@ -177,11 +210,94 @@
         
 
             <div class="navbar">
-                <button>Home</button>
-                <button>Trips</button>
-                <button>Tickets</button>
+                <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+                <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
+                <button onclick="navigateTo('Ticket.html')">Tickets</button>
             </div>
         </div>
     </body>
 
 </html>
+
+<script>
+
+    // Function to move to the specified page
+    function navigateTo(page) {
+        window.location.href = page; // Redirect to the specified page
+    }
+
+    function updateDateLabel() {
+        const dropdown = document.getElementById("date-dropdown");
+        const selectedDate = dropdown.value;
+        const dateLabel = document.getElementById("selected-date");
+        dateLabel.textContent = selectedDate;
+    }
+
+
+    const eventsData = {
+        "Sunday, February 13th": [
+            { name: "Pancake Breakfast", time: "9AM-11AM", details: "Enjoy a delicious pancake breakfast with fresh fruit and coffee." },
+            { name: "TELUS Spark", time: "10AM-5PM", details: "Explore interactive science exhibits and activities." },
+            { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck." },
+            { name: "Clear Nordic Spa", time: "9AM-5PM", details: "Relax and rejuvenate at the Nordic spa with hot and cold pools." }
+        ],
+        "Monday, February 14th": [
+            { name: "Romantic Dinner", time: "6PM-9PM", details: "A candlelit dinner with a special Valentine's Day menu." },
+            { name: "Movie Night", time: "8PM-10PM", details: "Watch a romantic movie at the local theater." },
+            { name: "Art Gallery Visit", time: "10AM-4PM", details: "Explore beautiful art exhibits at the gallery." },
+            { name: "Ice Skating", time: "1PM-3PM", details: "Enjoy ice skating at the outdoor rink." }
+        ],
+        "Tuesday, February 15th": [
+            { name: "Hiking Trip", time: "7AM-12PM", details: "A guided hike through scenic trails." },
+            { name: "Museum Tour", time: "10AM-3PM", details: "Discover history and artifacts at the museum." },
+            { name: "Cooking Class", time: "5PM-8PM", details: "Learn to cook a gourmet meal with a professional chef." },
+            { name: "Stargazing", time: "9PM-11PM", details: "Observe the night sky with telescopes and expert guides." }
+        ]
+    };
+
+    function updateDateLabelAndEvents() {
+        const dropdown = document.getElementById("date-dropdown");
+        const selectedDate = dropdown.value;
+
+        // Update the date label
+        const dateLabel = document.getElementById("selected-date");
+        dateLabel.textContent = selectedDate;
+
+        // Update the events
+        const eventsContainer = document.getElementById("events-container");
+        eventsContainer.innerHTML = ""; // Clear existing events
+
+        const events = eventsData[selectedDate];
+        events.forEach((event, index) => {
+            // Create a button for the event
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "collapsible";
+            button.innerHTML = `${event.name} <span style="font-size: 12px;">(${event.time})</span>`;
+            button.onclick = () => toggleInfoBox(`info-box-${index}`);
+
+            // Create the info box for the event
+            const infoBox = document.createElement("div");
+            infoBox.id = `info-box-${index}`;
+            infoBox.className = "info-box";
+            infoBox.style.display = "none"; // Initially hidden
+            infoBox.innerHTML = `<p><strong>Details:</strong> ${event.details}</p>`;
+
+            // Append the button and info box to the container
+            eventsContainer.appendChild(button);
+            eventsContainer.appendChild(infoBox);
+        });
+    }
+
+    function toggleInfoBox(id) {
+        const infoBox = document.getElementById(id);
+        if (infoBox.style.display === "none" || infoBox.style.display === "") {
+            infoBox.style.display = "block";
+        } else {
+            infoBox.style.display = "none";
+        }
+    }
+
+    // Initialize with the default date's events
+    updateDateLabelAndEvents();
+</script>

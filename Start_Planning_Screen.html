@@ -74,37 +74,48 @@
             align-items: center;
             margin: 5px 0;
         }
-        .dropdown-container label {
+        .dropdown-container label{
             margin-right: 10px;
-            width: 150px;
+            width: 85px; /* Ensure consistent width for labels */
+            text-align: left; /* Align text to the right */
         }
         input[type="date"] {
             padding: 10px;
             font-size: 16px;
         }
         .traveler-container {
-            margin: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-right: 35px;
-            margin-top: 60px;
+            margin-top: 40px; /* Add space above the traveler section */
+            text-align: center;
         }
+
+        .traveler-container h3 {
+            margin-bottom: 20px; /* Add space below the label */
+        }
+
         .traveler-group {
             display: flex;
+            justify-content: center; /* Center the buttons and labels */
             align-items: center;
-            margin: 5px 0;
-            margin-right: 35px;
-            margin-top: 20px;
+            margin: 10px 0; /* Add spacing between rows */
         }
+
         .traveler-group label {
             margin-right: 10px;
-            width: 80px;
+            width: 140px; /* Ensure consistent width for labels */
+            text-align: left; /* Align text to the right */
         }
+
         .traveler-group button {
             padding: 5px 10px;
             margin: 0 5px;
             border-radius: 50%;
+            font-size: 16px;
+        }
+
+        .traveler-group span {
+            width: 30px; /* Ensure consistent width for the count display */
+            text-align: center;
+            font-size: 16px;
         }
         .navbar {
             position: absolute;
@@ -129,16 +140,16 @@
             font-size: 13px;
         }
         .back-button {
-            padding: 10px 20px;
-            background-color: #c81d25;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            width: 40px; /* Adjust the size of the image */
+            height: 40px;
+            cursor: pointer; /* Make it look clickable */
+            border: none; /* Remove any border */
+            background: none; /* Ensure no background is applied */
+            outline: none; /* Remove focus outline */
         }
 
-        .back-button-container{
-            position:absolute;
+        .back-button-container {
+            position: absolute;
             top: 60px;
             left: 20px;
         }
@@ -151,7 +162,7 @@
             <li>Start Planning</li>
         </ul>
         <div class="back-button-container">
-            <button class="back-button">Back</button>
+            <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
         </div>
         <h1>Start Planning!</h1>
 
@@ -167,34 +178,117 @@
             </div>
         </div>
         <div class="traveler-container">
-            <h3><i>Add or Remove Travelers</i></h3>
+            <h3>Traveler Selection</h3> <!-- Add a label above the traveler section -->
             <div class="traveler-group">
-                <label for="adults">Adults:</label>
-                <button type="button">-</button>
+                <label for="adults">Adults (18-59):</label>
+                <button type="button" onclick="updateTravelerCount('adults', 'decrement')">-</button>
                 <span id="adults-count">0</span>
-                <button type="button">+</button>
+                <button type="button" onclick="updateTravelerCount('adults', 'increment')">+</button>
             </div>
             <div class="traveler-group">
-                <label for="children">Children:</label>
-                <button type="button">-</button>
+                <label for="children">Children (Under 18):</label>
+                <button type="button" onclick="updateTravelerCount('children', 'decrement')">-</button>
                 <span id="children-count">0</span>
-                <button type="button">+</button>
+                <button type="button" onclick="updateTravelerCount('children', 'increment')">+</button>
             </div>
             <div class="traveler-group">
-                <label for="seniors">Seniors:</label>
-                <button type="button">-</button>
+                <label for="seniors">Seniors (60+):</label>
+                <button type="button" onclick="updateTravelerCount('seniors', 'decrement')">-</button>
                 <span id="seniors-count">0</span>
-                <button type="button">+</button>
+                <button type="button" onclick="updateTravelerCount('seniors', 'increment')">+</button>
             </div>
         </div>
         <div class="button-container">
-            <button>Continue</button>
+            <button onclick="submitData()">Continue</button>
         </div>
         <div class="navbar">
-            <button>Home</button>
-            <button>Trips</button>
-            <button>Tickets</button>
+            <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+            <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
+            <button onclick="navigateTo('Tickets.html')">Tickets</button>
         </div>
     </div>
+
+
+    <script>
+        let back_button = document.querySelector(".back-button");
+
+        back_button.addEventListener("click", () => {
+          window.location.href = "Homepage_Screen.html"
+        });
+
+        // Function to move to the specified page
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Function to set the minimum date for the arrival and departure inputs
+        function initializeDateInputs() {
+            // Get today's date in YYYY-MM-DD format
+            const today = new Date().toISOString().split('T')[0];
+            const arrivalInput = document.getElementById('start-date');
+            const departureInput = document.getElementById('end-date');
+
+            // Set the minimum date for the arrival input to today
+            arrivalInput.min = today;
+
+            // Add an event listener to update the departure date's minimum based on the arrival date
+            arrivalInput.addEventListener('change', () => {
+                const selectedArrivalDate = arrivalInput.value;
+                // Set the departure date's minimum to the selected arrival date
+                departureInput.min = selectedArrivalDate;
+            });
+        }
+
+        // Function to handle traveler count increment and decrement
+        function updateTravelerCount(type, operation) {
+            const countElement = document.getElementById(`${type}-count`);
+            let count = parseInt(countElement.textContent);
+            
+            // Increment or decrement the count based on the operation
+            if (operation === 'increment') {
+                count++;
+            } else if (operation === 'decrement' && count > 0) {
+                count--;
+            }
+
+            countElement.textContent = count;
+        }
+
+        // Function to gather all data and pass it to another screen
+        function submitData() {
+            // Get the selected dates and traveler counts
+            const arrivalDate = document.getElementById('start-date').value;
+            const departureDate = document.getElementById('end-date').value;
+
+            // Get the traveler counts
+            const travelers = {
+                adults: parseInt(document.getElementById('adults-count').textContent),
+                children: parseInt(document.getElementById('children-count').textContent),
+                seniors: parseInt(document.getElementById('seniors-count').textContent),
+            };
+
+            // Store dates and traveler counts in an object
+            const tripData = {
+                arrivalDate,
+                departureDate,
+                travelers,
+            };
+
+            // Log the trip data to the console (for debugging)
+            console.log('Trip Data:', tripData);
+
+            // Pass the data to next screen
+            localStorage.setItem('tripData', JSON.stringify(tripData));
+
+
+            // Redirect to another screen (replace 'next_screen.html' with the actual file name)
+            // window.location.href = 'INSET_NEXT_SCREEN_HERE.html'; // Change this to the next screen
+        }
+
+        
+
+        // Initialize the date inputs when the page loads
+        window.onload = initializeDateInputs;
+    </script>
 </body>
 </html>

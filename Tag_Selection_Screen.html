@@ -29,28 +29,13 @@
             display: flex;
             flex-direction: column;
         }
-        .breadcrumb {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0 0 20px 0; /* add bottom margin to separate from content */
-        }
-        .breadcrumb li {
-            margin-right: 5px;
-        }
-        .breadcrumb li+li:before {
-            content: ">";
-            margin-right: 5px;
-        }
-        .button-container {
-            position: absolute;
-            bottom: 80px; /* adjusted to make space for the navbar */
-            right: 20px;
+        .tag-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        button {
+        .tag-container button {
             padding: 10px 20px;
             background-color: #c81d25;
             color: white;
@@ -58,21 +43,10 @@
             border-radius: 5px;
             cursor: pointer;
             font-family: Verdana;
+            transition: opacity 0.3s ease;
         }
-        
-        .tag-container button:active {
-            opacity: 50%;
-        }
-        .tag-container button:focus{
-            opacity: 50%;
-        }
-        .breadcrumb li {
-            font-size: 13px;
-        }
-        .app-container h2 {
-            align-self: flex-start; /* align the h2 element to the start */
-            margin-top: 80px;
-            font-family: Verdana;
+        .tag-container button.selected {
+            opacity: 0.5; /* Fade effect for selected buttons */
         }
         .navbar {
             position: absolute;
@@ -92,29 +66,58 @@
             font-size: 16px;
             font-family: Verdana;
         }
-        .tag-container {
+        .button-container {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
         }
-        .app-container select{
-            margin-bottom: 100px;
-        }
-
-        .back-button {
+        .button-container button {
             padding: 10px 20px;
             background-color: #c81d25;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-family: Verdana;
+        }
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0; /* add bottom margin to separate from content */
+        }
+        .breadcrumb li {
+            margin-right: 5px;
+        }
+        .breadcrumb li+li:before {
+            content: ">";
+            margin-right: 5px;
+        }
+        
+        .breadcrumb li {
+            font-size: 13px;
+        }
+        
+
+        .back-button {
+            width: 40px; /* Adjust the size of the image */
+            height: 40px;
+            cursor: pointer; /* Make it look clickable */
+            border: none; /* Remove any border */
+            background: none; /* Ensure no background is applied */
+            outline: none; /* Remove focus outline */
         }
 
-        .back-button-container{
-            position:absolute;
+        .back-button-container {
+            position: absolute;
             top: 60px;
             left: 20px;
+        }
+        h2 {
+            margin-top: 100px;
+            padding-top: 0px;
         }
     </style>
 </head>
@@ -127,7 +130,7 @@
         </ul>
 
         <div class="back-button-container">
-            <button class="back-button">Back</button>
+            <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
         </div>
 
         <h2>Tell Us What You Love & We’ll Handle the Rest!</h2>
@@ -141,27 +144,55 @@
         <h4><i>Select Tags</i></h4>
 
         <div class="tag-container">
-            <button>Landmarks & Attractions</button>
-            <button>Tours</button>
-            <button>Outdoor Adventures</button>
-            <button>Live Entertainment</button>
-            <button>Day Trips & Excursions</button>
-            <button>Shopping</button>
-            <button>Food & Drink</button>
-            <button>Wellness & Relaxation</button>
-            <button>Family-Friendly</button>
+            <button onclick="toggleTag(this, 'Landmarks & Attractions')">Landmarks & Attractions</button>
+            <button onclick="toggleTag(this, 'Tours')">Tours</button>
+            <button onclick="toggleTag(this, 'Outdoor Adventures')">Outdoor Adventures</button>
+            <button onclick="toggleTag(this, 'Live Entertainment')">Live Entertainment</button>
+            <button onclick="toggleTag(this, 'Day Trips & Excursions')">Day Trips & Excursions</button>
+            <button onclick="toggleTag(this, 'Shopping')">Shopping</button>
+            <button onclick="toggleTag(this, 'Food & Drink')">Food & Drink</button>
+            <button onclick="toggleTag(this, 'Wellness & Relaxation')">Wellness & Relaxation</button>
+            <button onclick="toggleTag(this, 'Family-Friendly')">Family-Friendly</button>
         </div>
 
         <div class="navbar">
-            <button>Home</button>
-            <button>Trips</button>
-            <button>Tickets</button>
+            <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+            <button onclick="navigateTo('Trips_Screen.html')">Trips</button>
+            <button onclick="navigateTo('Tickets_Screen.html')">Tickets</button>
         </div>
         <div class="button-container">
-            <button>Continue</button>
+            <button onclick="submitTags()">Continue</button>
         </div>
         
     </div>
+
+    <script>
+        // Data structure to store selected tags
+        const selectedTags = new Set();
+
+        // Function to move to the specified page
+        function navigateTo(page) {
+            window.location.href = page; // Redirect to the specified page
+        }
+
+        // Function to toggle tag selection
+        function toggleTag(button, tag) {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag); // Remove tag if already selected
+                button.classList.remove('selected'); // Remove fade effect
+            } else {
+                selectedTags.add(tag); // Add tag to the set
+                button.classList.add('selected'); // Apply fade effect
+            }
+        }
+
+        // Function to handle submission of selected tags
+        function submitTags() {
+            console.log('Selected Tags:', Array.from(selectedTags));
+            // Pass the selected tags to another screen or process them as needed
+            alert('Selected Tags: ' + Array.from(selectedTags).join(', '));
+        }
+    </script>
     
 </body>
 </html>
