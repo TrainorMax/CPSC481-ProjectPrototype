@@ -63,18 +63,19 @@
                 cursor: pointer;
                 font-family: Verdana;
             }
-            .back-button-container{
-                position:absolute;
+            .back-button {
+            width: 40px; /* Adjust the size of the image */
+            height: 40px;
+            cursor: pointer; /* Make it look clickable */
+            border: none; /* Remove any border */
+            background: none; /* Ensure no background is applied */
+            outline: none; /* Remove focus outline */
+            }
+
+            .back-button-container {
+                position: absolute;
                 top: 60px;
                 left: 20px;
-            }
-            .back-button {
-                padding: 10px 20px;
-                background-color: #c81d25;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
             }
             .dropdown-container {
                 margin: 0 0 20px 30px;
@@ -101,7 +102,6 @@
                 width: 200px;
             }
 
-            
             .navbar {
                 position: absolute;
                 bottom: 0;
@@ -142,7 +142,7 @@
     <body>
         <div class="app-container">
             <div class="back-button-container">
-                <button class="back-button">Back</button>
+                <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
             </div>
             
             <br></br>
@@ -162,32 +162,94 @@
                 <div class="dropdown-container">
                     <div class="section_label">Location:</div>
                     <div class="input-group">
-                        <input type="text" value="5629 Signal Hill Centre SW">
+                        <input type="text" value="5629 Signal Hill Centre SW" id="eventName" name="eventName">
                     </div>
                     <div class="section_label">Date:</div>
                     <div class="input-group">
-                        <input type="date">
+                        <input type="date" id="eventDate" name="eventDate">
                     </div>
                     <div class="section_label">Time:</div>
                     <div class="input-group">
-                        <input type="time">
+                        <input type="time" id="eventTime" name="eventTime">
                     </div>
                     <div class="section_label">People:</div>
                     <div class="input-group">
-                        <input type="number" value="1">
+                        <input type="number" value="1" id="eventAttendanceCount" name="eventAttendanceCount">
                     </div>
                 </div>
             </div>
 
-            <button>Cancel Event</button>
+            <button onclick="submitCancelEvent()"></buttononclick>Cancel Event</button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button>Confirm Edit</button>
+            <button onclick="submitConfirmEdit()"></buttononclick>Confirm Edit</button>
 
             <div class="navbar">
-                <button>Home</button>
-                <button>Trips</button>
-                <button>Tickets</button>
+                <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+                <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
+                <button onclick="navigateTo('Ticket_Viewer.html')">Tickets</button>
             </div>
         </div>
     </body>
+
+    <script>
+        let back_button = document.querySelector(".back-button");
+
+        back_button.addEventListener("click", () => {
+          window.location.href = "Trip_Timeline.html"
+        });
+
+        // Function to move to the specified page
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Function to gather all data and pass it to another screen
+        function submitConfirmEdit() {
+            // Get the selected dates and traveler counts
+            const eventDate = document.getElementById('eventDate').value;
+            const eventTime = document.getElementById('eventTime').value;
+            const eventAttendanceCount = document.getElementById('eventAttendanceCount').value;
+
+            const editEventData = {
+                eventDate,
+                eventTime,
+                eventAttendanceCount,
+            };
+
+            // Log the trip data to the console (for debugging)
+            console.log('Event Data:', editEventData);
+
+            // Store the data in localStorage
+            localStorage.setItem('eventData', JSON.stringify(editEventData));
+            
+            // Redirect to a confirmation page or back to the trip timeline
+            // You can change this destination as needed
+            window.location.href = "Trip_Timeline.html";
+        }
+
+        function submitCancelEvent() {
+            // Get the event details
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventTime = document.getElementById('eventTime').value;
+            
+            // Create an object with the cancellation data
+            const cancelEventData = {
+                eventName,
+                eventDate,
+                eventTime,
+                cancellationTime: new Date().toISOString() // Store when the cancellation was made
+            };
+            
+            // Log the cancellation data to the console (for debugging)
+            console.log('Cancellation Data:', cancelEventData);
+            
+            // Store the data in localStorage
+            localStorage.setItem('cancelEventData', JSON.stringify(cancelEventData));
+            
+            // Redirect to a confirmation page or back to the trip timeline
+            // You can change this destination as needed
+            window.location.href = "Trip_Timeline.html";
+        }
+    </script>
 </html>
