@@ -156,9 +156,7 @@
 </head>
 <body>
     <div class="app-container">
-        <ul class="breadcrumb">
-            <li>Home</li>
-        </ul>
+        <h2 id="welcome-header">Welcome, Guest</h2>
 
         <div class="weather-container">
             <img src="assets/weather-partly-cloudy.svg" alt="icon" style="width: 50px; height: auto;">
@@ -168,34 +166,15 @@
             </div>
         </div>
 
+        <br><br><br><br>
+        
         <h2>Ready to plan a trip?</h2>
 
         <div class="button-container">
             <button class="newtrip-button" style="margin-bottom: 20px;">Plan New Trip</button>
-        </div>
+        </div><br><br><br><br>
 
-        <div class="text-input">
-            <label style="display: block; text-align: left;"><b>Upcoming Trips</b></label><br>
-            <div class="trip-container">
-                <div class="box">
-                    <span class="box-text">Sep. 3 - Sep. 17, 2025</span>
-                    <button class="box-button">View Details</button>
-                </div>
-                
-        </div><br>
-
-        <div class="text-input">
-            <label style="display: block; text-align: left;"><b>Past Trips</b></label><br>
-            <div class="trip-container">
-                <div class="box">
-                    <span class="box-text">May 6 - May 9, 2023</span>
-                    <button class="box-button">View Details</button>
-                </div>
-                <div class="box">
-                    <span class="box-text">Jul. 30 - Aug. 2, 2021</span>
-                    <button class="box-button">View Details</button>
-                </div>
-        </div><br>
+        
         <div class="text-input">
             <label style="display: block; text-align: left;"><b>Amenities and Emergency Services</b></label><br>
             <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/cps.html">Calgary Police Service</a>: 911</label><br>
@@ -211,27 +190,47 @@
         </div>
     </div>
     <script>
-        let newtrip_button = document.querySelector(".newtrip-button");
-        let viewtrip_button = document.querySelector(".box-button");
-        let trips_button = document.querySelector(".trips-button");
-        let tickets_button = document.querySelector(".tickets-button");
-    
-        newtrip_button.addEventListener("click", () => {
-          window.location.href = "Start_Planning_Screen.html"
+        document.addEventListener("DOMContentLoaded", () => {
+            const newtrip_button = document.querySelector(".newtrip-button");
+            const viewtrip_button = document.querySelector(".box-button");
+            const trips_button = document.querySelector(".trips-button");
+            const tickets_button = document.querySelector(".tickets-button");
+
+            if (newtrip_button) {
+                newtrip_button.addEventListener("click", () => {
+                    window.location.href = "Start_Planning_Screen.html";
+                });
+            }
+
+            if (viewtrip_button) {
+                viewtrip_button.addEventListener("click", () => {
+                    window.location.href = "Trip_Timeline.html";
+                });
+            }
+
+            if (trips_button) {
+                trips_button.addEventListener("click", () => {
+                    window.location.href = "Trips_Tab.html";
+                });
+            }
+
+            if (tickets_button) {
+                tickets_button.addEventListener("click", () => {
+                    window.location.href = "Ticket_Viewer.html";
+                });
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get("username");
+
+            console.log("Username from URL:", username);
+            if (username) {
+                document.getElementById("welcome-header").textContent = `Welcome, ${username}`;
+            } else {
+                document.getElementById("welcome-header").textContent = "Welcome, Guest";
+            }
         });
-    
-        viewtrip_button.addEventListener("click", () => {
-          window.location.href = "Trip_Timeline.html"
-        });
-    
-        trips_button.addEventListener("click", () => {
-          window.location.href = "Trips_Tab.html"
-        });
-    
-        tickets_button.addEventListener("click", () => {
-          window.location.href = "Ticket_Viewer.html"
-        });
-      </script>
+    </script>
 </body>
 </html>
 
