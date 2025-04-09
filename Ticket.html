@@ -1,0 +1,209 @@
+<!-- Author: Soila Pertet
+     UCID : 30102008
+-->
+
+<!-- App concert from Soft Light Team: https://dribbble.com/shots/16448873-App-Concept-For-Booking-Tickets -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #D0CFCF;
+      font-family: Verdana;
+    }
+
+    h3 {
+      color: #c70f0f;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: Verdana;
+    }
+
+    .back-button {
+      cursor: pointer;
+    }
+
+    .back-button > img {
+      width: 35px;
+    }
+
+    .button-container {
+      bottom: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .event-name {
+      padding-bottom: 10px;
+      border-bottom: solid 2px #D0CFCF;
+    }
+
+    .event-name > span {
+      color: #c70f0f;
+      text-align: left;
+    }
+
+    .event-container {
+      font-size: 0.8rem;
+      width: 375px; /* set mobile app width */
+      height: auto; /* set mobile app height */
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      padding: 20px;
+    }
+
+    .event-tag > h4 {
+      border: 2px;
+      border-radius: 10px;
+      background-color: #c70f0f;
+      color: #FFFFFF;
+      padding: 5px;
+      width: 60px;
+    }
+
+    .event-ticket {
+      padding-bottom: 35px;
+    }
+
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .flex-pair {
+      width: 180px;
+    }
+    
+    .image-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-container > img {
+      width: 150px;
+    }
+    
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c70f0f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-family: Verdana;
+    }
+    
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Verdana;
+    }
+  </style>
+  <title>Ticket</title>
+</head>
+<body>
+  <div class="event-container">
+    <div class="event-ticket">
+      <div class="back-button">
+        <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="circled-left-2"/>
+      </div>
+      <div class="event-tag">
+        <h4>Concert</h4>
+      </div>
+      <div class="event-name">
+        <h2>Snoop Dogg: Cali to Canada Tour</h2>
+        <span>Show this ticket at the entrance</span>
+      </div>
+      <div class="event-place">
+        <h3>Location</h3>
+        <span>Scotiabank Saddledome</span>
+      </div>
+      <div class="flex-container">
+        <div class="flex-pair">
+          <h3>Date</h3>
+          <span>14/02/2025</span>
+        </div>
+        <div class="flex-pair">
+          <h3>Time</h3>
+          <span>11:30pm - 4:00am</span>
+        </div>
+      </div>
+      <div class="flex-container">
+        <div class="flex-pair">
+          <h3>Section</h3>
+          <span>G</span>
+        </div>
+        <div class="flex-pair">
+          <h3>Seat number</h3>
+          <span>106</span>
+        </div>
+      </div>
+      <div class="flex-container">
+        <div class="flex-pair">
+          <h3>Cost</h3>
+          <span>$65.63</span>
+        </div>
+        <div class="flex-pair">
+          <h3>Order number</h3>
+          <span>97625</span>
+        </div>
+      </div>
+      <div class="image-container">
+        <img src="./assets/qr_code.png" alt="Image of QR-code">
+      </div>
+    </div>
+    <div class="navbar">
+      <button class="home-button">Home</button>
+      <button class="trips-button">Trips</button>
+      <button class="tickets-button">Tickets</button>
+    </div>
+  </div>
+  <script>
+    let back_button = document.querySelector(".back-button");
+    let home_button = document.querySelector(".home-button");
+    let trips_button = document.querySelector(".trips-button");
+    let tickets_button = document.querySelector(".tickets-button");
+
+    back_button.addEventListener("click", () => {
+      window.location.href = "Ticket_Viewer.html"
+    });
+
+    home_button.addEventListener("click", () => {
+      window.location.href = "Homepage_Screen.html"
+    });
+
+    trips_button.addEventListener("click", () => {
+      window.location.href = "View_Trip_Page.html"
+    });
+
+    tickets_button.addEventListener("click", () => {
+      window.location.href = "Ticket_Viewer.html"
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!-- Author: Soila Pertet
+     UCID: 30102008  
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="./css/Ticket_Viewer.css"> -->
+   <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #D0CFCF;
+      font-family: Verdana;
+    }
+    
+    .ticket-viewer-container {
+      width: 375px; /* set mobile app width */
+      height: 667px; /* set mobile app height */
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .tickets {
+      display: flex;
+      flex-direction: column;
+      margin: 50px 5px 5px 5px;
+      padding: 20px;
+    }
+    
+    .ticket {
+      border-radius: 20px;
+      background-color: #D0CFCF;
+      color: black;
+      padding: 10px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      position: relative;
+    }
+    
+    .tickets-heading {
+      text-align: center;
+    }
+    
+    .ticket-description {
+      position: relative;
+    }
+    
+    .ticket-description > h3 {
+      padding: 4px;
+      margin: 2px;
+      border-bottom: 2px solid #c70f0f;
+    }
+    
+    .event-details {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    
+    .event-details > p {
+      font-style: italic;
+      margin: 5px;
+    }
+    
+    .event-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .location {
+      margin-bottom: 10px;
+      display: flex; 
+      align-items: center;
+      cursor: pointer;
+      gap:5px;
+    }
+    
+    .location > span {
+      font-style: italic;
+    }
+    
+    .icon {
+      width: 20px;
+    }
+    
+    .image-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .image-container > img {
+      border-radius: 20px;
+      width: 100px;
+      height: 100px;
+    }
+    
+    .back-button {
+      padding: 10px 20px;
+      background-color: #c81d25;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button-container{
+        position:absolute;
+        top: 30px;
+        left: 20px;
+    }
+    
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c81d25;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Verdana;
+    }
+    
+    button {
+      padding: 10px;
+      background-color: #c81d25;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: Verdana;
+    }
+   </style>
+  <title>Ticket Viewer</title>
+</head>
+<body>
+  <div class="ticket-viewer-container">
+    <div class="tickets">
+      <div class="back-button-container">
+        <button class="back-button">Back</button>
+      </div>
+      <h1 class="tickets-heading">My Tickets</h1>
+      <div class="ticket">
+        <div class="image-container">
+          <img src="./assets/snoop.jpg" alt="Image Snoop Dog Concert Banner">
+        </div>
+        <div class="ticket-description">
+          <h3>Snoop Dogg: Cali to Canada Tour</h3>
+          <div class="event-details">
+            <div class="event-container">
+              <!-- Flaticon: Calendar icons created by Khoirul Anwar -->
+              <img class="icon" src="./assets/calendar_icon.png" alt="Image of calendar icon">
+              <span class="date">14/02/2025</span>        
+            </div>
+            <div class="event-container">
+              <!-- Flaticon: Calendar icons created by dmitri13 -->
+              <img class="icon" src="./assets/clock_icon.png" alt="Image of calendar icon">  
+              <span class="time">11:30pm - 4:00am</span>        
+            </div>
+            <div class="location">
+              <!-- Flaticon: Location pin icons created by Smashicons -->
+              <img class="icon" src="./assets/location.png" alt="Image of location icon">
+              <span>Scotiabank Saddledome</span>
+            </div>
+          </div>
+          <div class="button-container">
+            <button class="view-button">VIEW TICKET</button>
+          </div>
+        </div>
+      </div>
+      <div class="navbar">
+        <button class="home-button">Home</button>
+        <button class="trips-button">Trips</button>
+        <button class="tickets-button" style="background-color:#a81d25">Tickets</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    let view_button = document.querySelector(".view-button");
+    let home_button = document.querySelector(".home-button");
+    let trips_button = document.querySelector(".trips-button");
+    let tickets_button = document.querySelector(".tickets-button");
+
+    view_button.addEventListener("click", () => {
+      window.location.href = "Ticket.html"
+    });
+
+    home_button.addEventListener("click", () => {
+      window.location.href = "Homepage_Screen.html"
+    });
+
+    trips_button.addEventListener("click", () => {
+      window.location.href = "View_Trip_Page.html"
+    });
+
+    tickets_button.addEventListener("click", () => {
+      window.location.href = "Ticket_Viewer.html"
+    });
+  </script>
+</body>
+</html>
