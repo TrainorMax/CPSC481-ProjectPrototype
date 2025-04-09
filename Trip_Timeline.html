@@ -18,7 +18,6 @@
       align-items: center;
       height: 100vh;
     }
-
     .app-container {
       width: 375px;
       height: 667px;
@@ -28,14 +27,12 @@
       flex-direction: column;
       position: relative;
     }
-
     .scrollable-content {
       overflow-y: auto;
       padding: 20px;
       flex-grow: 1;
       padding-bottom: 80px;
     }
-
     .breadcrumb {
       display: flex;
       justify-content: center;
@@ -45,36 +42,30 @@
       font-size: 13px;
       flex-wrap: wrap;
     }
-
     .breadcrumb li {
       margin-right: 5px;
     }
-
     .breadcrumb li+li:before {
       content: ">";
       margin-right: 5px;
     }
-
     .back-button-container {
       display: flex;
       justify-content: flex-start;
       margin: 10px 0;
     }
-
     .back-button {
-      padding: 10px 20px;
-      background-color: #c70f0f;
-      color: white;
-      border: none;
-      border-radius: 5px;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
+      border: none;
+      background: none;
+      outline: none;
     }
-
     h1 {
       margin-top: 5px;
       text-align: center;
     }
-
     .section {
       text-align: left;
       margin-bottom: 15px;
@@ -82,11 +73,9 @@
       background-color: #f9f9f9;
       border-radius: 5px;
     }
-
     .time-block {
       margin-bottom: 10px;
     }
-
     .event {
       display: flex;
       align-items: center;
@@ -97,21 +86,17 @@
       margin-top: 5px;
       box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
     }
-
     .event-details {
       flex-grow: 1;
     }
-
     .event-label {
       font-weight: normal;
       font-size: 14px;
     }
-
     .event-buttons {
       display: flex;
       gap: 5px;
     }
-
     button {
       padding: 6px 12px;
       font-size: 12px;
@@ -122,34 +107,28 @@
       cursor: pointer;
       transition: 0.2s ease;
     }
-
     button:hover {
       filter: brightness(1.1);
     }
-
     button:active {
       transform: scale(0.97);
     }
-
     .action-buttons {
       display: flex;
       justify-content: space-between;
       gap: 10px;
       margin-bottom: 10px;
     }
-
     .action-buttons button {
       background-color: #007bff;
       width: 50%;
     }
-
     .book-button {
       width: 100%;
       margin-top: 10px;
       background-color: #c70f0f;
       font-size: 14px;
     }
-
     .confirmation {
       position: fixed;
       top: 40%;
@@ -164,14 +143,12 @@
       font-size: 14px;
       text-align: center;
     }
-
     .empty-message {
       text-align: center;
       color: #999;
       font-size: 14px;
       margin-top: 40px;
     }
-
     .navbar {
       position: absolute;
       bottom: 0;
@@ -182,7 +159,6 @@
       justify-content: space-around;
       padding: 10px 0;
     }
-
     .navbar button {
       background-color: transparent;
       color: white;
@@ -202,84 +178,19 @@
         <li><a href="#">Suggestion Selection</a></li>
         <li>Trip Timeline</li>
       </ul>
-
       <div class="back-button-container">
-        <button class="back-button">Back</button>
+        <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="window.location.href='Suggestion_Selection_Screen.html'" />
       </div>
-
       <h1>Trip Timeline</h1>
-
       <div class="action-buttons">
-        <button>Add Event from Suggestions</button>
+        <button onclick="window.location.href='Suggestion_Selection_Screen.html'">Add Event from Suggestions</button>
         <button>Add Custom Event</button>
       </div>
-
-      <div id="timeline-container">
-        <div class="section">
-          <strong>Feb 13</strong>
-          <div class="time-block">
-            <p><b>9 AM</b></p>
-            <div class="event">
-              <div class="event-details">
-                <span class="event-label">Event 1</span>
-              </div>
-              <div class="event-buttons">
-                <button>Edit</button>
-                <button class="remove-btn">Remove</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="time-block">
-            <p><b>2 PM</b></p>
-            <div class="event">
-              <div class="event-details">
-                <span class="event-label">Event 2</span>
-              </div>
-              <div class="event-buttons">
-                <button>Edit</button>
-                <button class="remove-btn">Remove</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <strong>Feb 14</strong>
-          <div class="time-block">
-            <p><b>8 AM</b></p>
-            <div class="event">
-              <div class="event-details">
-                <span class="event-label">Event 3</span>
-              </div>
-              <div class="event-buttons">
-                <button>Edit</button>
-                <button class="remove-btn">Remove</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="time-block">
-            <p><b>12 PM</b></p>
-            <div class="event">
-              <div class="event-details">
-                <span class="event-label">Event 4</span>
-              </div>
-              <div class="event-buttons">
-                <button>Edit</button>
-                <button class="remove-btn">Remove</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <div id="timeline-container"></div>
       <p id="empty-message" class="empty-message" style="display: none;">No events added yet.</p>
       <button id="bookBtn" class="book-button">BOOK</button>
     </div>
-
     <div class="confirmation" id="confirmation">Events booked and saved!</div>
-
     <div class="navbar">
       <button>Home</button>
       <button>Trips</button>
@@ -288,44 +199,95 @@
   </div>
 
   <script>
-    const bookBtn = document.getElementById('bookBtn');
-    const confirmation = document.getElementById('confirmation');
-    const emptyMessage = document.getElementById('empty-message');
+    const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+    const timelineContainer = document.getElementById("timeline-container");
+    const bookBtn = document.getElementById("bookBtn");
+    const confirmation = document.getElementById("confirmation");
+    const emptyMessage = document.getElementById("empty-message");
 
-    bookBtn.addEventListener('click', () => {
-      const events = [];
-      document.querySelectorAll('.event').forEach(event => {
-        events.push(event.querySelector('.event-label').innerText);
-      });
-      localStorage.setItem("bookedEvents", JSON.stringify(events));
+    function renderEvents() {
+      timelineContainer.innerHTML = "";
+      let hasEvents = false;
 
+      for (const date in suggestions) {
+        const dayEvents = suggestions[date];
+        if (!dayEvents.length) continue;
+
+        hasEvents = true;
+        const section = document.createElement("div");
+        section.className = "section";
+        section.innerHTML = `<strong>${date}</strong>`;
+
+        const usedTimes = new Set();
+
+        dayEvents.forEach((eventObj, idx) => {
+          let { name, time } = eventObj;
+          if (!name) name = "Untitled Event";
+          if (!time) time = "TBD";
+
+          while (usedTimes.has(time)) {
+            const hour = parseInt(time) || 9;
+            time = (hour + 1) + "PM";
+          }
+          usedTimes.add(time);
+
+          const timeBlock = document.createElement("div");
+          timeBlock.className = "time-block";
+          timeBlock.innerHTML = `<p><b>${time}</b></p>`;
+
+          const event = document.createElement("div");
+          event.className = "event";
+          event.innerHTML = `
+            <div class="event-details">
+              <span class="event-label">${name}</span>
+            </div>
+            <div class="event-buttons">
+              <button>Edit</button>
+              <button class="remove-btn">Remove</button>
+            </div>
+          `;
+
+          event.querySelector('.remove-btn').addEventListener('click', () => {
+            suggestions[date] = suggestions[date].filter(e => e.name !== name);
+            localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
+            renderEvents();
+          });
+
+          timeBlock.appendChild(event);
+          section.appendChild(timeBlock);
+        });
+
+        timelineContainer.appendChild(section);
+      }
+
+      bookBtn.style.display = hasEvents ? 'block' : 'none';
+      emptyMessage.style.display = hasEvents ? 'none' : 'block';
+    }
+
+    bookBtn.addEventListener("click", () => {
+      const allEvents = [];
+      let hasSnoop = false;
+
+      for (const date in suggestions) {
+        suggestions[date].forEach(({ name }) => {
+          allEvents.push({ date, event: name });
+          if (name && name.toLowerCase().includes("snoop dogg")) hasSnoop = true;
+        });
+      }
+
+      localStorage.setItem("bookedEvents", JSON.stringify(allEvents));
       confirmation.style.display = "block";
       confirmation.style.opacity = 1;
       setTimeout(() => {
         confirmation.style.opacity = 0;
         setTimeout(() => {
           confirmation.style.display = "none";
+          window.location.href = hasSnoop ? "Seat_Selection.html" : "Payment_Screen.html";
         }, 500);
-      }, 1500);
+      }, 1000);
     });
 
-    document.querySelectorAll('.remove-btn').forEach(button => {
-      button.addEventListener('click', e => {
-        const eventDiv = e.target.closest('.event');
-        const timeBlock = eventDiv.closest('.time-block');
-        const section = eventDiv.closest('.section');
-
-        eventDiv.remove();
-        if (!timeBlock.querySelector('.event')) timeBlock.remove();
-        if (!section.querySelector('.time-block')) section.remove();
-
-        const remaining = document.querySelectorAll('.event').length;
-        if (remaining === 0) {
-          bookBtn.style.display = 'none';
-          emptyMessage.style.display = 'block';
-        }
-      });
-    });
+    renderEvents();
   </script>
 </body>
 </html>
