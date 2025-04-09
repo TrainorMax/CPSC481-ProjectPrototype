@@ -187,9 +187,9 @@
             <h2>Select Date</h2>
 
             <select name="dropdown-list" id="date-dropdown" onchange="updateDateLabelAndEvents()">
-                <option value="Sunday, February 13th">Sunday, February 13th</option>
-                <option value="Monday, February 14th">Monday, February 14th</option>
-                <option value="Tuesday, February 15th">Tuesday, February 15th</option>
+                <option value="Sunday, June 1st">Sunday, June 1st</option>
+                <option value="Monday, June 2nd">Monday, June 2nd</option>
+                <option value="Tuesday, June 3rd">Tuesday, June 3rd</option>
             </select>
 
             
@@ -228,12 +228,27 @@
         window.location.href = "Tag_Selection_Screen.html";
     });
 
-    // either load the selected suggestions from local storage or initialize with empty arrays when the user first visits the screen
-    let selectedSuggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {
-        "Sunday, February 13th": [],
-        "Monday, February 14th": [],
-        "Tuesday, February 15th": []
-    };
+    // Load saved selections or initialize based on tripData
+    let selectedSuggestions = JSON.parse(localStorage.getItem("selectedSuggestions"));
+    // If no saved selections, initialize with tripData dates
+    if (!selectedSuggestions) {
+        selectedSuggestions = {};
+        const tripData = JSON.parse(localStorage.getItem("tripData"));
+        if (tripData?.arrivalDate && tripData?.departureDate) {
+            // split the date strings into year, month, and day and convert to numbers
+            // this is because the previously used code would show the incorrect date range (due to timezone conversion, i.e. April 9th would show as April 8th)
+            const [startYear, startMonth, startDay] = tripData.arrivalDate.split('-').map(Number);
+            const [endYear, endMonth, endDay] = tripData.departureDate.split('-').map(Number);
+            // create date objects for the start and end dates with no timezone issues
+            const start = new Date(startYear, startMonth - 1, startDay);
+            const end = new Date(endYear, endMonth - 1, endDay);
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                const displayDate = new Date(d); // Copy to avoid mutation issues
+                const label = displayDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                selectedSuggestions[label] = [];
+            }
+        }
+    }
 
     // function to move to a specified page (used for navbar)
     function navigateTo(page) {
@@ -243,19 +258,19 @@
     // object to store all the event suggestion data
     // each event has a name, time, details, and tags
     const eventsData = {
-        "Sunday, February 13th": [
+        "Sunday, June 1": [
             { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
             { name: "Glenbow Museum", time: "10AM-4PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"] },
             { name: "City Walking Tour", time: "1PM-3PM", details: "Guided walking tour through downtown Calgary’s architectural and historical highlights.", tags: ["Tours"] },
             { name: "Fish Creek Provincial Park", time: "9AM-5PM", details: "Explore one of Canada’s largest urban parks, perfect for a scenic hike or bike ride.", tags: ["Outdoor Adventures", "Family-Friendly"] },
-            { name: "Ice Skating at Olympic Plaza", time: "1PM-3PM", details: "Outdoor skating in a historic downtown plaza.", tags: ["Outdoor Adventures", "Family-Friendly"] },
+            { name: "Ice Skating at the Olympic Oval", time: "1PM-3PM", details: "Indoor skating at one of the worlds premier skating rinks!", tags: ["Family-Friendly"] },
             { name: "Heritage Park", time: "10AM-5PM", details: "Step back in time at Canada’s largest living history museum.", tags: ["Day Trips & Excursions", "Family-Friendly"] },
             { name: "Calgary Farmers' Market", time: "10AM-5PM", details: "Sample fresh local produce, treats, and artisan goods.", tags: ["Shopping", "Food & Drink"] },
             { name: "NOtaBLE", time: "6PM-9PM", details: "Enjoy an amazing dinner at one of Calgary's top-rated restaurants.", tags: ["Food & Drink"] },
             { name: "Clear Nordic Spa", time: "10AM-6PM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"] },
             { name: "TELUS Spark Science Centre", time: "10AM-5PM", details: "Interactive exhibits, live science demos, and creative workshops.", tags: ["Family-Friendly", "Outdoor Adventures"] },
         ],
-        "Monday, February 14th": [
+        "Monday, June 2": [
             { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
             { name: "Studio Bell, Home of the National Music Centre", time: "10AM-5PM", details: "Interactive exhibits and performances exploring Canada’s music history.", tags: ["Landmarks & Attractions", "Tours"] },
             { name: "Historical Walking Tour of Inglewood", time: "11AM-1PM", details: "Explore Calgary’s oldest neighborhood with a guided tour of its historic buildings and stories.", tags: ["Tours"] },
@@ -267,7 +282,7 @@
             { name: "Clear Nordic Spa", time: "10AM-6PM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"] },
             { name: "Live Music at The Blues Can", time: "8PM-11PM", details: "Enjoy blues and jazz at one of Calgary’s top live music venues.", tags: ["Live Entertainment"] },
         ],
-        "Tuesday, February 15th": [
+        "Tuesday, June 3": [
             { name: "Calgary Tower", time: "10AM-9PM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"] },
             { name: "Glenbow Museum", time: "10AM-4PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"] },
             { name: "Bow River Bike Tour", time: "10AM-12PM", details: "Cycle along Calgary’s scenic river pathway system with a guide.", tags: ["Outdoor Adventures", "Tours"] },
@@ -369,8 +384,34 @@
         navigateTo("Trip_Timeline.html"); // change this to your actual next screen
     }
 
-    // run the updateDateLabelAndEvents function when the page loads
     window.onload = () => {
-        updateDateLabelAndEvents();
+        const tripData = JSON.parse(localStorage.getItem("tripData"));
+        const dropdown = document.getElementById("date-dropdown");
+
+        function formatDateLabel(dateObj) {
+            return dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        if (tripData?.arrivalDate && tripData?.departureDate) {
+            // split the date strings into year, month, and day and convert to numbers
+            // this is because the previously used code would show the incorrect date range (due to timezone conversion, i.e. April 9th would show as April 8th)
+            const [startYear, startMonth, startDay] = tripData.arrivalDate.split('-').map(Number);
+            const [endYear, endMonth, endDay] = tripData.departureDate.split('-').map(Number);
+            // create date objects for the start and end dates with no timezone issues
+            const start = new Date(startYear, startMonth - 1, startDay);
+            const end = new Date(endYear, endMonth - 1, endDay);
+            dropdown.innerHTML = ""; // Clear old options
+
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                const displayDate = new Date(d); // Copy to avoid mutation bug
+                const label = formatDateLabel(displayDate);
+                const option = document.createElement("option");
+                option.value = label;
+                option.textContent = label;
+                dropdown.appendChild(option);
+            }
+        }
+
+        updateDateLabelAndEvents(); // Render suggestions for the default date
     };
 </script>
