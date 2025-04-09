@@ -30,15 +30,14 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                overflow: hidden; /* Prevent scrolling on the container */
+
             }
 
             #events-container {
-                flex-grow: 1; /* Allow the container to grow and take available space */
-                overflow-y: auto; /* Enable vertical scrolling for the events section */
+                height: 275px; /* Adjust this value as needed */
+                overflow-y: auto;
                 margin-top: 20px;
-                padding-right: 10px; /* Add padding to prevent content from being cut off */
-                max-height: calc(100% - 200px); /* Adjust height to fit within the app container */
+                padding-right: 10px;
             }
 
             .breadcrumb {
@@ -203,7 +202,7 @@
             </div>
             
             <div class="button-container">
-                <button>Continue</button>
+                <button onclick="submitData()">Continue</button>
             </div>
 
 
@@ -220,6 +219,12 @@
 </html>
 
 <script>
+
+    let selectedSuggestions = {
+        "Sunday, February 13th": [],
+        "Monday, February 14th": [],
+        "Tuesday, February 15th": []
+    };
 
     // Function to move to the specified page
     function navigateTo(page) {
@@ -281,7 +286,10 @@
             infoBox.id = `info-box-${index}`;
             infoBox.className = "info-box";
             infoBox.style.display = "none"; // Initially hidden
-            infoBox.innerHTML = `<p><strong>Details:</strong> ${event.details}</p>`;
+            infoBox.innerHTML = `
+                <p><strong>Details:</strong> ${event.details}</p>
+                <button onclick="toggleSelection('${selectedDate}', '${event.name}', this)">Select</button>
+            `;
 
             // Append the button and info box to the container
             eventsContainer.appendChild(button);
@@ -296,6 +304,27 @@
         } else {
             infoBox.style.display = "none";
         }
+        
+    }
+
+    function toggleSelection(date, eventName, button) {
+        const list = selectedSuggestions[date];
+        const index = list.indexOf(eventName);
+        if (index === -1) {
+            list.push(eventName);
+            button.textContent = "Deselect";
+            button.style.backgroundColor = "#555";
+        } else {
+            list.splice(index, 1);
+            button.textContent = "Select";
+            button.style.backgroundColor = "#c81d25";
+        }
+    }
+
+    function submitData() {
+        localStorage.setItem("selectedSuggestions", JSON.stringify(selectedSuggestions));
+        console.log("Selected Suggestions:", selectedSuggestions);
+        //navigateTo("Trip_Timeline.html"); // Replace with your next screen
     }
 
     // Initialize with the default date's events
