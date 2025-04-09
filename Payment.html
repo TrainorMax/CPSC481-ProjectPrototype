@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #D0CFCF;
+      font-family: Verdana;
+    }
+    
+    .back-button {
+      position: absolute;
+      top: 3%;
+      left: 2%;
+      cursor: pointer;
+    }
+    
+    .back-button > img {
+      width: 40px;
+      height: auto;
+    }
+    
+    .checkout {
+      width: 375px; /* set mobile app width */
+      height: 667px; /* set mobile app height */
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      font-size: 0.85rem;
+    }
+    
+    .payment-container {
+      padding: 30px 20px 20px 30px;
+    }
+    
+    .payment-heading {
+      text-align: center;
+    }
+    
+    .events {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .event {
+      padding: 3px;
+      border-bottom: solid 2px #D0CFCF;
+      color: black;
+    }
+
+    .event > span {
+      color:#c70f0f;
+      font-style: italic;
+      text-align: left;
+    }
+    
+    .icon-container {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      margin-top: 5px;
+      justify-content: space-between;
+    }
+
+    .icon-container > p {
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .price-container {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      align-items: end;
+      text-align: left;
+    }
+    
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .flex-container > p {
+      font-style: italic;
+      font-weight: bold;
+      color: #c81d25;
+      margin: 5px;
+      padding: 0;
+    }
+    
+    .required {
+      color: #c81d25;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin: 15px 0 15px 0;
+    }
+
+    .form-group > input, .input > input {
+      height: 30px;
+      border: 2px solid #D0CFCF;
+      font-size: 0.85rem;
+    }
+    
+    .input {
+      position: relative;
+    }
+
+    .input > i {
+      position: absolute;
+      top: 12px;
+      left: 11px;
+    }
+
+    .input > input {
+      text-indent: 20px;
+    }
+
+    #card-error {
+      color: #c70f0f;
+      display: none;
+      font-style: italic;
+      font-size: 0.7rem;
+    }
+
+    #cvv-error {
+      color: #c70f0f;
+      display: none;
+      font-style: italic;
+      font-size: 0.7rem;
+    }
+
+    .exp_cvv {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: Verdana;
+    }
+    
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c70f0f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-family: Verdana;
+    }
+    
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Verdana;
+    }
+    
+    .confirm-button-container {
+      bottom: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .disabled {
+      opacity: 0.5;
+      pointer-events: none; 
+    }
+
+    .payment-form {
+      display: block;
+    }
+
+    .success {
+      display: none;
+    }
+
+    .success-message{
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .success-image {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 180px;
+      margin-top: 20px;
+    }
+    
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 5px 0; /* add bottom margin to separate from content */
+    }
+    
+    .breadcrumb li {
+        margin-right: 5px;
+    }
+    
+    .breadcrumb li+li:before {
+        content: ">";
+        margin-right: 5px;
+    }
+  </style>
+  <title>Payment Screen</title>
+</head>
+<body>
+  <div class="checkout">
+    <div class="payment-container">
+      <!-- <div class="breadcrumb-container">
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Planning</a></li>
+            <li><a href="#">Tags</a></li>
+            <li><a href="#">Suggestions</a></li>
+            <li><a href="#">Timeline</a></li>
+            <li><a href="#">Payment</a></li>
+        </ul>
+      </div> -->
+      <div class="back-button">
+        <img width="50" height="50" src="https://img.icons8.com/ios/50/circled-left-2.png" alt="circled-left-2"/>
+      </div> 
+      <h2 class="payment-heading">Checkout</h2>
+      <div class="events">
+        <div class="event">
+          <div class="icon-container">
+            <p>Snoop Dogg: Cali to Canada Tour</p>
+            <svg class="icon edit" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
+              <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"></path>
+            </svg>  
+          </div>
+          <span>Subtotal: $<span class="event-subtotal">62.50</span></span>
+        </div>
+        <div class="event">
+          <div class="icon-container">
+            <p>Clear Nordic Spa</p>
+            <svg class="icon edit" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
+              <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"></path>
+            </svg>
+          </div>
+          <span>Subtotal: $<span class="event-subtotal">41.75</span></span>          
+        </div>
+      </div>
+      <div class="price-container">
+        <div class="flex-container">
+          <p>Subtotal:</p>
+          <span>$<span class="subtotal">103.80</span></span>
+        </div>
+        <div class="flex-container">
+          <p>Total (with taxes):</p>
+          <span>$<span class="total">108.99</span></span>
+        </div>
+      </div>
+      <div class="payment-form">
+        <h4>Billing Information</h4>
+        <form role="form" class="form">
+          <div class="form-group">
+            <label for="cname">Name on Card <span class="required">*</span></label>
+            <input type="text" name="cname" id="cname" class="form-control" placeholder="John More Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="cnum">Card Number <span class="required">*</span></label>
+            <div class="input">
+              <i class="fa fa-credit-card" aria-hidden="true"></i>
+              <input type="text" name="cardNumber" placeholder="1234 1234 1234 1234" class="form-control card-number" maxlength="19" required>         
+              <span id="card-error"></span>
+            </div>
+          <div class="exp_cvv">
+            <div class="form-group">
+              <label for="expdate">Expiry Date <span class="required">*</span></label>
+              <input type="month" name="expdate" id="expdate" class="form-control" placeholder="MM/YY" required>  
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV <span class="required">*</span></label>
+              <input type="text" name="cvv" id="cvv" class="form-control" placeholder="123" maxlength="3" required>
+              <span id="cvv-error"></span>
+            </div>
+          </div>
+          <div class="confirm-button-container">
+            <button type="submit" disabled class="confirm-button disabled">CONFIRM PAYMENT</button>
+          </div>
+        </form>
+      </div>
+    </div>  
+    <div class="success">
+      <div class="image-container">
+        <!-- Credit for PNG: <a href="https://www.vecteezy.com/free-png/right-wrong">Right Wrong PNGs by Vecteezy</a> -->
+        <img class="success-image" src="./assets/payment_success.png" alt="Image of green checkmark">
+      </div>
+      <div class="success-message">
+        <h4>Payment successful</h4>
+        <p>Your payment of $108.99 was made successfully!</p>
+      </div>
+    </div>
+    <div class="navbar">
+      <button class="home-button">Home</button>
+      <button class="trips-button">Trips</button>
+      <button class="tickets-button">Tickets</button>
+    </div>
+  </div>
+  <script>
+
+    // Initialise values
+    const TAX_RATE = 0.05; 
+    let total_subtotal = 0.00;
+    let total = 0.00;
+
+    // Get query selectors
+    let payment_form = document.querySelector(".payment-form");
+    let form = document.querySelector(".form");
+    let payment_success = document.querySelector(".success");
+
+    let home_button = document.querySelector(".home-button");
+    let trips_button = document.querySelector(".trips-button");
+    let tickets_button = document.querySelector(".tickets-button");
+
+    let edit_buttons = document.querySelectorAll(".edit");
+    let delete_button = document.querySelector(".delete");
+    let confirm_button = document.querySelector(".confirm-button");
+    let back_button = document.querySelector(".back-button");
+
+    let event_subtotal_arr = document.querySelectorAll(".event-subtotal");
+    let subtotal_field = document.querySelector(".subtotal");
+    let total_field = document.querySelector(".total");
+
+    let errorMessage = document.querySelector(".error-message");
+    let cardError = document.querySelector("#card-error");
+    let cvvError = document.querySelector("#cvv-error");
+
+    // Get input fields
+    let customerName = document.querySelector("#cname");
+    let expDate = document.querySelector("#expdate");
+    let cardInput = document.querySelector(".card-number");
+    let cvvInput = document.querySelector("#cvv");
+
+    // Add event listener to input fields
+    [customerName, expDate].forEach((field) => {
+      field.addEventListener("input", validatePaymentForm);
+    })
+
+    // Calculate the subtotal and total price for all the events
+    event_subtotal_arr.forEach((item) => {
+      let cost = parseFloat(item.textContent);
+      total_subtotal += cost;
+    });
+
+    subtotal_field.textContent = total_subtotal;
+    total_field.textContent = (total_subtotal + (total_subtotal * TAX_RATE)).toFixed(2);
+
+    // Direct to the Edit booking screen when edit icon is clicked
+    edit_buttons.forEach((edit_button) => {
+      edit_button.addEventListener("click", () => {
+        window.location.href = "Edit_Booking_Screen.html"
+      });
+    });
+
+    // Direct to Trip Timeline page when back button is clicked
+    back_button.addEventListener("click", () => {
+      window.location.href = "Trip_Timeline.html"
+    });
+
+    // Real-time card validation
+    cardInput.addEventListener("input", () => {
+      const inputCardNo = cardInput.value.replace(/\D/g, ""); // remove the white spaces to get valid card number length
+
+      if(inputCardNo.length < 16) {
+        cardError.textContent = "Card Number must be 16 digits";
+        cardError.style.display = "block";
+      } else {
+        cardError.style.display = "none";
+      }
+
+      validatePaymentForm();
+    });
+
+    cvvInput.addEventListener("input", () => {
+      const inputCvvNo = cvvInput.value;
+
+      if(inputCvvNo.length < 3) {
+        cvvError.textContent = "CVV must be 3 digits";
+        cvvError.style.display = "block";
+      } else {
+        cvvError.style.display = "none";
+      }
+
+      validatePaymentForm();
+    });
+
+    // Define a function to validate the Billing information
+    function validatePaymentForm() {
+      let cName = customerName.value.trim();
+      let cardNum = cardInput.value.replace(/\D/g, "");
+      let expiryDate = expDate.value.trim();
+      let cvvNum = cvvInput.value.trim();
+
+      let isValid = (
+        cName.length > 1 &&
+        cardNum.length == 16 &&
+        expiryDate != "" && 
+        cvvNum.length == 3
+      );
+
+      console.log(isValid);
+
+      if(isValid) {
+        confirm_button.classList.remove("disabled");
+        confirm_button.disabled = false;
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          payment_form.style.display = "none";
+          payment_success.style.display = "block";
+        });
+
+      } else {
+        confirm_button.classList.add("disabled");
+        confirm_button.disabled = true;
+      }
+    }
+  </script>
+</body>
+</html>
