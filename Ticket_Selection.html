@@ -1,0 +1,377 @@
+<!-- Author: Soila Pertet
+     UCID: 30102008  
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="./css/Ticket_Selection.css"> -->
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #D0CFCF;
+      font-family: Verdana;
+    }
+    
+    .ticket-container {
+      font-size: 0.8rem;
+      width: 375px; /* set mobile app width */
+      height: auto; /* set mobile app height */
+      background-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .back-button {
+      position: absolute;
+      top: 1%;
+      left: 2%;
+      cursor: pointer;
+    }
+    
+    .back-button > img {
+      width: 40px;
+      height: auto;
+    }
+    
+    .navbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #c70f0f;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-family: Verdana;
+    }
+    
+    .image-container {
+      width: 100%;
+    }
+    
+    .concert-image {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .ticket-body {
+      margin-top: -40px;
+      padding: 15px;
+      border-top-left-radius: 20px; /* Adjust the radius as needed */
+      border-top-right-radius: 20px; /* Adjust the radius as needed */
+      position: relative;
+      z-index: 1;
+      background-color: white;
+    }
+    
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+    
+    .event-date, .event-time {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .event-date > span, .event-time > span {
+      margin-left: 3px;
+    }
+    
+    .icon {
+      width: 30px;
+    }
+    
+    .date, .time {
+      font-weight: bold;
+    }
+    
+    .location {
+      margin-top: 10px;
+      display: flex; 
+      align-items: center;
+    }
+    
+    .location > span {
+      font-style: italic;
+    }
+    
+    .ticket {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      gap: 5px;
+    }
+    
+    /* Plus button */
+    .button {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      cursor: pointer;
+      border: 2px solid #c70f0f;
+      border-radius: 50%;
+    }
+    
+    .button:hover {
+      background-color: #c70f0f;
+      transition: 0.2s;
+    }
+    
+    .button:hover:before,
+    .button:hover:after {
+      background: #fff;
+      transition: 0.2s;
+    }
+    
+    .plus:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #c70f0f;
+      height: 10px;
+      width: 2px;
+    }
+    
+    .plus::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 2px;
+      width: 10px;
+      background: #c70f0f;
+    }
+    
+    .minus::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 2px;
+      width: 10px;
+      background: #c70f0f;
+    }
+    
+    .minus:hover:before,
+    .minus:hover:after {
+      background: #fff;
+      transition: 0.2s;
+    }
+    
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    
+    .ticket-price {
+      display: flex;
+      flex-direction: column; 
+      justify-content: center;
+      align-items: end;
+      text-align: left;
+      padding-bottom: 60px;
+    }
+    
+    .price-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .price-container > p {
+      margin: 2px;
+    }
+    
+    .button-container {
+      bottom: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #c70f0f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-inline-end: 10px;
+      font-family: Verdana;
+    }
+    
+    .navbar button {
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Verdana;
+    }
+  </style>
+  <title>Ticket Selection</title>
+</head>
+<body>
+  <div class="ticket-container">
+    <div class="back-button">
+      <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/circled-left-2.png" alt="circled-left-2"/>    
+    </div> 
+    <div class="image-container">
+      <img class="concert-image" src="./assets/concert_image.jpg" alt="Image of concert"/>
+    </div>  
+    <div class="ticket-body">
+      <h2>The Battle of the Bands</h2>
+      <p>
+        Get ready for an electrifying night where the stage is set, the amps are cranked, and the 
+        best up-and-coming bands go head-to-head in an all-out musical showdown!
+      </p>
+      <div class="flex-container">
+        <div class="event-date">
+          <!-- Flaticon: Calendar icons created by Khoirul Anwar -->
+          <img class="icon" src="./assets/calendar_icon.png" alt="Image of calendar icon">
+          <span class="date">14 Jul</span>        
+        </div>
+        <div class="event-time">
+          <!-- Flaticon: Calendar icons created by dmitri13 -->
+          <img class="icon" src="./assets/clock_icon.png" alt="Image of calendar icon">  
+          <span class="time">11:30pm</span>        
+        </div>
+      </div>
+      <div class="location">
+        <!-- Flaticon: Location pin icons created by Smashicons -->
+        <img class="icon" src="./assets/location.png" alt="Image of location icon">
+        <span>Scotiabank Saddledome</span>
+      </div>
+      <div class="ticket">
+        <p class="text-xl font-bold">Number of Tickets:</p>
+        <!-- Credits for plus button: Luc Millet -->
+        <div class="button minus"></div>
+        <div class="ticket-number">0</div>
+        <div class="button plus"></div>
+      </div>
+      <div class="ticket-price">
+        <div class="price-container">
+          <p>Subtotal:</p>
+          <span class="subtotal">0.00</span>
+        </div>
+        <div class="price-container">
+          <p>Fees:</p>
+          <span class="fees">0.00</span>
+        </div>
+        <div class="price-container">
+          <p>Total:</p>
+          <span class="total">0.00</span>
+        </div>
+        <div class="button-container">
+          <button class="select-button">SELECT</button>
+        </div>
+      </div>
+      <div class="navbar">
+        <button class="home-button">Home</button>
+        <button class="trips-button">Trips</button>
+        <button class="tickets-button">Tickets</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const TICKET_PRICE = 31.50;
+    const FEES_RATE = 0.1;
+    const TAX_RATE = 0.05;
+
+    // Query Selections
+    let back_button = document.querySelector(".back-button");
+    let plus_button = document.querySelector(".plus");
+    let minus_button = document.querySelector(".minus");
+    let select_button = document.querySelector(".select-button");
+    let ticket_number_container = document.querySelector(".ticket-number");
+    let subtotal_container = document.querySelector(".subtotal");
+    let fees_container = document.querySelector(".fees");
+    let total_container = document.querySelector(".total");
+    let home_button = document.querySelector(".home-button");
+    let trips_button = document.querySelector(".trips-button");
+    let tickets_button = document.querySelector(".tickets-button");
+
+    let ticket_number = parseFloat(ticket_number_container.textContent);
+    let subtotal = parseFloat(subtotal_container.textContent);
+    let fees = parseFloat(fees_container.textContent);
+    let total = parseFloat(total_container.textContent);
+
+    // Direct to respective pages once button is clicked 
+    back_button.addEventListener("click", () => {
+      window.location.href = "Trip_Timeline.html";
+    });
+
+    select_button.addEventListener("click", () => {
+      window.location.href = "Trip_Timeline.html";
+    })
+
+    // Update the ticket number(s) and the corresponding prices: Increment
+    plus_button.addEventListener("click", () => {
+
+      if(ticket_number == 0) {
+        minus_button.classList.remove("disabled");
+      }
+
+      ticket_number += 1;
+
+      subtotal += TICKET_PRICE;
+      fees = (subtotal * FEES_RATE) + (subtotal * TAX_RATE);
+      total = subtotal + fees;
+
+      ticket_number_container.textContent = ticket_number;
+      subtotal_container.textContent = subtotal.toFixed(2);
+      fees_container.textContent = fees.toFixed(2);
+      total_container.textContent = total.toFixed(2);
+    });
+
+    // Update the ticket number(s) and the corresponding prices: Decrement
+    minus_button.addEventListener("click", () => {
+      
+      ticket_number -= 1;
+
+      // Check if the current ticket number is zero to disable the button
+      if(ticket_number == 0) {
+        minus_button.classList.add("disabled");
+      }
+
+      subtotal -= TICKET_PRICE;
+      fees = (subtotal * FEES_RATE) + (subtotal * TAX_RATE);
+      total = subtotal + fees;
+
+      ticket_number_container.textContent = ticket_number;
+      subtotal_container.textContent = subtotal.toFixed(2);
+      fees_container.textContent = fees.toFixed(2);
+      total_container.textContent = total.toFixed(2);
+    })
+
+    home_button.addEventListener("click", () => {
+      window.location.href = "Homepage_Screen.html"
+    });
+
+    trips_button.addEventListener("click", () => {
+      window.location.href = "View_Trip_Page.html"
+    });
+
+    tickets_button.addEventListener("click", () => {
+      window.location.href = "Ticket_Viewer.html"
+    });
+
+  </script>
+</body>
+</html>
