@@ -304,6 +304,8 @@
     const TICKET_PRICE = 20.00;
     const FEES_RATE = 0.1;
     const TAX_RATE = 0.05;
+    
+    let eventPricingDetails = {};
 
     // Query Selections
     let back_button = document.querySelector(".back-button");
@@ -328,10 +330,6 @@
       window.location.href = "Trip_Timeline.html";
     });
 
-    select_button.addEventListener("click", () => {
-      window.location.href = "Trip_Timeline.html";
-    })
-
     // Update the ticket number(s) and the corresponding prices: Increment
     plus_button.addEventListener("click", () => {
 
@@ -349,6 +347,19 @@
       subtotal_container.textContent = subtotal.toFixed(2);
       fees_container.textContent = fees.toFixed(2);
       total_container.textContent = total.toFixed(2);
+
+      // Update the # of tickets
+      if('no_of_tickets' in eventPricingDetails) {
+        eventPricingDetails['no_of_tickets'] += 1;
+      } else {
+        eventPricingDetails['no_of_tickets'] = 1;
+      }
+
+      // Update subtotal of tickets
+      eventPricingDetails['ticket_price'] = subtotal;
+
+      // Debugging purposes
+      console.log(eventPricingDetails);
     });
 
     // Update the ticket number(s) and the corresponding prices: Decrement
@@ -369,7 +380,23 @@
       subtotal_container.textContent = subtotal.toFixed(2);
       fees_container.textContent = fees.toFixed(2);
       total_container.textContent = total.toFixed(2);
-    })
+
+      // Update the # of tickets
+      if('no_of_tickets' in eventPricingDetails) {
+        eventPricingDetails['no_of_tickets'] -= 1;
+      } 
+
+      // Update subtotal of tickets
+      eventPricingDetails['ticket_price'] = subtotal;
+
+      // Debugging purposes
+      console.log(eventPricingDetails);
+    });
+
+    select_button.addEventListener("click", () => {
+      localStorage.setItem('eventDetails', JSON.stringify(eventPricingDetails));
+      window.location.href = "Payment.html";
+    });
 
     home_button.addEventListener("click", () => {
       window.location.href = "Homepage_Screen.html"
