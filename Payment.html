@@ -28,17 +28,20 @@
       height: auto;
     }
     
-    .checkout {
+    .payment-container {
       width: 375px; /* set mobile app width */
       height: 667px; /* set mobile app height */
       background-color: #FFFFFF;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
+      display: flex; /* need this to make content scrollable*/
+      flex-direction: column;
       font-size: 0.85rem;
     }
     
-    .payment-container {
-      padding: 30px 20px 20px 30px;
+    .scrollable-content {
+      padding: 30px 20px 120px 20px;
+      overflow-y: auto;
     }
     
     .payment-heading {
@@ -49,6 +52,8 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      overflow-y: auto;
+      padding-bottom: 20px;
     }
     
     .event {
@@ -242,8 +247,8 @@
   <title>Payment Screen</title>
 </head>
 <body>
-  <div class="checkout">
-    <div class="payment-container">
+  <div class="payment-container">
+    <div class="scrollable-content">
       <!-- <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li><a href="#">Home</a></li>
@@ -259,33 +264,16 @@
       </div> 
       <h2 class="payment-heading">Checkout</h2>
       <div class="events">
-        <div class="event">
-          <div class="icon-container">
-            <p>Snoop Dogg: Cali to Canada Tour</p>
-            <svg class="icon edit" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
-              <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"></path>
-            </svg>  
-          </div>
-          <span>Subtotal: $<span class="event-subtotal">62.50</span></span>
-        </div>
-        <div class="event">
-          <div class="icon-container">
-            <p>Clear Nordic Spa</p>
-            <svg class="icon edit" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
-              <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"></path>
-            </svg>
-          </div>
-          <span>Subtotal: $<span class="event-subtotal">41.75</span></span>          
-        </div>
+       <!-- Store events with prices in the event container -->
       </div>
       <div class="price-container">
         <div class="flex-container">
           <p>Subtotal:</p>
-          <span>$<span class="subtotal">103.80</span></span>
+          <span>$<span class="subtotal"></span></span>
         </div>
         <div class="flex-container">
           <p>Total (with taxes):</p>
-          <span>$<span class="total">108.99</span></span>
+          <span>$<span class="total"></span></span>
         </div>
       </div>
       <div class="payment-form">
@@ -326,7 +314,7 @@
       </div>
       <div class="success-message">
         <h4>Payment successful</h4>
-        <p>Your payment of $108.99 was made successfully!</p>
+        <p>Your payment of $<span class="billed-price"></span> was made successfully!</p>
       </div>
     </div>
     <div class="navbar">
@@ -341,24 +329,104 @@
     const TAX_RATE = 0.05; 
     let total_subtotal = 0.00;
     let total = 0.00;
+    let events_container = document.querySelector(".events");
 
-    // Get query selectors
+    // Create an Event class to initiate all events
+    class Event {
+      constructor(id, name, price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+      }
+    }
+
+    // Define functions
+    function create_event(id, name, price) {
+      const eventDiv = document.createElement("div");
+      eventDiv.classList.add("event");
+      eventDiv.setAttribute("id", id.toString());
+
+      const iconDiv = document.createElement("div");
+      iconDiv.classList.add("icon-container");
+      iconDiv.innerHTML = `
+        <p>${name}</p>
+        <svg class="icon edit" id=${id} xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
+          <path d="M 22.828125 3 C 22.316375 3 21.804562 3.1954375 21.414062 3.5859375 L 19 6 L 24 11 L 26.414062 8.5859375 C 27.195062 7.8049375 27.195062 6.5388125 26.414062 5.7578125 L 24.242188 3.5859375 C 23.851688 3.1954375 23.339875 3 22.828125 3 z M 17 8 L 5.2597656 19.740234 C 5.2597656 19.740234 6.1775313 19.658 6.5195312 20 C 6.8615312 20.342 6.58 22.58 7 23 C 7.42 23.42 9.6438906 23.124359 9.9628906 23.443359 C 10.281891 23.762359 10.259766 24.740234 10.259766 24.740234 L 22 13 L 17 8 z M 4 23 L 3.0566406 25.671875 A 1 1 0 0 0 3 26 A 1 1 0 0 0 4 27 A 1 1 0 0 0 4.328125 26.943359 A 1 1 0 0 0 4.3378906 26.939453 L 4.3632812 26.931641 A 1 1 0 0 0 4.3691406 26.927734 L 7 26 L 5.5 24.5 L 4 23 z"></path>
+        </svg>
+      `;
+
+      const subtotalSpan = document.createElement("span");
+      subtotalSpan.innerHTML = `Subtotal: $<span class="event-subtotal">${price}</span></span>`
+
+      eventDiv.appendChild(iconDiv);
+      eventDiv.appendChild(subtotalSpan);
+
+      events_container.appendChild(eventDiv);
+    }
+
+    function initialiseEventsArray() {
+      // Pull events from local storage
+      let suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {}; // access all event properties
+      let eventsToBook = JSON.parse(localStorage.getItem("bookedEvents")) || {};       // access all booked events
+      let selectedSeats = JSON.parse(localStorage.getItem("selectedSeats")) || {};
+      let selectedTickets = JSON.parse(localStorage.getItem("selectedTickets")) || {};
+
+      // Loop through each event and get the event name and price for the Checkout screen
+      let events = [];
+
+      for(let date in suggestions) {
+        suggestions[date].forEach(({ id, name, price }) => {
+          for(let i in eventsToBook) {
+            if(eventsToBook[i]["event"].toLowerCase().includes(name.toLowerCase())) {
+              if(name.toLowerCase().includes("the blues can")) {
+                let event = new Event(id, name, selectedTickets["ticket_price"]);
+                events.push(event);
+              } else if(name.toLowerCase().includes("snoop dogg")) {
+                let total_price = 0.0;
+                if(selectedSeats.length > 1) {
+                  selectedSeats.forEach(( { price }) => {
+                    total_price += parseFloat(price)
+                  });
+                }
+                let event = new Event(id, name, total_price);
+                events.push(event);
+              } else {
+                let event = new Event(id, name, parseFloat(price));
+                events.push(event);
+              }
+            }
+          }
+        });
+      }
+
+      console.log(events);
+      return events;
+    }
+
+    // Loop through events array and create div elements for each event before appending to event container
+    let bookedEvents = initialiseEventsArray();
+    bookedEvents.forEach(({ id, name, price}) => {
+      create_event(id, name, price);
+    })
+
     let payment_form = document.querySelector(".payment-form");
     let form = document.querySelector(".form");
-    let payment_success = document.querySelector(".success");
+
+    let edit_buttons = document.querySelectorAll(".edit");
 
     let home_button = document.querySelector(".home-button");
     let trips_button = document.querySelector(".trips-button");
     let tickets_button = document.querySelector(".tickets-button");
 
-    let edit_buttons = document.querySelectorAll(".edit");
-    let delete_button = document.querySelector(".delete");
     let confirm_button = document.querySelector(".confirm-button");
     let back_button = document.querySelector(".back-button");
 
     let event_subtotal_arr = document.querySelectorAll(".event-subtotal");
     let subtotal_field = document.querySelector(".subtotal");
     let total_field = document.querySelector(".total");
+
+    let payment_success = document.querySelector(".success");
+    let billed_price = document.querySelector(".billed-price");
 
     let errorMessage = document.querySelector(".error-message");
     let cardError = document.querySelector("#card-error");
@@ -383,11 +451,20 @@
 
     subtotal_field.textContent = total_subtotal;
     total_field.textContent = (total_subtotal + (total_subtotal * TAX_RATE)).toFixed(2);
+    billed_price.textContent = (total_subtotal + (total_subtotal * TAX_RATE)).toFixed(2);
 
     // Direct to the Edit booking screen when edit icon is clicked
     edit_buttons.forEach((edit_button) => {
-      edit_button.addEventListener("click", () => {
-        window.location.href = "Edit_Booking_Screen.html"
+      edit_button.addEventListener("click", (event) => {
+
+        // Get the id of the clicked element
+        const clickedId = event.target.id;
+
+        // Check if the clicked element has an id
+        if (clickedId) {
+          localStorage.setItem("eventToEdit", clickedId);
+          window.location.href = "Edit_Booking_Screen.html"
+        } 
       });
     });
 
