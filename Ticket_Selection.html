@@ -394,8 +394,26 @@
     });
 
     select_button.addEventListener("click", () => {
-      localStorage.setItem('eventDetails', JSON.stringify(eventPricingDetails));
-      window.location.href = "Payment.html";
+
+      let snoopDoggFound = false;
+      if(eventPricingDetails['no_of_tickets'] > 0) {
+        localStorage.setItem('eventDetails', JSON.stringify(eventPricingDetails));
+      }
+
+      // Code credits: Ahmed Alaq
+      // Check if user also booked for Snoop Dog tour
+      const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+      for(let date in suggestions) {
+        suggestions[date].forEach(({ name }) => {
+          if(name && name.toLowerCase().includes("snoop dogg")) {
+            snoopDoggFound = true;
+            window.location.href = "Seat_Selection.html";
+          }
+        });
+      }
+
+      // Direct to Checkout screen if user has not booked Snoop Dog tour
+      if(!snoopDoggFound) window.location.href = "Payment.html";
     });
 
     home_button.addEventListener("click", () => {
