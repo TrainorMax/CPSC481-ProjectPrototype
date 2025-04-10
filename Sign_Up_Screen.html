@@ -84,6 +84,24 @@
             font-size: 13px;
             font-family:Verdana;
         }
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .input-row label {
+            width: 170px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 5px;
+            font-size: 14px;
+        }
     </style>
 
     <!-- Firebase SDKs -->
@@ -112,26 +130,47 @@
         <h1>Create an Account</h1><br>
 
         <div class="text-input">
-            <label for="first-name">*First Name:</label>
-            <input type="text" id="first-name" name="first-name" placeholder="John" autocomplete="off"><br><br>
-            <label for="last-name">*Last Name:</label>
-            <input type="text" id="last-name" name="last-name" placeholder="Doe" autocomplete="off"><br><br><br>
-            
-            <label for="phone-number">Phone #:</label>
-            <input type="text" id="phone-number" name="phone-number" placeholder="123-456-7890" autocomplete="off"><br><br>
-            <label for="email">*Email:</label>
-            <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com" autocomplete="off"><br><br><br>
+            <div class = input-row>
+                <label for="first-name">*First Name:</label>
+                <input type="text" id="first-name" name="first-name" placeholder="John" autocomplete="off"><br><br>
+            </div>
 
-            <label for="new-password">*Password:</label>
-            <input type="password" id="new-password" autocomplete="off"><br><br><br>
+            <div class = input-row>
+                <label for="last-name">*Last Name:</label>
+                <input type="text" id="last-name" name="last-name" placeholder="Doe" autocomplete="off"><br><br><br>
+            </div>
+
+            
+            <div class = input-row>
+                <label for="phone-number">Phone #:</label>
+                <input type="text" id="phone-number" name="phone-number" placeholder="123-456-7890" autocomplete="off"><br><br>
+            </div>
+            
+            <div class = input-row>
+                <label for="email">*Email:</label>
+                <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com" autocomplete="off"><br><br><br>
+            </div>
+                
+            <div class = input-row>
+                <label for="new-password">*Password:</label>
+                <input type="password" id="new-password" autocomplete="off"><br><br><br>
+            </div>
         </div>
         <div class="checkbox-input">
-            <label for="marketing">I agree to receive marketing emails</label>
-            <input type="checkbox" id="marketing" name="marketing"><br><br>
-            <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>*</label>
-            <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
-            <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a>*</label>
-            <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br>
+            <div class = input-row>
+                <label for="marketing"><a href="marketing.html" target="_blank">I agree to receive marketing emails</a></label>
+                <input type="checkbox" id="marketing" name="marketing"><br><br>
+            </div>
+            
+            <div class = input-row>
+                <label for="terms-conditions"><a href="terms-and-conditions.html" target="_blank">Terms and Conditions</a>*</label>
+                <input type="checkbox" id="terms-conditions" name="terms-conditions"><br><br>
+            </div>
+            
+            <div class = input-row>
+                <label for="privacy-policy"><a href="privacy-policy.html" target="_blank">Privacy Policy</a>*</label>
+                <input type="checkbox" id="privacy-policy" name="privacy-policy"><br><br>
+            </div>
         </div>
         <h5><i>*indicates a required field</i></h3>
 
