@@ -210,12 +210,17 @@
         // Function to format date from YYYY-MM-DD to "Weekday, Month Day"
         function formatDisplayDate(dateStr) {
             if (!dateStr) return '';
-            
-            const date = new Date(dateStr);
+
+            // Manually split the date string into components
+            const [year, month, day] = dateStr.split('-').map(Number);
+
+            // Create date using local time (month is 0-based)
+            const date = new Date(year, month - 1, day);
+
             const options = { weekday: 'long', month: 'long', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
-        
+                
         // Function to add a custom event to localStorage
         function addCustomEvent() {
             const eventDateInput = document.getElementById('eventDate').value;
@@ -246,7 +251,7 @@
             const timeDisplay = formatTimeDisplay(eventTime);
             
             // Generate a unique ID for the new event
-            const eventId = 'custom-' + Date.now();
+            const eventId = 'custom-' + Date.now() ;
             
             // Create the event object matching the original structure
             const newEvent = {
