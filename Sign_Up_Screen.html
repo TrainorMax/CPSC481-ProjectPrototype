@@ -19,8 +19,8 @@
             font-family:Verdana;
         }
         .app-container {
-            width: 375px; /* set mobile app width */
-            height: 667px; /* set mobile app height */
+            width: 375px;
+            height: 667px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
@@ -31,8 +31,7 @@
             display: flex;
             list-style: none;
             padding: 0;
-            margin: 0 0 20px 0; /* add bottom margin to separate from content */
-            
+            margin: 0 0 20px 0;
         }
         .breadcrumb li {
             margin-right: 5px;
@@ -62,10 +61,7 @@
             color: #c81d25;
             font-family:Verdana;
         }
-        h3 {
-            font-family:Verdana;
-        }
-        h4 {
+        h3, h4, h5 {
             font-family:Verdana;
         }
         input[type="date"] {
@@ -77,6 +73,24 @@
             font-family:Verdana;
         }
     </style>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2fdAN192CEp7kPVd2kOIBjbAgD8S2luw",
+            authDomain: "flavor-forum.firebaseapp.com",
+            projectId: "flavor-forum",
+            storageBucket: "flavor-forum.appspot.com",
+            messagingSenderId: "226153939035",
+            appId: "1:226153939035:web:f4f81371beb8909e1a7f7e"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -94,9 +108,9 @@
             <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com"><br><br><br>
 
             <label for="user-name">*Username:</label>
-            <input type="text" id="user-name" name="user-name"><br><br>
+            <input type="text" id="user-name"><br><br>
             <label for="password">*Password:</label>
-            <input type="text" id="password" name="password"><br><br><br>
+            <input type="password" id="password"><br><br><br>
         </div>
         <div class="checkbox-input">
             <label for="marketing">I agree to receive marketing emails</label>
@@ -113,15 +127,55 @@
             <button class="continue-button">Continue</button>
         </div>
     </div>
+
     <script>
-        let login_button = document.querySelector(".login-button");
-        let continue_button = document.querySelector(".continue-button");
+        //Button Scripts
+        const login_button = document.querySelector(".login-button");
+        const continue_button = document.querySelector(".continue-button");
     
         login_button.addEventListener("click", () => {
           window.location.href = "Landing_Page_Screen.html"
         });
+
+        // Firebase registration handler
         continue_button.addEventListener("click", () => {
-          window.location.href = "Homepage_Screen.html"
+            const fname = document.getElementById("first-name").value;
+            const lname = document.getElementById("last-name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const terms = document.getElementById("terms-conditions").checked;
+            const privacy = document.getElementById("privacy-policy").checked;
+
+            if (!fname || !lname) {
+                alert("Please enter your first and last name.");
+                return;
+            }
+            if (!email) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            if (!password || password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+            if (!terms || !privacy) {
+                alert("Please read and accept our Terms & Conditions.");
+                return;
+            }
+            if (!privacy) {
+                alert("Please read and accept our Privacy Policy.");
+                return;
+            }
+
+            // Firebase Auth registration
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(userCredential => {
+                // Signed up successfully
+                window.location.href = "FB_Landing_Page_Screen.html";
+            })
+            .catch(error => {
+                alert("Error: " + error.message);
+            });
         });
       </script>
 </body>

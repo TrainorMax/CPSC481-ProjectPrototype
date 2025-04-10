@@ -33,7 +33,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 1px;
-            padding-left: 10%;
+            justify-content: center;
         }
         .container img {
             width: 20px;
@@ -156,7 +156,7 @@
 </head>
 <body>
     <div class="app-container">
-        <h2 id="welcome-header">Welcome, Guest</h2>
+        <h2 id="welcome-header">Homepage</h2>
 
         <div class="weather-container">
             <img src="assets/weather-partly-cloudy.svg" alt="icon" style="width: 50px; height: auto;">
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <br><br><br><br>
+        <br>
         
         <h2>Ready to plan a trip?</h2>
 
@@ -218,16 +218,6 @@
                 tickets_button.addEventListener("click", () => {
                     window.location.href = "Ticket_Viewer.html";
                 });
-            }
-
-            const params = new URLSearchParams(window.location.search);
-            const username = params.get("username");
-
-            console.log("Username from URL:", username);
-            if (username) {
-                document.getElementById("welcome-header").textContent = `Welcome, ${username}`;
-            } else {
-                document.getElementById("welcome-header").textContent = "Welcome, Guest";
             }
         });
     </script>
