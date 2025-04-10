@@ -1,13 +1,9 @@
-<!-- Author: Darren Yi
-     UCID: 30155092   
--->
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Booking</title>
+        <title>Add Custom Event</title>
         <style>
             body {
                 display: flex;
@@ -17,12 +13,12 @@
                 margin: 0;
                 background-color: #f0f0f0;
                 font-family: Verdana;
-                overflow: hidden; /* Prevent body scroll */
+                overflow: hidden;
             }
             .app-container {
-                width: 375px; /* set mobile app width */
-                height: 667px; /* set mobile app height */
-                max-height: 100vh; /* Allow container to take up full height */
+                width: 375px;
+                height: 667px;
+                max-height: 100vh;
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 padding: 20px;
@@ -32,10 +28,10 @@
                 flex-direction: column;
             }
             .scrollable-content {
-            overflow-y: auto;
-            padding: 46px;
-            flex-grow: 1;
-            padding-bottom: 80px;
+                overflow-y: auto;
+                padding: 46px;
+                flex-grow: 1;
+                padding-bottom: 80px;
             }
             .app-container h1 {
                 text-decoration: underline;
@@ -46,7 +42,7 @@
                 display: flex;
                 list-style: none;
                 padding: 0;
-                margin: 0 0 20px 0; /* add bottom margin to separate from content */
+                margin: 0 0 20px 0;
             }
             .breadcrumb li {
                 margin-right: 5px;
@@ -58,7 +54,7 @@
             }
             .button-container {
                 position: absolute;
-                bottom: 80px; /* adjusted to make space for the navbar */
+                bottom: 80px;
                 right: 20px;
                 display: flex;
                 justify-content: center;
@@ -74,14 +70,13 @@
                 font-family: Verdana;
             }
             .back-button {
-            width: 40px; /* Adjust the size of the image */
-            height: 40px;
-            cursor: pointer; /* Make it look clickable */
-            border: none; /* Remove any border */
-            background: none; /* Ensure no background is applied */
-            outline: none; /* Remove focus outline */
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                border: none;
+                background: none;
+                outline: none;
             }
-
             .back-button-container {
                 position: absolute;
                 top: 60px;
@@ -112,13 +107,12 @@
                 width: 200px;
             }
             textarea {
-                resize: vertical; /* Allows vertical resizing of textarea */
-                height: 100px; /* Fixed height (adjust as needed for 10 lines) */
+                resize: vertical;
+                height: 100px;
                 font-size: 14px;
                 width: 200px;
                 padding: 6px;
             }
-
             .navbar {
                 position: absolute;
                 bottom: 0;
@@ -140,7 +134,6 @@
             }
             .custom_line1 {
                 line-height: 2.1em;
-
             }
             .custom_line2 {
                 line-height: 0.5em;
@@ -177,36 +170,32 @@
                 <div class="back-button-container">
                     <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="backButtonAction()" />
                 </div>
+                
+                <h2>Add Custom Event</h2>
                 <br></br>
-                <img id="eventImage" alt="Event Image" style="width: 90%; text-align: center;">
-
-                <br>
-                    <strong id="eventName"></strong>
-                </br>
-                <div class="custom_line2">
-                    <br></br>
-                </div>
-
+                
                 <div class="section">
                     <div class="dropdown-container">
                         <div class="section_label">Date:</div>
                         <div class="input-group">
-                            <input type="text" id="eventDate" name="eventDate">
+                            <input type="date" id="eventDate" name="eventDate" placeholder="Enter event date">
+                        </div>
+                        <div class="section_label">Name:</div>
+                        <div class="input-group">
+                            <input type="text" id="eventName" name="eventName" placeholder="Enter event name">
                         </div>
                         <div class="section_label">Time:</div>
                         <div class="input-group">
-                            <input type="text" id="eventTime" name="eventTime">
+                            <input type="time" id="eventTime" name="eventTime">
                         </div>
                         <div class="section_label">Details:</div>
                         <div class="input-group">
-                            <textarea id="eventDetails" name="eventDetails"></textarea>
+                            <textarea id="eventDetails" name="eventDetails" placeholder="Enter event details"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <button onclick="submitCancelEvent()">Cancel Event</button>
-                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                <!-- <button onclick="submitConfirmEdit()"></buttononclick>Confirm Edit</button> -->
+                <button onclick="addCustomEvent()">Add Event</button>
             </div>
             <div class="navbar">
                 <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
@@ -214,274 +203,89 @@
                 <button onclick="navigateTo('Ticket_Viewer.html')">Tickets</button>
             </div>
         </div>
-        <div class="confirmation" id="confirmation">Event cancelled successfully!</div>
+        <div class="confirmation" id="confirmation">Event added successfully!</div>
     </body>
 
     <script>
-        let back_button = document.querySelector(".back-button");
-
-        back_button.addEventListener("click", () => {
-          window.location.href = "Trip_Timeline.html"
-        });
-
-        // Global variables to track the event being edited
-        let currentEventId = null;
-        let currentDate = null;
-
-        // Format a date object to YYYY-MM-DD format for input field
-        function formatDateForInput(dateStr) {
+        // Function to format date from YYYY-MM-DD to "Weekday, Month Day"
+        function formatDisplayDate(dateStr) {
             if (!dateStr) return '';
             
-            // Try to extract the date value from the string (e.g., "Monday, June 2")
-            const parts = dateStr.split(',');
-            if (parts.length >= 2) {
-                const monthDay = parts[1].trim().split(' ');
-                if (monthDay.length >= 2) {
-                    const month = monthDay[0];
-                    const day = parseInt(monthDay[1]);
-                    
-                    // Map month name to month number
-                    const months = {
-                        'January': '01', 'February': '02', 'March': '03', 'April': '04',
-                        'May': '05', 'June': '06', 'July': '07', 'August': '08',
-                        'September': '09', 'October': '10', 'November': '11', 'December': '12'
-                    };
-                    
-                    const monthNum = months[month];
-                    const year = new Date().getFullYear(); // Use current year as default
-                    
-                    if (monthNum && day) {
-                        return `${year}-${monthNum}-${day.toString().padStart(2, '0')}`;
-                    }
-                }
-            }
-            
-            return '';
-        }
-
-        // Extract time from string (e.g. "10AM" -> "10:00")
-        function formatTimeForInput(timeStr) {
-            if (!timeStr) return '';
-            
-            // Extract hours and AM/PM
-            const match = timeStr.match(/(\d+)(AM|PM)/i);
-            if (match) {
-                let hours = parseInt(match[1]);
-                const ampm = match[2].toUpperCase();
-                
-                // Convert to 24-hour format
-                if (ampm === 'PM' && hours < 12) {
-                    hours += 12;
-                } else if (ampm === 'AM' && hours === 12) {
-                    hours = 0;
-                }
-                
-                return `${hours.toString().padStart(2, '0')}:00`;
-            }
-            
-            return '';
-        }
-
-        // Function to populate event details in the fields
-        function populateEventDetails(event) {
-            document.getElementById('eventDate').value = event.date;            
-            document.getElementById('eventName').textContent = event.name;
-            document.getElementById('eventTime').value = formatTimeForInput(event.time);
-            document.getElementById('eventDetails').value = event.details;
-            
-            // Set appropriate image based on event type
-            if (event.name === "Calgary Tower") {
-                document.getElementById('eventImage').src = "https://image-tc.galaxy.tf/wijpeg-cbvyw509z9mbbu7me5d2vtmkl/poi-detail_og-image.jpg";
-            }
-
-            // Glenbow Museum
-            else if (event.name === "Glenbow Museum") {
-                document.getElementById('eventImage').src = "https://images.squarespace-cdn.com/content/v1/6375d83efe581663b51064d7/fe1b98bb-4aab-49b9-8959-d5c3d33ab797/Glenbow+Museum_1_Drawing+Only.jpg";
-            }
-
-            // City Walking Tour
-            else if (event.name === "City Walking Tour") {
-                document.getElementById('eventImage').src = "https://www.toonietours.ca/wp-content/uploads/2023/12/walking-tour-group-calgary-wonderland-sculpture.jpg";
-            }
-
-            // Fish Creek Provincial Park
-            else if (event.name === "Fish Creek Provincial Park") {
-                document.getElementById('eventImage').src = "https://cdn.sanity.io/images/lr9tta69/production/4f4810747dd6453571e4d20b71d26d23005d7ffc-2400x1800.jpg";
-            }
-
-            // Ice Skating at the Olympic Oval
-            else if (event.name === "Ice Skating at the Olympic Oval") {
-                document.getElementById('eventImage').src = "https://oval.ucalgary.ca/sites/default/files/styles/ucws_hero_cta_large_desktop/public/2022-06/Unknown-3.png";
-            }
-
-            // Heritage Park
-            else if (event.name === "Heritage Park") {
-                document.getElementById('eventImage').src = "https://www.todocanada.ca/wp-content/uploads/Heritage-Park-3.jpg";
-            }
-
-            // Calgary Farmers Market
-            else if (event.name === "Calgary Farmers Market") {
-                document.getElementById('eventImage').src = "https://www.visitcalgary.com/sites/default/files/styles/original_image/public/2023-03/1.%20FarmersMarket_body640.jpg.webp?itok=HWx-90ZF";
-            }
-
-            // Clear Nordic Spa
-            else if (event.name === "Clear Nordic Spa") {
-                document.getElementById('eventImage').src = "https://clearnordic.ca/wp-content/uploads/2024/12/Clear-Nordic-Spa_OG-image.jpg";
-            }
-
-            // TELUS Spark Science Centre
-            else if (event.name === "TELUS Spark Science Centre") {
-                document.getElementById('eventImage').src = "https://images.prismic.io/telusspark/df3da90f-8518-4aa2-860d-ec3e296e7ede_TELUS+SPARK_Building.jpg";
-            }
-
-            // Studio Bell, Home of the National Music Centre
-            else if (event.name === "Studio Bell, Home of the National Music Centre") {
-                document.getElementById('eventImage').src = "https://www.studiobell.ca/assets/images/_gallery/StudioBell_crBittermannPhotography-LR-2.jpg";
-            }
-
-            // Historical Walking Tour of Inglewood
-            else if (event.name === "Historical Walking Tour of Inglewood") {
-                document.getElementById('eventImage').src = "https://www.heritageinspiresyyc.org/wp-content/uploads/photo-gallery/Inglewood/2-_Inglewood_(1948)_The_Fox_Hatchery_(Glenbow).jpg?bwg=1612810492";
-            }
-
-            // Prince's Island Park Walk
-            else if (event.name === "Prince's Island Park Walk") {
-                document.getElementById('eventImage').src = "https://www.andrewswalks.co.uk/wp-content/uploads/Calgary.jpg";
-            }
-
-            // CrossIron Mills
-            else if (event.name === "CrossIron Mills") {
-                document.getElementById('eventImage').src = "https://retailinsider.b-cdn.net/wp-content/uploads/2018/10/IC-CrossIron-Mills-Exterior-Night-7245.jpg";
-            }
-
-            // Craft Beer Tasting
-            else if (event.name === "Craft Beer Tasting") {
-                document.getElementById('eventImage').src = "https://www.canadiancrafttours.ca/cdn/shop/products/zzz.webp?v=1670789441";
-            }
-
-            // Live Music at The Blues Can
-            else if (event.name === "Live Music at The Blues Can") {
-                document.getElementById('eventImage').src = "https://www.thebluescan.com/pics/mp00000440.jpg";
-            }
-
-            // Bow River Bike Tour
-            else if (event.name === "Bow River Bike Tour") {
-                document.getElementById('eventImage').src = "https://powertraveller.com/wp-content/uploads/2024/09/4_calgary-city-highlights-and-bow-river-bike-tour.jpg";
-            }
-
-            // Hiking Trip to Johnston Canyon
-            else if (event.name === "Hiking Trip to Johnston Canyon") {
-                document.getElementById('eventImage').src = "https://crmr.com/wp-content/uploads/2022/05/Hiking_Johnston_Canyon_Bow_Valley_Parkway_Paul_Zizka_2_Horizontal.jpg";
-            }
-
-            // Snoop Dogg: Cali to Canada Tour
-            else if (event.name === "Snoop Dogg: Cali to Canada Tour") {
-                document.getElementById('eventImage').src = "https://ca.billboard.com/media-library/snoop-dogg-s-cali-to-canada-tour-poster.jpg?id=51899477&width=1200&height=800&quality=90&coordinates=0%2C42%2C0%2C428";
-            }
-
-            else if (event.name === "YYC Food Trucks Lunch Park") {
-                document.getElementById('eventImage').src = "https://images.squarespace-cdn.com/content/v1/53f43705e4b03f018aae7cf3/1414464171405-PHB35PRBXRESIG7XP6S3/IMG_1614.JPG";
-            }
+            const date = new Date(dateStr);
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
         }
         
-        // Load the event on page load
-        window.onload = function() {
-            console.log("Page loaded, checking for event to edit");
+        // Function to add a custom event to localStorage
+        function addCustomEvent() {
+            const eventDateInput = document.getElementById('eventDate').value;
+            const eventName = document.getElementById('eventName').value.trim();
+            const eventTime = document.getElementById('eventTime').value;
+            const eventDetails = document.getElementById('eventDetails').value.trim();
             
-            const eventId = localStorage.getItem("eventToEdit");
-            if (!eventId) {
-                console.error("No event ID found in localStorage!");
+            // Validate inputs
+            if (!eventDateInput) {
+                alert("Please select a date");
                 return;
             }
             
-            console.log("Found event ID:", eventId);
-            currentEventId = eventId;
+            if (!eventName) {
+                alert("Please enter an event name");
+                return;
+            }
             
-            // Get all suggestions from localStorage
+            if (!eventTime) {
+                alert("Please select a time");
+                return;
+            }
+            
+            // Format the date to match the original structure (e.g., "Sunday, June 1")
+            const formattedDate = formatDisplayDate(eventDateInput);
+            
+            // Format time for display (convert from 24hr to AM/PM)
+            const timeDisplay = formatTimeDisplay(eventTime);
+            
+            // Generate a unique ID for the new event
+            const eventId = 'custom-' + Date.now();
+            
+            // Create the event object matching the original structure
+            const newEvent = {
+                name: eventName,
+                time: timeDisplay,
+                details: eventDetails,
+                id: eventId,
+                price: "0", // Default price for custom events
+                tags: ["Custom"] // Tag to identify custom events
+            };
+            
+            // Get existing suggestions from localStorage
             const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-            console.log("Retrieved suggestions:", suggestions);
             
-            // Find the event with matching ID across all dates
-            let foundEvent = null;
-            let foundDate = null;
-            
-            // Loop through each date in the suggestions
-            for (const date in suggestions) {
-                const events = suggestions[date];
-                console.log(`Checking date ${date} with ${events.length} events`);
-                
-                const event = events.find(e => e.id === eventId);
-                if (event) {
-                    foundEvent = event;
-                    foundDate = date; // Store the date where the event was found
-                    console.log("Found event:", event, "on date:", date);
-                    break;
-                }
+            // Initialize the date array if it doesn't exist
+            if (!suggestions[formattedDate]) {
+                suggestions[formattedDate] = [];
             }
             
-            if (foundEvent) {
-                // Store the date for later use
-                currentDate = foundDate;
-                
-                // Populate fields with event details including the date
-                populateEventDetails(foundEvent);
-                
-                // Set the date in the date input field
-                document.getElementById('eventDate').value = foundDate;
-                
-                console.log("Populated event details");
-            } else {
-                console.error("Event not found in suggestions!");
-            }
-        };
-
-        // // Function to save edited event data
-        // function submitConfirmEdit() {
-        //     if (!currentEventId || !currentDate) {
-        //         alert("Error: Could not identify the event to edit.");
-        //         return;
-        //     }
+            // Add the new event to the date
+            suggestions[formattedDate].push(newEvent);
             
-        //     // Get values from form fields
-        //     const eventDate = document.getElementById('eventDate').value;
-        //     const eventTime = document.getElementById('eventTime').value;
+            // Save back to localStorage
+            localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
             
-        //     // Format time for display (convert from 24hr to AM/PM)
-        //     const timeDisplay = formatTimeDisplay(eventTime);
+            // Show confirmation
+            const confirmation = document.getElementById('confirmation');
+            confirmation.style.display = "block";
+            confirmation.style.opacity = 1;
             
-        //     // Get all suggestions from localStorage
-        //     const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-            
-        //     // Find the event with matching ID
-        //     if (suggestions[currentDate]) {
-        //         const eventIndex = suggestions[currentDate].findIndex(e => e.id === currentEventId);
-                
-        //         if (eventIndex !== -1) {
-        //             // Update the event time
-        //             suggestions[currentDate][eventIndex].time = timeDisplay;
-        //             // Add attendance count to the event
-        //             suggestions[currentDate][eventIndex].attendanceCount = attendanceCount;
-                    
-        //             // Save back to localStorage
-        //             localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
-                    
-        //             // Show confirmation
-        //             const confirmation = document.getElementById('confirmation');
-        //             confirmation.textContent = "Changes saved successfully!";
-        //             confirmation.style.display = "block";
-                    
-        //             // Redirect after a short delay
-        //             setTimeout(() => {
-        //                 window.location.href = "Trip_Timeline.html";
-        //             }, 1500);
-        //         } else {
-        //             alert("Error: Event not found.");
-        //         }
-        //     } else {
-        //         alert("Error: Date not found in saved suggestions.");
-        //     }
-        // }
-
+            // Redirect after a short delay
+            setTimeout(() => {
+                confirmation.style.opacity = 0;
+                setTimeout(() => {
+                    window.location.href = "Trip_Timeline.html";
+                }, 0);
+            }, 1000);
+        }
+        
         // Function to convert time from 24hr format to AM/PM format
         function formatTimeDisplay(time24) {
             if (!time24) return "";
@@ -495,52 +299,23 @@
             
             return `${hours}${ampm}`;
         }
+        
+        // Navigation functions
+        function backButtonAction() {
+            window.location.href = "Trip_Timeline.html";
+        }
+        
+        function navigateTo(page) {
+            window.location.href = page;
+        }
 
-        // Function to remove the event
-// Function to remove the event by ID without needing the date
-    function submitCancelEvent() {
-        if (!currentEventId) {
-            alert("Error: Could not identify the event to cancel.");
-            return;
-        }
-        
-        // Get all suggestions from localStorage
-        const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-        let eventRemoved = false;
-        
-        // Loop through each date's events
-        for (const date in suggestions) {
-            // Filter out the event with matching ID
-            const originalLength = suggestions[date].length;
-            suggestions[date] = suggestions[date].filter(e => e.id !== currentEventId);
-            
-            // If the length changed, we found and removed our event
-            if (suggestions[date].length !== originalLength) {
-                eventRemoved = true;
-                break;
-            }
-        }
-        
-        if (eventRemoved) {
-            // Save back to localStorage
-            localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
-            
-            // Show styled confirmation popup
-            const confirmation = document.getElementById('confirmation');
-            confirmation.style.display = "block";
-            confirmation.style.opacity = 1;
-            
-            // Redirect after 1000ms (1 second) delay
-            setTimeout(() => {
-                confirmation.style.opacity = 0;
-                setTimeout(() => {
-                    window.location.href = "Trip_Timeline.html";
-                }, 0);
-            }, 1000);
-        } else {
-            alert("Error: Event not found in saved suggestions.");
-        }
-    }
+        // Set default date to today when page loads
+        window.onload = function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('eventDate').value = `${yyyy}-${mm}-${dd}`;
+        };
     </script>
-
 </html>
