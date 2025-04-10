@@ -153,7 +153,7 @@
             <span class="trip-label">Wilderness Adventure</span>
           </div>
           <div class="trip-buttons">
-            <button>View</button>
+            <button onclick = "navigateTo('View_Upcoming_Trip_Page.html')">View</button>
           </div>
         </div>
       </div>
@@ -192,6 +192,11 @@
       const isOpen = list.style.display === "block";
       list.style.display = isOpen ? "none" : "block";
       arrow.textContent = isOpen ? "▼" : "▲";
+    }
+
+    // function to move to a specified page (used for view buttons)
+    function navigateTo(page) {
+        window.location.href = page;
     }
   </script>
 </body>
