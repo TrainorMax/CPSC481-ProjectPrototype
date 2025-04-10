@@ -184,25 +184,21 @@
       <p id="empty-message" class="empty-message" style="display: none;">No events added yet.</p>
     </div>
     <div class="navbar">
-      <button>Home</button>
-      <button>Trips</button>
-      <button>Tickets</button>
-    </div>
+      <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+      <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
+      <button onclick="navigateTo('Ticket_Viewer.html')">Tickets</button>
+  </div>
   </div>
 
   <script>
-    const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || {};
+    const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || [];
     const timelineContainer = document.getElementById("timeline-container");
-    const bookBtn = document.getElementById("bookBtn");
-    const confirmation = document.getElementById("confirmation");
     const emptyMessage = document.getElementById("empty-message");
-    const travelData = JSON.parse(localStorage.getItem("travelData")) || {};
 
     function renderEvents() {
       timelineContainer.innerHTML = "";
-      let hasEvents = bookedEvents.length > 0;
 
-      if (!hasEvents) {
+      if (bookedEvents.length === 0) {
         emptyMessage.style.display = "block";
         return;
       }
@@ -211,29 +207,29 @@
 
       // Group events by date
       const eventsByDate = {};
-      bookedEvents.forEach(({ date, event }) => {
+      bookedEvents.forEach((eventObj) => {
+        const { date } = eventObj;
         if (!eventsByDate[date]) {
           eventsByDate[date] = [];
         }
-        eventsByDate[date].push(event);
+        eventsByDate[date].push(eventObj);
       });
 
-      // Build timeline
       for (const date in eventsByDate) {
         const section = document.createElement("div");
         section.className = "section";
         section.innerHTML = `<strong>${date}</strong>`;
 
-        eventsByDate[date].forEach((eventName, idx) => {
+        eventsByDate[date].forEach((eventObj) => {
           const timeBlock = document.createElement("div");
           timeBlock.className = "time-block";
-          timeBlock.innerHTML = `<p><b>${idx + 1}.</b></p>`;
+          timeBlock.innerHTML = `<p><b>${eventObj.time}</b></p>`;
 
           const event = document.createElement("div");
           event.className = "event";
           event.innerHTML = `
             <div class="event-details">
-              <span class="event-label">${eventName}</span>
+              <span class="event-label"><strong>${eventObj.name}</strong></span><br/>
             </div>
             <div class="event-buttons">
               <button class="edit-btn">View</button>
@@ -241,16 +237,21 @@
             </div>
           `;
 
+          // View button
           event.querySelector('.edit-btn').addEventListener('click', () => {
-            // Handle view action (if needed)
-            alert(`Viewing: ${eventName}`);
+            localStorage.setItem("eventToEdit", eventObj.id);
+            window.location.href = "Edit_Booking_Screen.html?from=upcoming_trip";
           });
 
+          // Remove button
           event.querySelector('.remove-btn').addEventListener('click', () => {
-            // Remove from bookedEvents
-            const updated = bookedEvents.filter(e => !(e.date === date && e.event === eventName));
-            localStorage.setItem("bookedEvents", JSON.stringify(updated));
-            location.reload();
+            const updated = bookedEvents.filter(e =>
+              !(e.date === eventObj.date && e.name === eventObj.name && e.time === eventObj.time)
+            );
+            bookedEvents.length = 0;
+            updated.forEach(e => bookedEvents.push(e));
+            localStorage.setItem("bookedEvents", JSON.stringify(bookedEvents));
+            renderEvents();
           });
 
           timeBlock.appendChild(event);
@@ -259,6 +260,11 @@
 
         timelineContainer.appendChild(section);
       }
+    }
+
+    // function to move to a specified page (used for navbar)
+    function navigateTo(page) {
+        window.location.href = page;
     }
 
     renderEvents();
