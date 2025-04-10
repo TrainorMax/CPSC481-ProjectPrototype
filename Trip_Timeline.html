@@ -118,9 +118,9 @@
     }
     .action-buttons {
       display: flex;
-      justify-content: center; /* optional if you want the buttons centered inside the flex container */
+      justify-content: center;
       gap: 10px;
-      margin: 0 auto 10px auto; /* this centers the whole .action-buttons block */
+      margin: 0 auto 10px auto;
       width: 300px;
     }
     .action-buttons button {
@@ -225,16 +225,34 @@
 
         const usedTimes = new Set();
 
-        dayEvents.forEach((eventObj, idx) => {
+        dayEvents.forEach((eventObj) => {
           let { name, time } = eventObj;
           if (!name) name = "Untitled Event";
           if (!time) time = "TBD";
 
-          while (usedTimes.has(time)) {
-            const hour = parseInt(time) || 9;
-            time = (hour + 1) + "PM";
+          if (time !== "TBD") {
+            while (usedTimes.has(time)) {
+              const match = time.match(/^(\d{1,2})(:(\d{2}))?(AM|PM)$/i);
+              if (match) {
+                let hour = parseInt(match[1]);
+                let minute = match[3] ? parseInt(match[3]) : 0;
+                let suffix = match[4].toUpperCase();
+
+                hour += 1;
+                if (hour === 12) {
+                  suffix = suffix === "AM" ? "PM" : "AM";
+                } else if (hour > 12) {
+                  hour = 1;
+                  suffix = suffix === "AM" ? "PM" : "AM";
+                }
+
+                time = `${hour}${minute > 0 ? ':' + String(minute).padStart(2, '0') : ''}${suffix}`;
+              } else {
+                break;
+              }
+            }
+            usedTimes.add(time);
           }
-          usedTimes.add(time);
 
           const timeBlock = document.createElement("div");
           timeBlock.className = "time-block";
@@ -276,34 +294,30 @@
 
     bookBtn.addEventListener("click", () => {
       const allEvents = [];
-
       let hasSnoop = false;
-      let hasTheBlues = false;          // Changes - Soila
+      let hasTheBlues = false;
 
       for (const date in suggestions) {
-        suggestions[date].forEach(({ name }) => {
-          allEvents.push({ date, event: name });
+        suggestions[date].forEach(({ name, time, details, id }) => {
+          allEvents.push({ date, name, time, details, id });  
           if (name && name.toLowerCase().includes("snoop dogg")) hasSnoop = true;
-          if (name && name.toLowerCase().includes("the blues can")) hasTheBlues = true;   // Changes - Soila
+          if (name && name.toLowerCase().includes("the blues can")) hasTheBlues = true;
         });
       }
 
-      localStorage.setItem("bookedEvents", JSON.stringify(allEvents));
+      localStorage.setItem("bookedEvents", JSON.stringify(allEvents)); 
+
       confirmation.style.display = "block";
       confirmation.style.opacity = 1;
       setTimeout(() => {
         confirmation.style.opacity = 0;
         setTimeout(() => {
           confirmation.style.display = "none";
-
-          // Scenario where user selects The Blues Can event (direct them to select tickets first since it comes before Snoop Concert)
-          if(hasTheBlues) {
+          if (hasTheBlues) {
             window.location.href = "Ticket_Selection.html";
           } else {
-            // Scenario wher user does not select The Blues Can
             window.location.href = hasSnoop ? "Seat_Selection.html" : "Payment.html";
           }
-
         }, 500);
       }, 1000);
     });
