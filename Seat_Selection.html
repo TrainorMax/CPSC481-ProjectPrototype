@@ -22,7 +22,9 @@
       width: 375px;
       height: 667px;
       background-color: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -173,15 +175,19 @@
       border-radius: 3px;
       display: none;
     }
+
+    
     .navbar {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #c70f0f;
+      height: 39.5px;
+      background-color: #c81d25;
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
+      font-family: Verdana;
     }
     .navbar button {
       background-color: transparent;
@@ -189,7 +195,9 @@
       border: none;
       cursor: pointer;
       font-size: 16px;
+      font-family: Verdana;
     }
+
     #confirmation-toast {
       position: fixed;
       top: 50%;
@@ -251,14 +259,13 @@
       <div id="totalDisplay"></div>
 
       <button class="select-button">SELECT</button>
-
       <div id="confirmation-toast"></div>
     </div>
 
     <div class="navbar">
-      <button>Home</button>
-      <button>Trips</button>
-      <button>Tickets</button>
+      <button onclick="window.location.href='Homepage_Screen.html'">Home</button>
+      <button onclick="window.location.href='Trips_Tab.html'">Trips</button>
+      <button onclick="window.location.href='Ticket_Viewer.html'">Tickets</button>
     </div>
   </div>
 
@@ -335,7 +342,7 @@
     selectBtn.addEventListener('click', () => {
       if (selectedSeats.length === 0) return;
       localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats));
-      window.location.href = "Payment.html";
+      window.location.href = "Payment_Screen.html";
     });
   </script>
 </body>
