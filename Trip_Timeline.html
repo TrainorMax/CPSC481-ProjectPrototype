@@ -248,7 +248,7 @@
           `;
 
           event.querySelector('.edit-btn').addEventListener('click', () => {
-            localStorage.setItem("eventToEdit", JSON.stringify({ date, name, time }));
+            localStorage.setItem("eventToEdit", eventObj.id);
             window.location.href = "Edit_Booking_Screen.html";
           });
 
