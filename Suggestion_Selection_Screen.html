@@ -257,14 +257,13 @@
     // each event has a name, time, details, and tags
     const eventsData = {
         "Sunday, June 1": [
-            { name: "Calgary Tower", time: "10AM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"], id: "1" },
-            { name: "Glenbow Museum", time: "12PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"], id: "2" },
-            { name: "City Walking Tour", time: "2PM", details: "Guided walking tour through downtown Calgary’s architectural and historical highlights.", tags: ["Tours"], id: "3" },
-            { name: "Fish Creek Provincial Park", time: "3PM", details: "Explore one of Canada’s largest urban parks, perfect for a scenic hike or bike ride.", tags: ["Outdoor Adventures", "Family-Friendly"], id: "4" },
-            { name: "Ice Skating at the Olympic Oval", time: "5PM", details: "Indoor skating at one of the worlds premier skating rinks!", tags: ["Family-Friendly"], id: "5" },
-            { name: "Heritage Park", time: "1PM", details: "Step back in time at Canada’s largest living history museum.", tags: ["Day Trips & Excursions", "Family-Friendly"], id: "6" },
-            { name: "Calgary Farmers Market", time: "11AM", details: "Sample fresh local produce, treats, and artisan goods.", tags: ["Shopping", "Food & Drink"], id: "7" },
-            { name: "NOtaBLE", time: "7PM", details: "Enjoy an amazing dinner at one of Calgary's top-rated restaurants.", tags: ["Food & Drink"], id: "8" },
+            { name: "Calgary Tower", time: "10AM", details: "Take in breathtaking views of the city from the observation deck.", tags: ["Landmarks & Attractions", "Family-Friendly"], id: "1", price: "18" },
+            { name: "Glenbow Museum", time: "12PM", details: "Explore captivating exhibits of art and history in the heart of downtown Calgary.", tags: ["Landmarks & Attractions", "Tours"], id: "2", price: "25" },
+            { name: "City Walking Tour", time: "2PM", details: "Guided walking tour through downtown Calgary’s architectural and historical highlights.", tags: ["Tours"], id: "3", price: "0" },
+            { name: "Fish Creek Provincial Park", time: "3PM", details: "Explore one of Canada’s largest urban parks, perfect for a scenic hike or bike ride.", tags: ["Outdoor Adventures", "Family-Friendly"], id: "4", price: "0" },
+            { name: "Ice Skating at the Olympic Oval", time: "5PM", details: "Indoor skating at one of the worlds premier skating rinks!", tags: ["Family-Friendly"], id: "5", price: "25$" },
+            { name: "Heritage Park", time: "1PM", details: "Step back in time at Canada’s largest living history museum.", tags: ["Day Trips & Excursions", "Family-Friendly"], id: "6", price: "30" },
+            { name: "Calgary Farmers Market", time: "11AM", details: "Sample fresh local produce, treats, and artisan goods.", tags: ["Shopping", "Food & Drink"], id: "7", price: "0" },
             { name: "Clear Nordic Spa", time: "9AM", details: "Treat yourself to a massage or soak in Calgary's newest nordic spa.", tags: ["Wellness & Relaxation"], id: "9" },
             { name: "TELUS Spark Science Centre", time: "4PM", details: "Interactive exhibits, live science demos, and creative workshops.", tags: ["Family-Friendly", "Outdoor Adventures"], id: "10" },
         ],
@@ -325,7 +324,7 @@
 
             // check if the event is already selected
             // if it is, set the button to "Deselect" and change the background color
-            const isSelected = selectedSuggestions[selectedDate]?.includes(event.name);
+            const isSelected = selectedSuggestions[selectedDate]?.some(e => e.name === event.name);
             const label = isSelected ? "Deselect" : "Select";
             const bgColor = isSelected ? "#555" : "#c81d25";
 
