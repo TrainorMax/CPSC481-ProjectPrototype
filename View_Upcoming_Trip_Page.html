@@ -176,7 +176,7 @@
       <div class="back-button-container">
         <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="window.location.href='Suggestion_Selection_Screen.html'" />
       </div>
-      <h1>Trip to Jasper</h1>
+      <h1>Trip to Calgary</h1>
       <div class="action-buttons">
         <button onclick="window.location.href='Add_Custom_Event_Screen.html'">Add Custom Event</button>
       </div>
@@ -191,47 +191,49 @@
   </div>
 
   <script>
-    const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+    const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || {};
     const timelineContainer = document.getElementById("timeline-container");
     const bookBtn = document.getElementById("bookBtn");
     const confirmation = document.getElementById("confirmation");
     const emptyMessage = document.getElementById("empty-message");
+    const travelData = JSON.parse(localStorage.getItem("travelData")) || {};
 
     function renderEvents() {
       timelineContainer.innerHTML = "";
-      let hasEvents = false;
+      let hasEvents = bookedEvents.length > 0;
 
-      for (const date in suggestions) {
-        const dayEvents = suggestions[date];
-        if (!dayEvents.length) continue;
+      if (!hasEvents) {
+        emptyMessage.style.display = "block";
+        return;
+      }
 
-        hasEvents = true;
+      emptyMessage.style.display = "none";
+
+      // Group events by date
+      const eventsByDate = {};
+      bookedEvents.forEach(({ date, event }) => {
+        if (!eventsByDate[date]) {
+          eventsByDate[date] = [];
+        }
+        eventsByDate[date].push(event);
+      });
+
+      // Build timeline
+      for (const date in eventsByDate) {
         const section = document.createElement("div");
         section.className = "section";
         section.innerHTML = `<strong>${date}</strong>`;
 
-        const usedTimes = new Set();
-
-        dayEvents.forEach((eventObj, idx) => {
-          let { name, time } = eventObj;
-          if (!name) name = "Untitled Event";
-          if (!time) time = "TBD";
-
-          while (usedTimes.has(time)) {
-            const hour = parseInt(time) || 9;
-            time = (hour + 1) + "PM";
-          }
-          usedTimes.add(time);
-
+        eventsByDate[date].forEach((eventName, idx) => {
           const timeBlock = document.createElement("div");
           timeBlock.className = "time-block";
-          timeBlock.innerHTML = `<p><b>${time}</b></p>`;
+          timeBlock.innerHTML = `<p><b>${idx + 1}.</b></p>`;
 
           const event = document.createElement("div");
           event.className = "event";
           event.innerHTML = `
             <div class="event-details">
-              <span class="event-label">${name}</span>
+              <span class="event-label">${eventName}</span>
             </div>
             <div class="event-buttons">
               <button class="edit-btn">View</button>
@@ -240,14 +242,15 @@
           `;
 
           event.querySelector('.edit-btn').addEventListener('click', () => {
-            localStorage.setItem("eventToEdit", eventObj.id);
-            window.location.href = "Edit_Booking_Screen.html";
+            // Handle view action (if needed)
+            alert(`Viewing: ${eventName}`);
           });
 
           event.querySelector('.remove-btn').addEventListener('click', () => {
-            suggestions[date] = suggestions[date].filter(e => e.name !== name);
-            localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
-            renderEvents();
+            // Remove from bookedEvents
+            const updated = bookedEvents.filter(e => !(e.date === date && e.event === eventName));
+            localStorage.setItem("bookedEvents", JSON.stringify(updated));
+            location.reload();
           });
 
           timeBlock.appendChild(event);
@@ -256,46 +259,7 @@
 
         timelineContainer.appendChild(section);
       }
-
-      bookBtn.style.display = hasEvents ? 'block' : 'none';
-      emptyMessage.style.display = hasEvents ? 'none' : 'block';
     }
-
-    bookBtn.addEventListener("click", () => {
-      const allEvents = [];
-
-      let hasSnoop = false;
-      let hasTheBlues = false;          // Changes - Soila
-
-      for (const date in suggestions) {
-        suggestions[date].forEach(({ name }) => {
-          allEvents.push({ date, event: name });
-          if (name && name.toLowerCase().includes("snoop dogg")) hasSnoop = true;
-          if (name && name.toLowerCase().includes("the blues can")) hasTheBlues = true;   // Changes - Soila
-        });
-      }
-
-      localStorage.setItem("bookedEvents", JSON.stringify(allEvents));
-      confirmation.style.display = "block";
-      confirmation.style.opacity = 1;
-      setTimeout(() => {
-        confirmation.style.opacity = 0;
-        setTimeout(() => {
-          confirmation.style.display = "none";
-
-          // Scenario where user selects The Blues Can event (direct them to select tickets first since it comes before Snoop Concert)
-          if(hasTheBlues) {
-            window.location.href = "Ticket_Selection.html";
-          } else {
-            // Scenario wher user does not select The Blues Can
-            window.location.href = hasSnoop ? "Seat_Selection.html" : "Payment.html";
-          }
-
-        }, 500);
-      }, 1000);
-    });
-
-    
 
     renderEvents();
   </script>
