@@ -191,7 +191,7 @@
   </div>
 
   <script>
-    const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || {};
+    const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || [];
     const timelineContainer = document.getElementById("timeline-container");
     const bookBtn = document.getElementById("bookBtn");
     const confirmation = document.getElementById("confirmation");
@@ -200,22 +200,22 @@
 
     function renderEvents() {
       timelineContainer.innerHTML = "";
-      let hasEvents = bookedEvents.length > 0;
 
-      if (!hasEvents) {
+      if (bookedEvents.length === 0) {
         emptyMessage.style.display = "block";
         return;
       }
 
       emptyMessage.style.display = "none";
 
-      // Group events by date
+      // Group by date
       const eventsByDate = {};
-      bookedEvents.forEach(({ date, event }) => {
+      bookedEvents.forEach((eventObj) => {
+        const { date } = eventObj;
         if (!eventsByDate[date]) {
           eventsByDate[date] = [];
         }
-        eventsByDate[date].push(event);
+        eventsByDate[date].push(eventObj); // push the whole object!
       });
 
       // Build timeline
@@ -224,16 +224,17 @@
         section.className = "section";
         section.innerHTML = `<strong>${date}</strong>`;
 
-        eventsByDate[date].forEach((eventName, idx) => {
+        eventsByDate[date].forEach((eventObj, idx) => {
           const timeBlock = document.createElement("div");
           timeBlock.className = "time-block";
-          timeBlock.innerHTML = `<p><b>${idx + 1}.</b></p>`;
+          timeBlock.innerHTML = `<p><b>${eventObj.time}</b></p>`;
 
           const event = document.createElement("div");
           event.className = "event";
+
           event.innerHTML = `
             <div class="event-details">
-              <span class="event-label">${eventName}</span>
+              <span class="event-label"><strong>${eventObj.name}</strong></span><br/>
             </div>
             <div class="event-buttons">
               <button class="edit-btn">View</button>
@@ -242,15 +243,16 @@
           `;
 
           event.querySelector('.edit-btn').addEventListener('click', () => {
-            // Handle view action (if needed)
-            alert(`Viewing: ${eventName}`);
+            localStorage.setItem("eventToEdit", eventObj.id);
+            window.location.href = "Edit_Booking_Screen.html?from=trip_timeline";
           });
 
           event.querySelector('.remove-btn').addEventListener('click', () => {
-            // Remove from bookedEvents
-            const updated = bookedEvents.filter(e => !(e.date === date && e.event === eventName));
+            const updated = bookedEvents.filter(e =>
+              !(e.date === eventObj.date && e.name === eventObj.name && e.time === eventObj.time)
+            );
             localStorage.setItem("bookedEvents", JSON.stringify(updated));
-            location.reload();
+            renderEvents();
           });
 
           timeBlock.appendChild(event);
