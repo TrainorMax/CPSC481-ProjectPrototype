@@ -84,11 +84,11 @@
         <div class="text-input">
             <div class="input-row">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email">
+                <input type="text" id="no1" name="no1" autocomplete="off">
             </div>
             <div class="input-row">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="no2" name="no2" autocomplete="off">
             </div>
         </div>
 
@@ -126,8 +126,8 @@
 
         // Firebase login
         document.querySelector(".login-button").addEventListener("click", () => {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+        const email = document.getElementById("no1").value;
+        const password = document.getElementById("no2").value;
 
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {

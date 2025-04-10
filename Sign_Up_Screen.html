@@ -18,6 +18,18 @@
             background-color: #d0cfcf;
             font-family:Verdana;
         }
+        .back-button {
+            cursor: pointer;
+            text-align: left;
+            width: 10%;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .back-button > img {
+            width: 35px;
+        }
         .app-container {
             width: 375px;
             height: 667px;
@@ -94,23 +106,24 @@
 </head>
 <body>
     <div class="app-container">
+        <div class="back-button">
+            <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="circled-left-2"/>
+        </div>
         <h1>Create an Account</h1><br>
 
         <div class="text-input">
             <label for="first-name">*First Name:</label>
-            <input type="text" id="first-name" name="first-name" placeholder="John"><br><br>
+            <input type="text" id="first-name" name="first-name" placeholder="John" autocomplete="off"><br><br>
             <label for="last-name">*Last Name:</label>
-            <input type="text" id="last-name" name="last-name" placeholder="Doe"><br><br><br>
+            <input type="text" id="last-name" name="last-name" placeholder="Doe" autocomplete="off"><br><br><br>
             
             <label for="phone-number">Phone #:</label>
-            <input type="text" id="phone-number" name="phone-number" placeholder="123-456-7890"><br><br>
+            <input type="text" id="phone-number" name="phone-number" placeholder="123-456-7890" autocomplete="off"><br><br>
             <label for="email">*Email:</label>
-            <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com"><br><br><br>
+            <input type="text" id="email" name="email" placeholder="john.doe@hotmail.com" autocomplete="off"><br><br><br>
 
-            <label for="user-name">*Username:</label>
-            <input type="text" id="user-name"><br><br>
-            <label for="password">*Password:</label>
-            <input type="password" id="password"><br><br><br>
+            <label for="new-password">*Password:</label>
+            <input type="password" id="new-password" autocomplete="off"><br><br><br>
         </div>
         <div class="checkbox-input">
             <label for="marketing">I agree to receive marketing emails</label>
@@ -123,17 +136,16 @@
         <h5><i>*indicates a required field</i></h3>
 
         <div class="button-container">
-            <button class="login-button">Back to Log In</button>
             <button class="continue-button">Continue</button>
         </div>
     </div>
 
     <script>
         //Button Scripts
-        const login_button = document.querySelector(".login-button");
+        const back_button = document.querySelector(".back-button");
         const continue_button = document.querySelector(".continue-button");
     
-        login_button.addEventListener("click", () => {
+        back_button.addEventListener("click", () => {
           window.location.href = "Landing_Page_Screen.html"
         });
 
@@ -142,7 +154,7 @@
             const fname = document.getElementById("first-name").value;
             const lname = document.getElementById("last-name").value;
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            const password = document.getElementById("new-password").value;
             const terms = document.getElementById("terms-conditions").checked;
             const privacy = document.getElementById("privacy-policy").checked;
 
@@ -158,7 +170,7 @@
                 alert("Password must be at least 6 characters long.");
                 return;
             }
-            if (!terms || !privacy) {
+            if (!terms) {
                 alert("Please read and accept our Terms & Conditions.");
                 return;
             }

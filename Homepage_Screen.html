@@ -156,6 +156,9 @@
 </head>
 <body>
     <div class="app-container">
+        <div class="button-container">
+            <button class="signout-button" style="margin-bottom: 20px;">Sign Out</button>
+        </div><br>
         <h2 id="welcome-header">Homepage</h2>
 
         <div class="weather-container">
@@ -191,10 +194,17 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const signout_button = document.querySelector(".signout-button");
             const newtrip_button = document.querySelector(".newtrip-button");
             const viewtrip_button = document.querySelector(".box-button");
             const trips_button = document.querySelector(".trips-button");
             const tickets_button = document.querySelector(".tickets-button");
+
+            if (signout_button) {
+                signout_button.addEventListener("click", () => {
+                    window.location.href = "Landing_Page_Screen.html";
+                });
+            }
 
             if (newtrip_button) {
                 newtrip_button.addEventListener("click", () => {
