@@ -30,7 +30,6 @@
       flex-direction: column;
     }
 
-  
     h1 {
       margin-top: 5px;
       text-align: center;
@@ -116,10 +115,12 @@
       bottom: 0;
       left: 0;
       width: 100%;
+      height: 59.5px;
       background-color: #c81d25;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      align-items: center; 
+      font-family: Verdana;
     }
 
     .navbar button {
@@ -128,60 +129,44 @@
       border: none;
       cursor: pointer;
       font-size: 16px;
+      font-family: Verdana;
+      height: 100%; 
     }
 
     .navbar button:nth-child(2) {
       background-color: #a81d25;
     }
+
+    .no-trips {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
   <div class="app-container">
-
     <h1>My Trips</h1>
 
     <div class="collapsible-header" onclick="toggleTrips('upcoming-list', this)">
       <span>Upcoming Trips</span>
       <span>▼</span>
     </div>
-    <div class="trip-list" id="upcoming-list">
-      <div class="trip-section">
-        <strong>Trip to Jasper</strong>
-        <p><b>Date: May 5 - May 10, 2025</b></p>
-        <div class="trip">
-          <div class="trip-details">
-            <span class="trip-label">Wilderness Adventure</span>
-          </div>
-          <div class="trip-buttons">
-            <button onclick = "navigateTo('View_Upcoming_Trip_Page.html')">View</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="trip-list" id="upcoming-list"></div>
 
     <div class="collapsible-header" onclick="toggleTrips('past-list', this)">
       <span>Past Trips</span>
       <span>▼</span>
     </div>
     <div class="trip-list" id="past-list">
-      <div class="trip-section">
-        <strong>Trip to Calgary</strong>
-        <p><b>Date: Feb. 13 - Feb. 14, 2025</b></p>
-        <div class="trip">
-          <div class="trip-details">
-            <span class="trip-label">Calgary Business</span>
-          </div>
-          <div class="trip-buttons">
-            <button>View</button>
-          </div>
-        </div>
-      </div>
+      <p class="no-trips">No past trips available.</p>
     </div>
 
     <div class="navbar">
-      <button>Home</button>
-      <button>Trips</button>
-      <button>Tickets</button>
+      <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
+      <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
+      <button onclick="navigateTo('Ticket_Viewer.html')">Tickets</button>
     </div>
   </div>
 
@@ -194,10 +179,43 @@
       arrow.textContent = isOpen ? "▼" : "▲";
     }
 
-    // function to move to a specified page (used for view buttons)
     function navigateTo(page) {
-        window.location.href = page;
+      window.location.href = page;
     }
+
+    window.onload = () => {
+      const upcomingList = document.getElementById("upcoming-list");
+      const booked = JSON.parse(localStorage.getItem("bookedEvents")) || [];
+
+      if (booked.length === 0) {
+        upcomingList.innerHTML = `<p class="no-trips">No upcoming trips planned.</p>`;
+        return;
+      }
+
+      const dates = Object.values(booked.map(b => b.date));
+      const startDate = new Date(dates[0]);
+      const endDate = new Date(dates[dates.length - 1]);
+
+      const format = (d) => {
+        const month = d.toLocaleString('default', { month: 'long' });
+        return `${month} ${d.getDate()}, 2025`; // Default year 2025
+      };
+
+      upcomingList.innerHTML = `
+        <div class="trip-section">
+          <strong>Trip to Calgary</strong>
+          <p><b>Date: ${format(startDate)} - ${format(endDate)}</b></p>
+          <div class="trip">
+            <div class="trip-details">
+              <span class="trip-label">Calgary City Explorer</span>
+            </div>
+            <div class="trip-buttons">
+              <button onclick="navigateTo('View_Upcoming_Trip_Page.html')">View</button>
+            </div>
+          </div>
+        </div>
+      `;
+    };
   </script>
 </body>
 </html>
