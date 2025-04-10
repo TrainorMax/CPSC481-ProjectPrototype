@@ -271,12 +271,15 @@
 
     bookBtn.addEventListener("click", () => {
       const allEvents = [];
+
       let hasSnoop = false;
+      let hasTheBlues = false;          // Changes - Soila
 
       for (const date in suggestions) {
         suggestions[date].forEach(({ name }) => {
           allEvents.push({ date, event: name });
           if (name && name.toLowerCase().includes("snoop dogg")) hasSnoop = true;
+          if (name && name.toLowerCase().includes("the blues can")) hasTheBlues = true;   // Changes - Soila
         });
       }
 
@@ -287,7 +290,15 @@
         confirmation.style.opacity = 0;
         setTimeout(() => {
           confirmation.style.display = "none";
-          window.location.href = hasSnoop ? "Seat_Selection.html" : "Payment_Screen.html";
+
+          // Scenario where user selects The Blues Can event (direct them to select tickets first since it comes before Snoop Concert)
+          if(hasTheBlues) {
+            window.location.href = "Ticket_Selection.html";
+          } else {
+            // Scenario wher user does not select The Blues Can
+            window.location.href = hasSnoop ? "Seat_Selection.html" : "Payment.html";
+          }
+
         }, 500);
       }, 1000);
     });

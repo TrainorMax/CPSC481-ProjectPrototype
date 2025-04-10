@@ -94,16 +94,28 @@
       font-weight: bold;
     }
     
-    .location {
+    .event-location {
       margin-top: 10px;
       display: flex; 
       align-items: center;
     }
     
-    .location > span {
+    .event-location > a {
       font-style: italic;
+      text-decoration: none;
+      color: black;
+    }
+
+    .event-location > a:hover {
+      color: #c70f0f!important;
+      font-weight: bold;
     }
     
+    .event-location > a:visited {
+      text-decoration: none;
+      color: black;
+    }
+
     .ticket {
       display: flex;
       flex-direction: row;
@@ -201,7 +213,7 @@
       align-items: center;
       display: flex;
       justify-content: center;
-      margin-top: 2px;
+      margin-top: 10px;
     }
     
     button {
@@ -232,35 +244,35 @@
       <img src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/circled-left-2.png" alt="circled-left-2"/>    
     </div> 
     <div class="image-container">
-      <img class="concert-image" src="./assets/concert_image.jpg" alt="Image of concert"/>
+      <img class="concert-image" src="https://www.thebluescan.com/pics/mp00000440.jpg" alt="Image of concert"/>
     </div>  
     <div class="ticket-body">
-      <h2>The Battle of the Bands</h2>
+      <h2>Live Music at The Blues Can</h2>
       <p>
-        Get ready for an electrifying night where the stage is set, the amps are cranked, and the 
-        best up-and-coming bands go head-to-head in an all-out musical showdown!
-      </p>
+        Enjoy live blues and jazz performances at The Blues Can, one of Calgary’s most beloved venues. With its cozy atmosphere and talented artists, 
+        it’s the perfect spot to unwind and soak in great music.      
+      </p> 
       <div class="flex-container">
         <div class="event-date">
           <!-- Flaticon: Calendar icons created by Khoirul Anwar -->
           <img class="icon" src="./assets/calendar_icon.png" alt="Image of calendar icon">
-          <span class="date">14 Jul</span>        
+          <span class="date">2 June</span>        
         </div>
         <div class="event-time">
           <!-- Flaticon: Calendar icons created by dmitri13 -->
           <img class="icon" src="./assets/clock_icon.png" alt="Image of calendar icon">  
-          <span class="time">11:30pm</span>        
+          <span class="time">8.00 PM</span>        
         </div>
       </div>
-      <div class="location">
+      <div class="event-location">
         <!-- Flaticon: Location pin icons created by Smashicons -->
         <img class="icon" src="./assets/location.png" alt="Image of location icon">
-        <span>Scotiabank Saddledome</span>
+        <a href="https://maps.app.goo.gl/cE9RgmJTbtxTRq6T8" target="_blank" rel="noopener noreferrer">2002 16 Ave NW, Calgary, AB T2M 0M1</a>
       </div>
       <div class="ticket">
         <p class="text-xl font-bold">Number of Tickets:</p>
         <!-- Credits for plus button: Luc Millet -->
-        <div class="button minus"></div>
+        <div class="button minus disabled"></div>
         <div class="ticket-number">0</div>
         <div class="button plus"></div>
       </div>
@@ -289,9 +301,11 @@
     </div>
   </div>
   <script>
-    const TICKET_PRICE = 31.50;
+    const TICKET_PRICE = 20.00;
     const FEES_RATE = 0.1;
     const TAX_RATE = 0.05;
+    
+    let eventPricingDetails = {};
 
     // Query Selections
     let back_button = document.querySelector(".back-button");
@@ -316,10 +330,6 @@
       window.location.href = "Trip_Timeline.html";
     });
 
-    select_button.addEventListener("click", () => {
-      window.location.href = "Trip_Timeline.html";
-    })
-
     // Update the ticket number(s) and the corresponding prices: Increment
     plus_button.addEventListener("click", () => {
 
@@ -337,6 +347,19 @@
       subtotal_container.textContent = subtotal.toFixed(2);
       fees_container.textContent = fees.toFixed(2);
       total_container.textContent = total.toFixed(2);
+
+      // Update the # of tickets
+      if('no_of_tickets' in eventPricingDetails) {
+        eventPricingDetails['no_of_tickets'] += 1;
+      } else {
+        eventPricingDetails['no_of_tickets'] = 1;
+      }
+
+      // Update subtotal of tickets
+      eventPricingDetails['ticket_price'] = subtotal;
+
+      // Debugging purposes
+      console.log(eventPricingDetails);
     });
 
     // Update the ticket number(s) and the corresponding prices: Decrement
@@ -357,7 +380,41 @@
       subtotal_container.textContent = subtotal.toFixed(2);
       fees_container.textContent = fees.toFixed(2);
       total_container.textContent = total.toFixed(2);
-    })
+
+      // Update the # of tickets
+      if('no_of_tickets' in eventPricingDetails) {
+        eventPricingDetails['no_of_tickets'] -= 1;
+      } 
+
+      // Update subtotal of tickets
+      eventPricingDetails['ticket_price'] = subtotal;
+
+      // Debugging purposes
+      console.log(eventPricingDetails);
+    });
+
+    select_button.addEventListener("click", () => {
+
+      let snoopDoggFound = false;
+      if(eventPricingDetails['no_of_tickets'] > 0) {
+        localStorage.setItem('eventDetails', JSON.stringify(eventPricingDetails));
+      }
+
+      // Code credits: Ahmed Alaq
+      // Check if user also booked for Snoop Dog tour
+      const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+      for(let date in suggestions) {
+        suggestions[date].forEach(({ name }) => {
+          if(name && name.toLowerCase().includes("snoop dogg")) {
+            snoopDoggFound = true;
+            window.location.href = "Seat_Selection.html";
+          }
+        });
+      }
+
+      // Direct to Checkout screen if user has not booked Snoop Dog tour
+      if(!snoopDoggFound) window.location.href = "Payment.html";
+    });
 
     home_button.addEventListener("click", () => {
       window.location.href = "Homepage_Screen.html"
