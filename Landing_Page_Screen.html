@@ -47,14 +47,15 @@
         }
         h1 {
             color: #c81d25;
-            font-family:Verdana;
             font-size: 24px;
+            font-family:Verdana;
         }
         h3 {
-            font-family:Verdana;
             font-size: 14px;
+            font-family:Verdana;
         }
         h4 {
+            font-size: 14px;
             font-family:Verdana;
         }
         .input-row {
@@ -63,13 +64,11 @@
             justify-content: space-between;
             margin-bottom: 10px;
         }
-
         .input-row label {
-            width: 130px; /* fixed width for label alignment */
+            width: 130px;
             text-align: left;
             font-size: 14px;
         }
-
         .input-row input {
             flex: 1;
             padding: 5px;
@@ -80,13 +79,12 @@
 <body>
     <div class="app-container">
         <h1>Welcome to the <br>TravelYYC Companion</h1>
-
         <h3><i>Start planning your dream YYC trip now!</i></h3>
 
         <div class="text-input">
             <div class="input-row">
-                <label for="user-name">Username/Email:</label>
-                <input type="text" id="user-name" name="user-name">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email">
             </div>
             <div class="input-row">
                 <label for="password">Password:</label>
@@ -107,33 +105,45 @@
 
         <img src="assets/calgary-skyline.jpg" alt="Calgary Skyline" style="width: 100%; position: absolute; bottom: 0; left: 0;">
     </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
     <script>
-        let signup_button = document.querySelector(".signup-button");
-        let guest_button = document.querySelector(".guest-button");
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2fdAN192CEp7kPVd2kOIBjbAgD8S2luw",
+            authDomain: "flavor-forum.firebaseapp.com",
+            projectId: "flavor-forum",
+            storageBucket: "flavor-forum.appspot.com",
+            messagingSenderId: "226153939035",
+            appId: "1:226153939035:web:f4f81371beb8909e1a7f7e"
+        };
 
-        signup_button.addEventListener("click", () => {
-          window.location.href = "Sign_Up_Screen.html"
-        });
-    
-        guest_button.addEventListener("click", () => {
-          window.location.href = "Homepage_Screen.html"
-        });
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        document.addEventListener("DOMContentLoaded", () => {
-            let login_button = document.querySelector(".login-button");
+        // Firebase login
+        document.querySelector(".login-button").addEventListener("click", () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-            login_button.addEventListener("click", () => {
-                const username = document.getElementById("user-name").value;
-                const password = document.getElementById("password").value;
-                if (username && password) {
-                    window.location.href = `Homepage_Screen.html?username=${encodeURIComponent(username)}`;
-                } else if (username && !password) {
-                    alert("Please enter a password.");
-                } else if (!username && password) {
-                    alert("Please enter a username.");
-                } else
-                    alert("Please enter a username and password.");
+        auth.signInWithEmailAndPassword(email, password)
+            .then(() => {
+                window.location.href = "Homepage_Screen.html";
+            })
+            .catch((error) => {
+                alert("Login Failed: " + error.message);
             });
+        });
+
+        document.querySelector(".signup-button").addEventListener("click", () => {
+            window.location.href = "Sign_Up_Screen.html";
+        });
+
+        document.querySelector(".guest-button").addEventListener("click", () => {
+            window.location.href = "Homepage_Screen.html";
         });
       </script>
 </body>
