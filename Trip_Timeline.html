@@ -242,10 +242,15 @@
               <span class="event-label">${name}</span>
             </div>
             <div class="event-buttons">
-              <button>Edit</button>
+              <button class="edit-btn">Edit</button>
               <button class="remove-btn">Remove</button>
             </div>
           `;
+
+          event.querySelector('.edit-btn').addEventListener('click', () => {
+            localStorage.setItem("eventToEdit", JSON.stringify({ date, name, time }));
+            window.location.href = "Edit_Booking_Screen.html";
+          });
 
           event.querySelector('.remove-btn').addEventListener('click', () => {
             suggestions[date] = suggestions[date].filter(e => e.name !== name);
