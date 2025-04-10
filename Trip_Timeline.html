@@ -303,8 +303,8 @@
       let hasTheBlues = false;
 
       for (const date in suggestions) {
-        suggestions[date].forEach(({ name, time, details, id }) => {
-          allEvents.push({ date, name, time, details, id });  
+        suggestions[date].forEach(({ name, time, details, id, price }) => {
+          allEvents.push({ date, name, time, details, id, price });  
           if (name && name.toLowerCase().includes("snoop dogg")) hasSnoop = true;
           if (name && name.toLowerCase().includes("the blues can")) hasTheBlues = true;
         });

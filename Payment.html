@@ -360,6 +360,7 @@
     }
 
     function initialiseEventsArray() {
+
       // Pull events from local storage
       let suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {}; // access all event properties
       let eventsToBook = JSON.parse(localStorage.getItem("bookedEvents")) || {};       // access all booked events
@@ -369,40 +370,59 @@
       // Loop through each event and get the event name and price for the Checkout screen
       let events = [];
 
-      for(let date in suggestions) {
-        suggestions[date].forEach(({ id, name, price }) => {
-          for(let i in eventsToBook) {
-            if(eventsToBook[i]["event"].toLowerCase().includes(name.toLowerCase())) {
-              if(name.toLowerCase().includes("the blues can")) {
-                let event = new Event(id, name, selectedTickets["ticket_price"]);
-                events.push(event);
-              } else if(name.toLowerCase().includes("snoop dogg")) {
-                let total_price = 0.0;
-                if(selectedSeats.length > 1) {
-                  selectedSeats.forEach(( { price }) => {
-                    total_price += parseFloat(price)
-                  });
-                }
-                let event = new Event(id, name, total_price);
-                events.push(event);
-              } else {
-                if(parseFloat(price) > 0.0) {
-                  let event = new Event(id, name, parseFloat(price));
-                  events.push(event);
-                }
-              }
+      // Track each event, its price and its occurrence
+      let trackingEvents = {};
+
+      eventsToBook.forEach(({ id, name, price}) => {
+        if(trackingEvents[name]) {
+          trackingEvents[name].count += 1;
+        } else {
+          if(name.toLowerCase().includes("the blues can")) {
+            trackingEvents[name] = {
+              id: id,
+              count: 1,
+              price: selectedTickets["ticket_price"] // set to the total price of The Blues Can tickets
+            }
+          } else if(name.toLowerCase().includes("snoop dogg")) {
+            let total_price = 0.0;
+            if(selectedSeats.length > 1) {
+              selectedSeats.forEach(( { price }) => {
+                total_price += parseFloat(price)
+              });
+            }
+            trackingEvents[name] = {
+              id: id,
+              count: 1,
+              price: total_price // set to the total price of the Snoop Dogg tickets
+            }
+          } else {
+            trackingEvents[name] = {
+              id: id,
+              count: 1,
+              price: price
             }
           }
-        });
+        }
+      });
+
+      for(let name in trackingEvents) {
+        if(name.toLowerCase().includes("the blues can") || name.toLowerCase().includes("snoop dogg")) {
+          let event = new Event(trackingEvents[name].id, name, trackingEvents[name].price)
+          events.push(event);
+        } else {
+          let event = new Event(trackingEvents[name].id, name, (trackingEvents[name].price * trackingEvents[name].count));
+          events.push(event);
+        }
       }
 
+      console.log(trackingEvents);
       console.log(events);
       return events;
     }
 
     // Loop through events array and create div elements for each event before appending to event container
     let bookedEvents = initialiseEventsArray();
-    bookedEvents.forEach(({ id, name, price}) => {
+    bookedEvents.forEach(({ id, name, price }) => {
       create_event(id, name, price);
     })
 
