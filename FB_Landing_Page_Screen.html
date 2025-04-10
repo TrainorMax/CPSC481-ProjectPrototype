@@ -1,0 +1,145 @@
+<!-- Author: Max Trainor
+     UCID: 30089346     
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #d0cfcf;
+      font-family: Verdana;
+    }
+    .app-container {
+      width: 375px;
+      height: 667px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      font-family: Verdana;
+    }
+    .button-container {
+      bottom: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #c81d25;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-inline-end: 10px;
+      font-family: Verdana;
+    }
+    h1 {
+      color: #c81d25;
+      font-size: 24px;
+    }
+    h3 {
+      font-size: 14px;
+    }
+    h4 {
+      font-size: 14px;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .input-row label {
+      width: 130px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .input-row input {
+      flex: 1;
+      padding: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <h1>Welcome to the <br>TravelYYC Companion</h1>
+    <h3><i>Start planning your dream YYC trip now!</i></h3>
+
+    <div class="text-input">
+      <div class="input-row">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+      </div>
+      <div class="input-row">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="login-button">Log In</button>
+    </div>
+
+    <h4>Don't have an account?</h4>
+    <div class="button-container">
+      <button class="signup-button">Sign Up</button>
+      <button class="guest-button">Continue as Guest</button>
+    </div>
+
+    <img src="assets/calgary-skyline.jpg" alt="Calgary Skyline" style="width: 100%; position: absolute; bottom: 0; left: 0;">
+  </div>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2fdAN192CEp7kPVd2kOIBjbAgD8S2luw",
+      authDomain: "flavor-forum.firebaseapp.com",
+      projectId: "flavor-forum",
+      storageBucket: "flavor-forum.appspot.com",
+      messagingSenderId: "226153939035",
+      appId: "1:226153939035:web:f4f81371beb8909e1a7f7e"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.querySelector(".signup-button").addEventListener("click", () => {
+      window.location.href = "Sign_Up_Screen.html";
+    });
+
+    document.querySelector(".guest-button").addEventListener("click", () => {
+      window.location.href = "Homepage_Screen.html";
+    });
+
+    document.querySelector(".login-button").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "Homepage_Screen.html";
+        })
+        .catch((error) => {
+          alert("Login Failed: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
