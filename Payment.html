@@ -537,6 +537,12 @@
           e.preventDefault();
           payment_form.style.display = "none";
           payment_success.style.display = "block";
+
+          // Redirect to Homepage after payment is successful
+          setTimeout(() => {
+            window.location.href = "Homepage_Screen.html"; 
+          }, 1200);
+
         });
 
       } else {
