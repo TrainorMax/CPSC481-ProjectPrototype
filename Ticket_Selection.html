@@ -358,7 +358,7 @@
       }
 
       // Update subtotal of tickets
-      eventPricingDetails['ticket_price'] = subtotal;
+      eventPricingDetails['ticket_price'] = total;
 
       // Debugging purposes
       console.log(eventPricingDetails);
@@ -378,6 +378,9 @@
       fees = (subtotal * FEES_RATE) + (subtotal * TAX_RATE);
       total = subtotal + fees;
 
+      // Update subtotal of tickets
+      eventPricingDetails['ticket_price'] = (subtotal + fees).toFixed(2);
+
       ticket_number_container.textContent = ticket_number;
       subtotal_container.textContent = subtotal.toFixed(2);
       fees_container.textContent = fees.toFixed(2);
@@ -387,9 +390,6 @@
       if('no_of_tickets' in eventPricingDetails) {
         eventPricingDetails['no_of_tickets'] -= 1;
       } 
-
-      // Update subtotal of tickets
-      eventPricingDetails['ticket_price'] = total;
 
       // Debugging purposes
       console.log(eventPricingDetails);
