@@ -209,10 +209,11 @@
                 <!-- <button onclick="submitConfirmEdit()"></buttononclick>Confirm Edit</button> -->
             </div>
             <div class="navbar">
-                <button onclick="navigateTo('Homepage_Screen.html')">Home</button>
-                <button onclick="navigateTo('Trips_Tab.html')">Trips</button>
-                <button onclick="navigateTo('Ticket_Viewer.html')">Tickets</button>
+                <button id="home-btn">Home</button>
+                <button id="trips-btn">Trips</button>
+                <button id="tickets-btn">Tickets</button>
             </div>
+            
         </div>
         <div class="confirmation" id="confirmation">Event cancelled successfully!</div>
     </body>
@@ -229,7 +230,19 @@
                 window.location.href = "Payment.html";
             } else if (fromPage === 'trip_timeline') {
                 window.location.href = "Trip_Timeline.html";
+            } else if (fromPage === 'upcoming_trip') {
+                window.location.href = "View_Upcoming_Trip_Page.html";
             }
+        });
+
+        document.getElementById('home-btn').addEventListener('click', () => {
+            window.location.href = 'Homepage_Screen.html';
+        });
+        document.getElementById('trips-btn').addEventListener('click', () => {
+            window.location.href = 'Trips_Tab.html';
+        });
+        document.getElementById('tickets-btn').addEventListener('click', () => {
+            window.location.href = 'Ticket_Viewer.html';
         });
 
         // Global variables to track the event being edited
