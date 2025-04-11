@@ -382,7 +382,7 @@
             }
           } else if(name.toLowerCase().includes("snoop dogg")) {
             let total_price = 0.0;
-            if(selectedSeats.length > 1) {
+            if(selectedSeats.length >= 1) {
               selectedSeats.forEach(( { price }) => {
                 total_price += parseFloat(price)
               });
