@@ -125,19 +125,18 @@
             .active, .collapsible:hover {
                 background-color: #ddd;
             }
-            .back-button {
-                width: 40px; /* adjust the size of the image */
-                height: 40px;
-                cursor: pointer; /* make it look clickable */
-                border: none; /* remove any border */
-                background: none; /* ensure no background is applied */
-                outline: none; /* remove focus outline */
-            }
-
             .back-button-container {
-                position: absolute;
-                top: 60px;
-                left: 20px;
+              display: flex;
+              justify-content: flex-start;
+              margin: 10px 0;
+            }
+            .back-button {
+              width: 40px;
+              height: 40px;
+              cursor: pointer;
+              border: none;
+              background: none;
+              outline: none;
             }
 
             .app-container select{
@@ -171,9 +170,7 @@
             #selected-date {
                 margin-top: 5px; /* reduce the top margin of the date label */
             }
-            h2{
-                padding-top: 24px;
-            }
+            
 
 
         </style>
