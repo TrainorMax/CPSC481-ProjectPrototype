@@ -19,16 +19,16 @@
       height: 100vh;
     }
     .app-container {
-        width: 375px;
-        height: 667px;
-        max-height: 100vh;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-        position: relative;
-        display: flex;
-        flex-direction: column;
+      width: 375px;
+      height: 667px;
+      max-height: 100vh;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      display: flex;
+      flex-direction: column;
     }
     .scrollable-content {
       overflow-y: auto;
@@ -36,26 +36,11 @@
       flex-grow: 1;
       padding-bottom: 80px;
     }
-    .breadcrumb {
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 13px;
-      flex-wrap: wrap;
-    }
-    .breadcrumb li {
-      margin-right: 5px;
-    }
-    .breadcrumb li+li:before {
-      content: ">";
-      margin-right: 5px;
-    }
     .back-button-container {
-      display: flex;
-      justify-content: flex-start;
-      margin: 10px 0;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
     }
     .back-button {
       width: 40px;
@@ -66,7 +51,7 @@
       outline: none;
     }
     h1 {
-      margin-top: 5px;
+      margin-top: 30px;
       text-align: center;
     }
     .section {
@@ -158,37 +143,30 @@
       margin-top: 40px;
     }
     .navbar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 39.5px;
-        background-color: #c81d25;
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0;
-        font-family: Verdana;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 39.5px;
+      background-color: #c81d25;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-family: Verdana;
     }
     .navbar button {
-        background-color: transparent;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        font-family: Verdana;
+      background-color: transparent;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Verdana;
     }
   </style>
 </head>
 <body>
   <div class="app-container">
     <div class="scrollable-content">
-      <ul class="breadcrumb">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Start Planning</a></li>
-        <li><a href="#">Tag Selection</a></li>
-        <li><a href="#">Suggestion Selection</a></li>
-        <li>Trip Timeline</li>
-      </ul>
       <div class="back-button-container">
         <img src="https://img.icons8.com/ios/50/circled-left-2.png" alt="Back" class="back-button" onclick="window.location.href='Suggestion_Selection_Screen.html'" />
       </div>
