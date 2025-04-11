@@ -12,3 +12,5 @@ You can access the hosted webpage at: https://trainormax.github.io/CPSC481-Proje
 - Since we do not have any backend storage, this project only supports planning one trip at a time, using localStorage to store user and choice data 
 
 - This means that after a trip has been booked, a new trip cannot be planned until the browser cache has been cleared
+
+- Lastly, to simulate the mobile experience, the app is displayed using fixed mobile screen dimensions
