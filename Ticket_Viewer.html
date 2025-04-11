@@ -24,7 +24,11 @@
       background-color: #FFFFFF;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
-      font-size: 0.9rem;
+      display: flex; /* need this to make content scrollable*/
+      flex-direction: column;
+      font-size: 0.85rem;
+      padding: 20px;
+      overflow: hidden;
     }
     
     .tickets {
@@ -148,6 +152,7 @@
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
+      height: 39px;
     }
 
     .navbar button {
@@ -201,7 +206,7 @@
     let tickets_container = document.querySelector(".tickets");
 
     let empty_container = document.querySelector(".empty");
-    if(eventsToBook == []) {
+    if(eventsToBook.length == 0) {
       empty_container.style.display = "block";
     } else {
         
