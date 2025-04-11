@@ -407,8 +407,10 @@
           let event = new Event(trackingEvents[name].id, name, trackingEvents[name].price)
           events.push(event);
         } else {
-          let event = new Event(trackingEvents[name].id, name, (trackingEvents[name].price * trackingEvents[name].count));
-          events.push(event);
+          if(trackingEvents[name].price > 0) {
+            let event = new Event(trackingEvents[name].id, name, (trackingEvents[name].price * trackingEvents[name].count));
+            events.push(event);  
+          } 
         }
       }
 
