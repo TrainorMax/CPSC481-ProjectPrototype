@@ -236,19 +236,26 @@
         price: "0",
         tags: ["Custom"]
       };
-
-      const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-      if (!suggestions[formattedDate]) suggestions[formattedDate] = [];
-      suggestions[formattedDate].push(newEvent);
-      localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
-
-      const confirmation = document.getElementById('confirmation');
-      confirmation.style.display = "block";
-      confirmation.style.opacity = 1;
       
       const urlParams = new URLSearchParams(window.location.search);
       const fromPage = urlParams.get('from');
       
+      if (fromPage === 'upcoming_trip') {
+        const suggestions = JSON.parse(localStorage.getItem("bookedEvents")) || {};
+        if (!suggestions[formattedDate]) suggestions[formattedDate] = [];
+        suggestions[formattedDate].push(newEvent);
+        localStorage.setItem("bookedEvents", JSON.stringify(suggestions));
+      } else if (fromPage === 'trip_timeline') {
+        const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+        if (!suggestions[formattedDate]) suggestions[formattedDate] = [];
+        suggestions[formattedDate].push(newEvent);
+        localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
+      }
+
+      const confirmation = document.getElementById('confirmation');
+      confirmation.style.display = "block";
+      confirmation.style.opacity = 1;
+
       setTimeout(() => {
         confirmation.style.opacity = 0;
         setTimeout(() => {
