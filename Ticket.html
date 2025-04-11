@@ -98,10 +98,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px 0px;
     }
 
     .image-container > img {
-      width: 150px;
+      width: 180px;
     }
     
     .navbar {
@@ -137,41 +138,31 @@
         <h4>Concert</h4>
       </div>
       <div class="event-name">
-        <h2>Snoop Dogg: Cali to Canada Tour</h2>
+        <h2 class="heading"></h2>
         <span>Show this ticket at the entrance</span>
       </div>
       <div class="event-place">
         <h3>Location</h3>
-        <span>Scotiabank Saddledome</span>
+        <span class="location"></span>
       </div>
       <div class="flex-container">
         <div class="flex-pair">
           <h3>Date</h3>
-          <span>14/02/2025</span>
+          <span class="date"></span>
         </div>
         <div class="flex-pair">
           <h3>Time</h3>
-          <span>11:30pm - 4:00am</span>
-        </div>
-      </div>
-      <div class="flex-container">
-        <div class="flex-pair">
-          <h3>Section</h3>
-          <span>G</span>
-        </div>
-        <div class="flex-pair">
-          <h3>Seat number</h3>
-          <span>106</span>
+          <span class="time"></span>
         </div>
       </div>
       <div class="flex-container">
         <div class="flex-pair">
           <h3>Cost</h3>
-          <span>$65.63</span>
+          <span>$ <span class="cost"></span></span>
         </div>
         <div class="flex-pair">
           <h3>Order number</h3>
-          <span>97625</span>
+          <span class="order-number"></span>
         </div>
       </div>
       <div class="image-container">
@@ -185,6 +176,41 @@
     </div>
   </div>
   <script>
+
+    let trackedEvents = JSON.parse(localStorage.getItem("trackingEvents")) || {};
+    let eventsToBook = JSON.parse(localStorage.getItem("bookedEvents")) || {};       // access all booked events
+
+    let ticketID = localStorage.getItem('ticketID');
+    let event_name, event_location, event_date, event_time, event_cost;
+
+    eventsToBook.forEach(({ name, date, time }) => {
+      if(ticketID == 1) {
+        if(name.toLowerCase().includes("the blues can")) {
+          event_name = name;
+          event_location = "The Blues Can";
+          event_date = date;
+          event_time = time;
+          event_cost = trackedEvents[name].price;
+        }  
+      } else if(ticketID == 2) {
+          if(name.toLowerCase().includes("snoop dogg")) {
+            event_name = name;
+            event_location = "Scotiabank Saddledome";
+            event_date = date;
+            event_time = time;
+            event_cost = trackedEvents[name].price;
+          };
+        }
+    });
+
+    // Query Selectors
+    document.querySelector(".heading").textContent = event_name;
+    document.querySelector(".location").textContent = event_location;
+    document.querySelector(".date").textContent = event_date;
+    document.querySelector(".time").textContent = event_time;
+    document.querySelector(".cost").textContent = event_cost;
+    document.querySelector(".order-number").textContent = Math.floor(100000 + Math.random() * 900000);
+
     let back_button = document.querySelector(".back-button");
     let home_button = document.querySelector(".home-button");
     let trips_button = document.querySelector(".trips-button");

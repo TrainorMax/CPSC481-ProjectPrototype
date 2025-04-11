@@ -180,10 +180,10 @@
         
         <div class="text-input">
             <label style="display: block; text-align: left;"><b>Amenities and Emergency Services</b></label><br>
-            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/cps.html">Calgary Police Service</a>: 911</label><br>
-            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/311.html">Calgary City Services</a>: 311</label><br>
-            <label style="display: block; text-align: left;"><a href="https://www.albertahealthservices.ca/topics/page11975.aspx">Poison and Drug Information Service</a>: 1-800-332-1414</label><br>
-            <label style="display: block; text-align: left;"><a href="https://www.thecheckergroup.com/">Checker Cabs</a>: (403) 299-9999</label>
+            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/cps.html" target="_blank">Calgary Police Service</a>: 911</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.calgary.ca/311.html" target="_blank">Calgary City Services</a>: 311</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.albertahealthservices.ca/topics/page11975.aspx" target="_blank">Poison and Drug Information Service</a>: 1-800-332-1414</label><br>
+            <label style="display: block; text-align: left;"><a href="https://www.thecheckergroup.com/" target="_blank">Checker Cabs</a>: (403) 299-9999</label>
         </div>
 
         <div class="navbar">
@@ -196,7 +196,6 @@
         document.addEventListener("DOMContentLoaded", () => {
             const signout_button = document.querySelector(".signout-button");
             const newtrip_button = document.querySelector(".newtrip-button");
-            const viewtrip_button = document.querySelector(".box-button");
             const trips_button = document.querySelector(".trips-button");
             const tickets_button = document.querySelector(".tickets-button");
 
@@ -209,12 +208,6 @@
             if (newtrip_button) {
                 newtrip_button.addEventListener("click", () => {
                     window.location.href = "Start_Planning_Screen.html";
-                });
-            }
-
-            if (viewtrip_button) {
-                viewtrip_button.addEventListener("click", () => {
-                    window.location.href = "Trip_Timeline.html";
                 });
             }
 
