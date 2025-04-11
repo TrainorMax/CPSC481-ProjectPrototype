@@ -421,41 +421,84 @@
             console.log("Found event ID:", eventId);
             currentEventId = eventId;
             
-            // Get all suggestions from localStorage
-            const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-            console.log("Retrieved suggestions:", suggestions);
-            
-            // Find the event with matching ID across all dates
-            let foundEvent = null;
-            let foundDate = null;
-            
-            // Loop through each date in the suggestions
-            for (const date in suggestions) {
-                const events = suggestions[date];
-                console.log(`Checking date ${date} with ${events.length} events`);
-                
-                const event = events.find(e => e.id === eventId);
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromPage = urlParams.get('from');
+
+            if (fromPage === 'upcoming_trip') {
+                // Get bookedEvents from localStorage (flattened structure)
+                const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || [];
+                console.log("Retrieved bookedEvents:", bookedEvents);
+
+                // Find the event with matching ID directly in the array
+                let foundEvent = null;
+                let foundDate = null;
+
+                // Look for the event in the flattened array
+                const event = bookedEvents.find(e => e.id === eventId);
                 if (event) {
                     foundEvent = event;
-                    foundDate = date; // Store the date where the event was found
-                    console.log("Found event:", event, "on date:", date);
-                    break;
+                    foundDate = event.date; // The date is now a property of each event
+                    console.log("Found event:", event, "on date:", foundDate);
                 }
-            }
-            
-            if (foundEvent) {
-                // Store the date for later use
-                currentDate = foundDate;
-                
-                // Populate fields with event details including the date
-                populateEventDetails(foundEvent);
-                
-                // Set the date in the date input field
-                document.getElementById('eventDate').value = foundDate;
-                
-                console.log("Populated event details");
+
+                // If you need to access by date later on, you can group events by date
+                if (foundEvent === null) {
+                    console.log("No event found with ID:", eventId);
+                }
+
+                if (foundEvent) {
+                    // Store the date for later use
+                    currentDate = foundDate;
+                    
+                    // Populate fields with event details including the date
+                    populateEventDetails(foundEvent);
+                    
+                    // Set the date in the date input field
+                    document.getElementById('eventDate').value = foundDate;
+                    
+                    console.log("Populated event details");
+                } else {
+                    console.error("Event not found in suggestions!");
+                }
             } else {
-                console.error("Event not found in suggestions!");
+
+
+                // Get all suggestions from localStorage
+                const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+                console.log("Retrieved suggestions:", suggestions);
+                
+                // Find the event with matching ID across all dates
+                let foundEvent = null;
+                let foundDate = null;
+                
+                // Loop through each date in the suggestions
+                for (const date in suggestions) {
+                    const events = suggestions[date];
+                    console.log(`Checking date ${date} with ${events.length} events`);
+                    
+                    const event = events.find(e => e.id === eventId);
+                    if (event) {
+                        foundEvent = event;
+                        foundDate = date; // Store the date where the event was found
+                        console.log("Found event:", event, "on date:", date);
+                        break;
+                    }
+                }
+                
+                if (foundEvent) {
+                    // Store the date for later use
+                    currentDate = foundDate;
+                    
+                    // Populate fields with event details including the date
+                    populateEventDetails(foundEvent);
+                    
+                    // Set the date in the date input field
+                    document.getElementById('eventDate').value = foundDate;
+                    
+                    console.log("Populated event details");
+                } else {
+                    console.error("Event not found in suggestions!");
+                }
             }
         };
 
@@ -476,50 +519,115 @@
             // Function to remove the event
         // Function to remove the event by ID without needing the date
         function submitCancelEvent() {
-            if (!currentEventId) {
-                alert("Error: Could not identify the event to cancel.");
-                return;
-            }
-            
-            // Get all suggestions from localStorage
-            const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
-            let eventRemoved = false;
-            
-            // Loop through each date's events
-            for (const date in suggestions) {
-                // Filter out the event with matching ID
-                const originalLength = suggestions[date].length;
-                suggestions[date] = suggestions[date].filter(e => e.id !== currentEventId);
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromPage = urlParams.get('from');
+
+            if (fromPage === 'upcoming_trip') {
+                if (!currentEventId) {
+                    alert("Error: Could not identify the event to cancel.");
+                    return;
+                }
                 
-                // If the length changed, we found and removed our event
-                if (suggestions[date].length !== originalLength) {
-                    eventRemoved = true;
-                    break;
+                // Get all bookedEvents from localStorage
+                const bookedEvents = JSON.parse(localStorage.getItem("bookedEvents")) || [];
+                
+                // Find the event with the matching ID
+                const eventIndex = bookedEvents.findIndex(event => event.id === currentEventId);
+                
+                if (eventIndex !== -1) {
+                    // Remove the event from the array
+                    bookedEvents.splice(eventIndex, 1);
+                    
+                    // Save the updated array back to localStorage
+                    localStorage.setItem("bookedEvents", JSON.stringify(bookedEvents));
+                    
+                    // Reorganize back into suggestions format for other functions that might need it
+                    const suggestions = {};
+                    bookedEvents.forEach(event => {
+                        if (!suggestions[event.date]) {
+                            suggestions[event.date] = [];
+                        }
+                        suggestions[event.date].push({
+                            name: event.name,
+                            time: event.time,
+                            details: event.details,
+                            id: event.id,
+                            price: event.price,
+                            tags: event.tags || [] // In case tags exist
+                        });
+                    });
+                    localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
+                    
+                    // Show styled confirmation popup
+                    const confirmation = document.getElementById('confirmation');
+                    confirmation.style.display = "block";
+                    confirmation.style.opacity = 1;
+                    
+                    // Redirect after 1000ms (1 second) delay
+                    setTimeout(() => {
+                        confirmation.style.opacity = 0;
+                        setTimeout(() => {
+                            if (fromPage === 'payment') {
+                                window.location.href = "Payment.html";
+                            } else if (fromPage === 'trip_timeline') {
+                                window.location.href = "Trip_Timeline.html";
+                            } else if (fromPage === 'upcoming_trip') {
+                                window.location.href = "View_Upcoming_Trip_Page.html";
+                            }
+                        }, 0);
+                    }, 1000);
+                } else {
+                    alert("Error: Event not found in booked events.");
                 }
             }
-            
-            if (eventRemoved) {
-                // Save back to localStorage
-                localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
+            else {
+                if (!currentEventId) {
+                    alert("Error: Could not identify the event to cancel.");
+                    return;
+                }
                 
-                // Show styled confirmation popup
-                const confirmation = document.getElementById('confirmation');
-                confirmation.style.display = "block";
-                confirmation.style.opacity = 1;
+                // Get all suggestions from localStorage
+                const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
+                let eventRemoved = false;
                 
-                // Redirect after 1000ms (1 second) delay
-                setTimeout(() => {
-                    confirmation.style.opacity = 0;
+                // Loop through each date's events
+                for (const date in suggestions) {
+                    // Filter out the event with matching ID
+                    const originalLength = suggestions[date].length;
+                    suggestions[date] = suggestions[date].filter(e => e.id !== currentEventId);
+                    
+                    // If the length changed, we found and removed our event
+                    if (suggestions[date].length !== originalLength) {
+                        eventRemoved = true;
+                        break;
+                    }
+                }
+                
+                if (eventRemoved) {
+                    // Save back to localStorage
+                    localStorage.setItem("selectedSuggestions", JSON.stringify(suggestions));
+                    
+                    // Show styled confirmation popup
+                    const confirmation = document.getElementById('confirmation');
+                    confirmation.style.display = "block";
+                    confirmation.style.opacity = 1;
+                    
+                    // Redirect after 1000ms (1 second) delay
                     setTimeout(() => {
-                        if (fromPage === 'payment') {
-                            window.location.href = "Payment.html";
-                        } else if (fromPage === 'trip_timeline') {
-                            window.location.href = "Trip_Timeline.html";
-                        }
-                    }, 0);
-                }, 1000);
-            } else {
-                alert("Error: Event not found in saved suggestions.");
+                        confirmation.style.opacity = 0;
+                        setTimeout(() => {
+                            if (fromPage === 'payment') {
+                                window.location.href = "Payment.html";
+                            } else if (fromPage === 'trip_timeline') {
+                                window.location.href = "Trip_Timeline.html";
+                            } else if (fromPage === 'upcoming_trip') {
+                                window.location.href = "View_Upcoming_Trip_Page.html";
+                            }
+                        }, 0);
+                    }, 1000);
+                } else {
+                    alert("Error: Event not found in saved suggestions.");
+                }
             }
         }
     </script>
