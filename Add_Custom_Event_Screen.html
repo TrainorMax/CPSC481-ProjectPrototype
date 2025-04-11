@@ -245,11 +245,18 @@
       const confirmation = document.getElementById('confirmation');
       confirmation.style.display = "block";
       confirmation.style.opacity = 1;
-
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromPage = urlParams.get('from');
+      
       setTimeout(() => {
         confirmation.style.opacity = 0;
         setTimeout(() => {
-          window.location.href = "Trip_Timeline.html";
+          if (fromPage === 'upcoming_trip') {
+            window.location.href = "View_Upcoming_Trip_page.html";
+          } else if (fromPage === 'trip_timeline') {
+            window.location.href = "Trip_Timeline.html";
+          }
         }, 0);
       }, 1000);
     }
@@ -265,7 +272,18 @@
     }
 
     function backButtonAction() {
-      window.location.href = "Trip_Timeline.html";
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromPage = urlParams.get('from');
+
+
+      if (fromPage === 'trip_timeline') {
+        window.location.href = "Trip_Timeline.html";
+      } else if (fromPage === 'upcoming_trip') {
+        window.location.href = "View_Upcoming_Trip_Page.html";
+      } else {
+        // Fallback or default route
+        window.history.back();
+      }
     }
 
     function navigateTo(page) {
