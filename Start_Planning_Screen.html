@@ -283,6 +283,27 @@
 
         // function for continue button to call on saveTripData(), and to move to next page
         function submitData() {
+            const arrivalDate = document.getElementById('start-date').value;
+            const departureDate = document.getElementById('end-date').value;
+            const travelers = {
+                adults: parseInt(document.getElementById('adults-count').textContent),
+                children: parseInt(document.getElementById('children-count').textContent),
+                seniors: parseInt(document.getElementById('seniors-count').textContent),
+            };
+
+            if (!arrivalDate || !departureDate) {
+                alert("Please select both arrival and departure dates.");
+                return;
+            }
+            if (travelers.adults + travelers.children + travelers.seniors === 0) {
+                alert("Please add at least one traveler.");
+                return;
+            }
+
+        
+
+
+
             saveTripData();
             window.location.href = 'Tag_Selection_Screen.html';
         }
