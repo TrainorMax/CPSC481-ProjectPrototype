@@ -30,8 +30,13 @@
     .tickets {
       display: flex;
       flex-direction: column;
-      margin: 50px 5px 5px 5px;
-      padding: 20px;
+      gap: 10px;
+      margin: 5px;
+      padding: 10px;
+    }
+
+    .tickets-heading {
+      text-align: center;
     }
     
     .ticket {
@@ -44,10 +49,6 @@
       flex-direction: row;
       gap: 10px;
       position: relative;
-    }
-    
-    .tickets-heading {
-      text-align: center;
     }
     
     .ticket-description {
@@ -103,8 +104,8 @@
     
     .image-container > img {
       border-radius: 20px;
-      width: 100px;
-      height: 100px;
+      width: 140px;
+      height: 120px;
     }
     
     .back-button {
@@ -115,11 +116,27 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    
+
     .back-button-container{
         position:absolute;
         top: 30px;
         left: 20px;
+    }
+
+    .empty {
+      display: block;
+    }
+
+    .empty > h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .empty > img {
+      width: 250px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     
     .navbar {
@@ -156,59 +173,135 @@
 </head>
 <body>
   <div class="ticket-viewer-container">
+    <h1 class="tickets-heading">My Tickets</h1>
     <div class="tickets">
-      <h1 class="tickets-heading">My Tickets</h1>
-      <div class="ticket">
-        <div class="image-container">
-          <img src="./assets/snoop.jpg" alt="Image Snoop Dog Concert Banner">
-        </div>
-        <div class="ticket-description">
-          <h3>Snoop Dogg: Cali to Canada Tour</h3>
-          <div class="event-details">
-            <div class="event-container">
-              <!-- Flaticon: Calendar icons created by Khoirul Anwar -->
-              <img class="icon" src="./assets/calendar_icon.png" alt="Image of calendar icon">
-              <span class="date">14/02/2025</span>        
-            </div>
-            <div class="event-container">
-              <!-- Flaticon: Calendar icons created by dmitri13 -->
-              <img class="icon" src="./assets/clock_icon.png" alt="Image of calendar icon">  
-              <span class="time">11:30pm - 4:00am</span>        
-            </div>
-            <div class="location">
-              <!-- Flaticon: Location pin icons created by Smashicons -->
-              <img class="icon" src="./assets/location.png" alt="Image of location icon">
-              <span>Scotiabank Saddledome</span>
-            </div>
-          </div>
-          <div class="button-container">
-            <button class="view-button">VIEW TICKET</button>
-          </div>
-        </div>
-      </div>
-      <div class="navbar">
-        <button class="home-button">Home</button>
-        <button class="trips-button">Trips</button>
-        <button class="tickets-button" style="background-color:#a81d25">Tickets</button>
-      </div>
+      <!-- Add tickets to tickets container -->
+       <div class="empty">
+        <img class="ticket-image" src="./assets/tickets.png" alt="Image of tickets">
+        <h1>Your tickets will appear here!</h1>
+       </div>
+    </div>
+    <div class="navbar">
+      <button class="home-button">Home</button>
+      <button class="trips-button">Trips</button>
+      <button class="tickets-button" style="background-color:#a81d25">Tickets</button>
     </div>
   </div>
   <script>
-    let view_button = document.querySelector(".view-button");
+
+    // Pull events from local storage
+    let eventsToBook = JSON.parse(localStorage.getItem("bookedEvents")) || [];       
+    let selectedSeats = JSON.parse(localStorage.getItem("selectedSeats")) || [];
+    let selectedTickets = JSON.parse(localStorage.getItem("selectedTickets")) || {};
+
+    // Query Selectors
     let home_button = document.querySelector(".home-button");
     let trips_button = document.querySelector(".trips-button");
     let tickets_button = document.querySelector(".tickets-button");
+    let tickets_container = document.querySelector(".tickets");
 
-    view_button.addEventListener("click", () => {
-      window.location.href = "Ticket.html"
-    });
+    let empty_container = document.querySelector(".empty");
+    if(eventsToBook == []) {
+      empty_container.style.display = "block";
+    } else {
+        
+        empty_container.style.display = "none";
+
+        // Get events which require tickets
+        let requiresTicket = [];
+        eventsToBook.forEach(({ name, date, time }) => {
+           if(name.toLowerCase().includes("the blues can")) {
+            requiresTicket.push({
+              id: 1,
+              image: "https://www.thebluescan.com/pics/mp00000440.jpg",
+              alt: "Image of people performing on stage",
+              name: name,
+              date: date, 
+              time: time,
+              location: "The Blues Can"
+            });
+          } else if(name.toLowerCase().includes("snoop dogg")) {
+            requiresTicket.push({
+              id: 2,
+              image: "./assets/snoop.jpg",
+              alt: "Image of Snoop Dogg Concert Banner",
+              name: name,
+              date: date, 
+              time: time,
+              location: "Scotiabank Saddledome"
+            });
+          }
+        });
+
+        console.log(requiresTicket);
+
+        function createTicket(id, image, alt, name, date, time, location) {
+          ticketDiv = document.createElement("div");
+          ticketDiv.classList.add("ticket");
+          ticketDiv.setAttribute("id", id.toString());
+
+          imageDiv = document.createElement("div");
+          imageDiv.classList.add("image-container");
+          imageDiv.innerHTML = `<img src=${image} alt=${alt}/>`;
+          console.log(`<img src="${image}" alt=${alt}/>`);
+          ticketDiv.appendChild(imageDiv);
+
+          eventDiv = document.createElement("div");
+          eventDiv.classList.add("ticket-description");
+          eventDiv.innerHTML = `
+            <h3>${name}</h3>
+            <div class="event-details">
+              <div class="event-container">
+                <!-- Flaticon: Calendar icons created by Khoirul Anwar -->
+                <img class="icon" src="./assets/calendar_icon.png" alt="Image of calendar icon">
+                <span class="date">${date}</span>        
+              </div>
+              <div class="event-container">
+                <!-- Flaticon: Calendar icons created by dmitri13 -->
+                <img class="icon" src="./assets/clock_icon.png" alt="Image of calendar icon">  
+                <span class="time">${time}</span>        
+              </div>
+              <div class="location">
+                <!-- Flaticon: Location pin icons created by Smashicons -->
+                <img class="icon" src="./assets/location.png" alt="Image of location icon">
+                <span>${location}</span>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="view-button" id=${id}>VIEW TICKET</button>
+            </div>`;
+
+          ticketDiv.appendChild(eventDiv);
+
+          // Append ticket div to tickets container
+          tickets_container.appendChild(ticketDiv);
+        }
+
+        requiresTicket.forEach(({ id, image, alt, name, date, time, location }) => {
+          createTicket(id, image, alt, name, date, time, location);
+        });
+        
+        let view_buttons = document.querySelectorAll(".view-button");
+        view_buttons.forEach((view_button) => {
+          view_button.addEventListener("click", (event) => {
+            
+            let clickedId = event.target.id;
+            console.log(clickedId);
+  
+            if(clickedId) {
+              localStorage.setItem('ticketID', clickedId);
+              window.location.href = "Ticket.html";
+            }   
+          });
+        });
+    }
 
     home_button.addEventListener("click", () => {
       window.location.href = "Homepage_Screen.html"
     });
 
     trips_button.addEventListener("click", () => {
-      window.location.href = "Trips_Tab.html"
+      window.location.href = "View_Trip_Page.html"
     });
 
     tickets_button.addEventListener("click", () => {

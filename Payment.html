@@ -251,16 +251,6 @@
 <body>
   <div class="payment-container">
     <div class="scrollable-content">
-      <!-- <div class="breadcrumb-container">
-        <ul class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Planning</a></li>
-            <li><a href="#">Tags</a></li>
-            <li><a href="#">Suggestions</a></li>
-            <li><a href="#">Timeline</a></li>
-            <li><a href="#">Payment</a></li>
-        </ul>
-      </div> -->
       <div class="back-button">
         <img width="50" height="50" src="https://img.icons8.com/ios/50/circled-left-2.png" alt="circled-left-2"/>
       </div> 
@@ -554,6 +544,18 @@
         confirm_button.disabled = true;
       }
     }
+
+    home_button.addEventListener("click", () => {
+      window.location.href = "Homepage_Screen.html"
+    });
+
+    trips_button.addEventListener("click", () => {
+      window.location.href = "View_Trip_Page.html"
+    });
+
+    tickets_button.addEventListener("click", () => {
+      window.location.href = "Ticket_Viewer.html"
+    });
   </script>
 </body>
 </html>
