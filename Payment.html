@@ -464,6 +464,7 @@
       total_subtotal += cost;
     });
 
+    localStorage.setItem("total_subtotal", total_subtotal); // store the subtotal in local storage
     subtotal_field.textContent = total_subtotal;
     total_field.textContent = (total_subtotal + (total_subtotal * TAX_RATE)).toFixed(2);
     billed_price.textContent = (total_subtotal + (total_subtotal * TAX_RATE)).toFixed(2);
@@ -563,6 +564,18 @@
 
     tickets_button.addEventListener("click", () => {
       window.location.href = "Ticket_Viewer.html"
+    });
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      let total_subtotal = parseFloat(localStorage.getItem("total_subtotal")) || 0.00;
+      
+      if (total_subtotal === 0) {
+        // If no subtotal is found, redirect to the homepage
+        window.location.href = "Homepage_Screen.html";
+        }
+
+        
     });
   </script>
 </body>
