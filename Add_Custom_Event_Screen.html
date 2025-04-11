@@ -236,6 +236,16 @@
         price: "0",
         tags: ["Custom"]
       };
+
+      const newEvent1 = {
+        date: formattedDate,
+        name: eventName,
+        time: timeDisplay,
+        details: eventDetails,
+        id: eventId,
+        price: "0",
+        tags: ["Custom"]
+      };
       
       const urlParams = new URLSearchParams(window.location.search);
       const fromPage = urlParams.get('from');
@@ -243,7 +253,7 @@
       if (fromPage === 'upcoming_trip') {
         const suggestions = JSON.parse(localStorage.getItem("bookedEvents")) || {};
         if (!suggestions[formattedDate]) suggestions[formattedDate] = [];
-        suggestions[formattedDate].push(newEvent);
+        suggestions.push(newEvent1);
         localStorage.setItem("bookedEvents", JSON.stringify(suggestions));
       } else if (fromPage === 'trip_timeline') {
         const suggestions = JSON.parse(localStorage.getItem("selectedSuggestions")) || {};
