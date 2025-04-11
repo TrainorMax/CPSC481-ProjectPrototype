@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #D0CFCF;
-      font-family: Verdana;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Verdana;
     }
     
     .back-button {
@@ -26,19 +26,23 @@
     }
     
     .payment-container {
-      width: 375px; /* set mobile app width */
-      height: 667px; /* set mobile app height */
+      width: 415px; /* set mobile app width */
+      height: 707px; /* set mobile app height */
       background-color: #FFFFFF;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
       display: flex; /* need this to make content scrollable*/
       flex-direction: column;
       font-size: 0.85rem;
+      padding: 20px;
+      overflow: hidden;
     }
     
     .scrollable-content {
-      padding: 30px 20px 120px 20px;
+      padding: 0;
       overflow-y: auto;
+      flex-grow: 1;
+      height: calc(100% - 60px);
     }
     
     .payment-heading {
@@ -177,7 +181,8 @@
       background-color: #c81d25;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      padding: 0px 0;
+      height: 59px;
     }
 
     .navbar button {
