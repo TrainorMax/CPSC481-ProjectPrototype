@@ -422,8 +422,7 @@
         }
       }
 
-      console.log(trackingEvents);
-      console.log(events);
+      localStorage.setItem('trackingEvents', JSON.stringify(trackingEvents));
       return events;
     }
 
